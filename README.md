@@ -3,39 +3,80 @@ device compare
 
 
 手机对比
+我正在设计一个数码设备对比网站,目前有一个不成熟的思考,我希望你指出我的设计之中的严重问题,并补全我的设计.目前设计处于Demo阶段, 所以无需抛出过于刁钻的问题,只考虑严重的底线问题.
 
+以下是网站设计说明书:
 1. 本网站致力于通过简洁明快的页面,让消费对比不同的机型, 以方便挑选购买到合适的机型
 2. 风格模仿 apple iphone 对比的页面
-3. 后端只需要一个接口 
-/device/phone/detail?modelList=iphone-17-pro-max,iphone-16,iphone-15-plus
-requestBody: [model1, model2]
-example: ["iphone 13", "iphone 17"]
+3. 网站初期尽可能简单,以MVP原则制作Demo,只节选部分重点参数
+3. 后端只需要一个接口, 传入不同手机的机型名称,返回对应的参数.
+GET /device/phone/detail?modelList={model_id1},{model_id2}
+通过model_id 来对应传入的设备id,比如iphone-17-pro-max
 
+
+数据库设计:
+在 MVP 阶段，直接采用本地 JSON 文件作为静态数据源，启动时加载到内存中作为一级缓存。
 responseBody:
 {
-	"iphone 13": {
-		"display": {
-			"size": "6.3 inches",
-			"resolution": "2622 x 1206",
-			"refresh_rate": "120Hz"
-			},
-		"battery": {
-			"capacity_mah": 3582,
-			"charging_watt": 25
-		  },
-		"hardware": {
-			"chipset": "Apple A18 Pro",
-			"ram": "8GB"
-		  },
-		
-		"screenSize": float,
-		"batteryCapacity": int
-		"soc": "A15",
-		"mainSensor": "Sony 818"
-	}
+  "iphone 13 pro": {
+    "chipset": "Apple A18 Pro",
+    "storage_versions": [
+      { "ram_gb": 8, "rom_gb": 128, "price": 2999 },
+      { "ram_gb": 12, "rom_gb": 256, "price": 3499 },
+      { "ram_gb": 16, "rom_gb": 512, "price": 3999 }
+    ],
+    "display": {
+      "size": 6.1,
+      "resolution": "2532 x 1170",
+      "max_refresh_rate": 120,
+      "min_refresh_rate": 10
+    },
+    "battery": {
+      "capacity_mah": 3095,
+      "charging_watt": 20
+    },
+
+    "Camera": {
+      "wide": {
+        "sensor": "Sony IMX703",
+        "resolution": "5000",
+        "aperture": 1.8,
+        "focal_length": 23,
+        "sensor_size": 1,
+        "image_stabilization": [
+          "OIS",
+          "EIS"
+        ]
+      },
+      "telephoto": {
+        "sensor": "Sony IMX713"
+      },
+      "ultra_wide": {
+        "sensor": "Sony IMX772"
+      },
+      "rear": {
+        "sensor": "Sony IMX514"
+      }
+    }
+  }
 }
 
-
+组件分类
+屏幕
+芯片
+摄像头
+电池容量
+充电功率
+三防等级
+生物识别
+机身材质
+机身尺寸/重量
+扬声器
+震动马达
+数据接口: USB NFC 红外 3.5mm
+OS 操作系统
+GPS
+蜂窝网络通讯频段
 
 以下是对应词汇的英文表达：
 
