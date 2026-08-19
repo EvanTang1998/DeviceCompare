@@ -9,9 +9,13 @@ device compare
 1. 本网站致力于通过简洁明快的页面,让消费对比不同的机型, 以方便挑选购买到合适的机型
 2. 页面风格模仿 apple iphone compare 页面，区别在于我这个网站可以展示市面更多品牌机型
 3. 网站初期尽可能简单, 以MVP原则制作Demo, 只预置少量机型，节选部分重点参数作为验证即可。
-3. MVP阶段，后端只有一个接口, 前期不用管查询参数，直接返回所有机型的数据 GET /device/phones?modelList=${model1},${model2},${model3}
-4. 数据来源:
-在 MVP 阶段，直接采用本地 JSON 文件作为静态数据源，接口直接把它作为响应即可。
+3. MVP阶段，不要后端，直接采用 JSON 作为静态数据源，直接把它作为响应即可。
+
+目前仅需实现第一版本：
+1. 不需要后端，直接在代码里 用json 写死两款手机的参数，只为了检查效果
+
+
+GET /device/phones?modelList=${model1},${model2},${model3}
 responseBody:
 {
   "iphone 13 pro": {
