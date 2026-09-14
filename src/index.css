@@ -1,0 +1,215 @@
+:root {
+  --bg: #f5f5f7;
+  --surface: #ffffff;
+  --text: #1d1d1f;
+  --text-secondary: #6e6e73;
+  --border: rgba(0, 0, 0, 0.08);
+  --accent: #0066cc;
+  --diff-bg: #f0f7ff;
+  --radius: 12px;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Helvetica Neue", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.page {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 24px 16px 48px;
+}
+
+.site-header {
+  text-align: center;
+  padding: 16px 0 24px;
+}
+
+.site-header h1 {
+  font-size: 26px;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+}
+
+.site-header p {
+  color: var(--text-secondary);
+  margin-top: 6px;
+  font-size: 14px;
+}
+
+.compare-scroll {
+  overflow-x: auto;
+  background: var(--surface);
+  border: 0.5px solid var(--border);
+  border-radius: var(--radius);
+}
+
+.compare-grid {
+  display: grid;
+  grid-template-columns: minmax(130px, 170px) repeat(4, minmax(210px, 1fr));
+  min-width: 960px;
+}
+
+.corner-cell {
+  position: sticky;
+  left: 0;
+  z-index: 3;
+  background: var(--surface);
+  border-bottom: 0.5px solid var(--border);
+  display: flex;
+  align-items: flex-end;
+  padding: 12px 14px;
+}
+
+.corner-label {
+  color: var(--text-secondary);
+  font-size: 13px;
+}
+
+.header-cell {
+  border-bottom: 0.5px solid var(--border);
+  border-left: 0.5px solid var(--border);
+  padding: 16px 12px;
+  background: var(--surface);
+}
+
+.phone-image {
+  height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 12px;
+}
+
+.phone-image img {
+  max-height: 120px;
+  max-width: 90%;
+  object-fit: contain;
+}
+
+.image-placeholder {
+  width: 74px;
+  height: 112px;
+  border-radius: 14px;
+  background: #e8e8ed;
+  border: 0.5px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  padding: 6px;
+}
+
+.image-placeholder span {
+  font-size: 11px;
+  color: var(--text-secondary);
+  text-align: center;
+  word-break: break-all;
+}
+
+.picker {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.picker select,
+.picker input {
+  width: 100%;
+  padding: 8px 10px;
+  border: 0.5px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+  font-size: 13px;
+  color: var(--text);
+  outline: none;
+}
+
+.picker select:focus,
+.picker input:focus {
+  border-color: var(--accent);
+}
+
+.section-cell {
+  background: var(--bg);
+  border-bottom: 0.5px solid var(--border);
+  border-left: 0.5px solid var(--border);
+  padding: 10px 14px;
+}
+
+.section-cell h2 {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text);
+}
+
+.label-cell {
+  position: sticky;
+  left: 0;
+  z-index: 2;
+  background: var(--surface);
+  border-bottom: 0.5px solid var(--border);
+  padding: 10px 14px;
+  color: var(--text-secondary);
+  font-size: 13px;
+}
+
+.value-cell {
+  border-bottom: 0.5px solid var(--border);
+  border-left: 0.5px solid var(--border);
+  padding: 10px 14px;
+  font-size: 13px;
+  background: var(--surface);
+}
+
+.value-cell.diff {
+  background: var(--diff-bg);
+}
+
+.value-cell .empty {
+  color: #c7c7cc;
+}
+
+.value-cell .lines .line + .line {
+  margin-top: 2px;
+}
+
+.value-cell .lines .line:first-child {
+  font-weight: 500;
+}
+
+.site-footer {
+  text-align: center;
+  color: var(--text-secondary);
+  font-size: 12px;
+  padding-top: 20px;
+}
+
+@media (max-width: 768px) {
+  .compare-grid {
+    grid-template-columns: minmax(110px, 130px) repeat(4, minmax(230px, 260px));
+    min-width: 1060px;
+  }
+
+  .phone-image {
+    height: 90px;
+  }
+
+  .image-placeholder {
+    width: 58px;
+    height: 88px;
+  }
+
+  .site-header h1 {
+    font-size: 20px;
+  }
+}
