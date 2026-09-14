@@ -4,6 +4,7 @@ import react from "@vitejs/plugin-react";
 export default defineConfig({
   plugins: [react()],
   cacheDir: ".vite-cache",
+  base: "/DeviceCompare/",
   server: {
     port: 5173,
     strictPort: true

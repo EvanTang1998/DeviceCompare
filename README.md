@@ -1,4 +1,4 @@
-# 火眸 · 手机对比网站
+# 灵眸 · 手机对比网站
 
 仿 Apple iPhone Compare 风格的手机参数对比网站，React + Vite 纯前端实现，静态 JSON 作为数据源。设计需求与规划见 [designer-document/设计说明.md](designer-document/设计说明.md)。
 
@@ -7,8 +7,15 @@
 ```bash
 npm install        # 首次安装依赖
 npm run build      # 构建生产包
-npm run preview    # 启动预览服务（http://localhost:4173）
+npm run preview    # 启动预览服务（http://localhost:4173/DeviceCompare/）
 ```
+
+## 在线访问（GitHub Pages）
+
+推送到 `main` 后 GitHub Actions 自动构建并部署到：
+**https://evantang1998.github.io/DeviceCompare/**
+
+首次使用需在仓库 Settings → Pages → Source 选择「GitHub Actions」启用一次。
 
 ## 目录结构
 
