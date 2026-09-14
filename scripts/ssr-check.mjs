@@ -12,7 +12,7 @@ try {
   const { default: App } = await vite.ssrLoadModule("/src/App.jsx");
   const html = renderToString(React.createElement(App));
   const checks = [
-    ["火眸", html.includes("火眸")],
+    ["灵眸", html.includes("灵眸")],
     ["iPhone 17 Pro", html.includes("iPhone 17 Pro")],
     ["一加 Ace 6", html.includes("一加 Ace 6")],
     ["A19 Pro", html.includes("A19 Pro")],

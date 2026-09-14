@@ -221,7 +221,7 @@ export default function App() {
   return (
     <div className="page">
       <header className="site-header">
-        <h1>火眸 · 手机对比</h1>
+        <h1>灵眸 · 手机对比</h1>
         <p>选择多台手机，并排看清关键参数差异</p>
       </header>
 
