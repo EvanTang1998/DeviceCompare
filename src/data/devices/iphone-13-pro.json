@@ -4,7 +4,7 @@
   "release_year": 2021,
   "chipset": {
     "chip": "Apple A15 Bionic",
-    "ram": ["6GB LPDDR4X"],
+    "ram": ["6GB"],
     "rom": ["128GB", "256GB", "512GB", "1TB"]
   },
   "body": {
