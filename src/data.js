@@ -1,38 +1,39 @@
-import iphone13pro from "../static/iphone13pro_specs.json";
-import iphone17 from "../static/iphone17_specs.json";
-import iphone17pro from "../static/iphone17pro_specs.json";
-import oneplusAce6 from "../static/oneplus_ace6_specs.json";
+// 机型数据装载层
+// 约定：src/data/devices/ 下「同名」的 JSON 与图片属于同一台手机
+//   例：iphone-17-pro.json（参数） + iphone-17-pro.png（产品图）
+// 文件名（去掉扩展名）即机型的 id，页面上选择器、图片、参数表都靠这个 id 关联
 
-// 自动收集 src/assets/phones/ 下的图片，文件名 = 机型的 id（如 iphone-17-pro.png）
-const images = import.meta.glob("./assets/phones/*.{png,jpg,jpeg,webp}", {
+const specs = import.meta.glob("./data/devices/*.json", { eager: true, import: "default" });
+const images = import.meta.glob("./data/devices/*.{png,jpg,jpeg,webp}", {
   eager: true,
   import: "default"
 });
 
-const slugify = (name) =>
-  name
-    .toLowerCase()
-    .replace(/\s+/g, "-")
-    .replace(/[^a-z0-9\u4e00-\u9fa5-]/g, "");
+// "./data/devices/iphone-17-pro.json" -> "iphone-17-pro"
+const idOf = (path) => path.split("/").pop().replace(/\.(json|png|jpe?g|webp)$/i, "");
 
-const brandOf = (name) => {
-  if (name.includes("iPhone")) return "苹果";
-  if (name.includes("一加")) return "一加";
-  return "其他";
-};
+const BRAND_RULES = [
+  { test: /iphone/i, brand: "苹果" },
+  { test: /oneplus|一加/i, brand: "一加" }
+];
 
-const raw = [iphone17pro, iphone17, iphone13pro, oneplusAce6];
+const brandOf = (name) => BRAND_RULES.find((r) => r.test.test(name))?.brand ?? "其他";
 
-export const phones = raw.map((obj) => {
-  const name = Object.keys(obj)[0];
-  const id = slugify(name);
-  return {
-    id,
-    brand: brandOf(name),
-    name,
-    image: images[`./assets/phones/${id}.png`] || images[`./assets/phones/${id}.jpg`] || null,
-    data: obj[name]
-  };
-});
+const imageIndex = new Map(Object.entries(images).map(([path, url]) => [idOf(path), url]));
+
+// 按 id 排序，保证每次加载顺序一致（改名即改顺序，如想固定顺序就给文件名加 01-、02- 前缀）
+export const phones = Object.entries(specs)
+  .map(([path, obj]) => {
+    const id = idOf(path);
+    const name = Object.keys(obj)[0];
+    return {
+      id,
+      brand: brandOf(name),
+      name,
+      image: imageIndex.get(id) ?? null,
+      data: obj[name]
+    };
+  })
+  .sort((a, b) => a.id.localeCompare(b.id));
 
 export const brands = [...new Set(phones.map((p) => p.brand))];
