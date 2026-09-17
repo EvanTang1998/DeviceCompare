@@ -27,23 +27,47 @@ npm run preview    # 本地预览构建产物（http://localhost:4173/DeviceComp
 ├── src/
 │   ├── main.jsx                  # React 入口
 │   ├── App.jsx                   # Compare 页面（选择器 + 四列参数表）
-│   ├── data.js                   # 数据装载层：扫描 devices/ 目录，配对参数与图片
+│   ├── data.js                   # 数据装载层：扫描数据目录，按 id 配对参数与图片
 │   ├── index.css                 # 样式（含响应式）
 │   └── data/
-│       └── devices/              # ★ 机型数据源：每台手机一对「同名」文件
-│           ├── iphone-13-pro.json   + iphone-13-pro.jpg
-│           ├── iphone-17.json       + iphone-17.png
-│           ├── iphone-17-pro.json   + iphone-17-pro.png
-│           └── oneplus-ace-6.json   + oneplus-ace-6.jpg
+│       ├── devices/              # ★ 参数数据：每台手机一个 JSON
+│       │   ├── iphone-13-pro.json
+│       │   ├── iphone-17.json
+│       │   ├── iphone-17-pro.json
+│       │   └── oneplus-ace-6.json
+│       └── images/               # ★ 产品图：文件名 = 对应 JSON 的文件名
+│           ├── iphone-13-pro.jpg
+│           ├── iphone-17.png
+│           ├── iphone-17-pro.png
+│           └── oneplus-ace-6.jpg
 ├── designer-document/            # 设计说明（需求、参数范围、术语表）
 └── scripts/
     └── ssr-check.mjs             # 无浏览器渲染验证（node scripts/ssr-check.mjs）
 ```
 
+## 数据格式
+
+一个机型一个文件，顶层直接是机型对象：
+
+```jsonc
+{
+  "name": "iPhone 17 Pro",        // 页面显示名
+  "brand": "苹果",                 // 用于品牌筛选
+  "release_year": 2025,
+  "chipset": { "chip": "", "ram": [], "rom": [] },
+  "body":    { "dimensions_mm": {}, "weight_g": 0, "frame_material": "", "...": "" },
+  "display": { "size_inch": 0, "resolution": "", "ppi": 0, "...": "" },
+  "battery": { "capacity_mah": 0, "charging_watt": 0, "wireless_charging_watt": 0 },
+  "camera":  [ { "type": "主摄", "sensor": "", "resolution_mp": 0, "...": "" } ]
+}
+```
+
+约定：字段名全英文 snake_case，带单位后缀（`_mm` / `_g` / `_mah` / `_watt` / `_inch` / `_mp` / `_nits` / `_um` / `_deg`）；取值统一用纯中文；多值字段一律用数组（如 `ram`、`rom`、`image_stabilization`）。
+
 ## 新增机型（3 步，不用改代码）
 
-1. 在 `src/data/devices/` 新建一个 JSON，文件名即机型 id（小写、连字符，如 `xiaomi-15.json`），内容复制现有文件保持相同字段结构（顶层 key 为机型名）
-2. 同名图片放同一个目录（如 `xiaomi-15.png`），支持 png / jpg / jpeg / webp，没有图会显示占位卡
+1. 在 `src/data/devices/` 新建 `<id>.json`（文件名即机型 id：小写、连字符，如 `xiaomi-15.json`），内容复制现有文件、按上面结构填写
+2. 在 `src/data/images/` 放**同名**图片（如 `xiaomi-15.png`），支持 png / jpg / jpeg / webp；没有图会显示占位卡
 3. `git push`，线上自动更新
 
 机型 id 决定三件事：页面选择器里的取值、图片的配对、默认排序（按 id 字母序）。

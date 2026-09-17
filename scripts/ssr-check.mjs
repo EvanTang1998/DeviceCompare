@@ -25,8 +25,9 @@ try {
     ["摄像头分组行", html.includes("摄像头 · 主摄")]
   ];
 
-  // 数据与图片配对检查：每台机型都应带上自己的图片
+  // 数据完整性检查：每台机型都应有显示名、品牌、配对图片
   for (const p of phones) {
+    checks.push([`${p.name} 品牌已标注`, Boolean(p.brand) && p.brand !== "其他"]);
     checks.push([`${p.name} 图片已配对`, Boolean(p.image)]);
   }
   console.log(`机型数：${phones.length}（${phones.map((p) => p.id).join(" / ")}）`);

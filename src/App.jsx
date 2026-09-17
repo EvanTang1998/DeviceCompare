@@ -26,13 +26,13 @@ const cameraCell = (p, type) => {
   const spec = [
     cam.resolution_mp ? `${cam.resolution_mp}MP` : null,
     cam.aperture,
-    cam.focalLength_mm ? `${cam.focalLength_mm}mm` : null
+    cam.focal_length_mm ? `${cam.focal_length_mm}mm` : null
   ]
     .filter(Boolean)
     .join(" · ");
   if (spec) lines.push(spec);
   const extra = [];
-  if (cam.sensorSize_inch) extra.push(`${cam.sensorSize_inch}"`);
+  if (cam.sensor_size_inch) extra.push(`${cam.sensor_size_inch}"`);
   if (cam.pixel_size_um) extra.push(`${cam.pixel_size_um}μm`);
   if (cam.field_of_view_deg) extra.push(`${cam.field_of_view_deg}°`);
   if (extra.length) lines.push(extra.join(" · "));
@@ -92,7 +92,7 @@ const buildSections = (selectedPhones) => {
         { label: "面板", get: (p) => p.display?.panel },
         { label: "形态", get: (p) => p.display?.form },
         { label: "最大亮度", get: brightnessText },
-        { label: "HDR", get: (p) => p.display?.hdr }
+        { label: "HDR", get: (p) => p.display?.hdr_formats }
       ]
     },
     {
