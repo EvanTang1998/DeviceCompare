@@ -1,0 +1,10 @@
+# 抓取产物：原始快照与中间结果，属于可再生产物，不入库
+out/
+recon-out/
+
+# 依赖：本目录是独立工具，依赖不进版本库
+node_modules/
+
+# Playwright/Chrome 的临时用户数据
+.user-data/
+*.log

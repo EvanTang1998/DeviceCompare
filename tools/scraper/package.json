@@ -1,0 +1,17 @@
+{
+  "name": "device-compare-scraper",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "DeviceCompare 的数据采集工具。依赖完全独立于前端，不参与 vite 构建，也不会被根目录 npm ci 安装。",
+  "scripts": {
+    "images": "node cli.mjs images",
+    "promote": "node cli.mjs promote",
+    "list": "node cli.mjs list",
+    "recon": "node cli.mjs recon",
+    "test": "node test/parse.test.mjs"
+  },
+  "dependencies": {
+    "playwright-core": "^1.56.0"
+  }
+}

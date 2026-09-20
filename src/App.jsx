@@ -180,17 +180,47 @@ function PhonePicker({ value, phones, onChange }) {
 
 function PhoneHeader({ value, phones, onChange }) {
   const phone = phones.find((p) => p.id === value);
+  const colors = phone?.colors ?? [];
+  const [picked, setPicked] = useState(null);
+
+  // 用户点过就用他点的那一色，否则用 JSON 里标记为默认的那一色
+  const active = colors.find((c) => c.slug === picked) ?? colors.find((c) => c.isDefault) ?? null;
+  const src = active?.image ?? phone?.image ?? null;
+  const altText = active && phone ? `${phone.name} · ${active.name}` : phone?.name;
+
   return (
     <div className="phone-header">
       <div className="phone-image">
-        {phone?.image ? (
-          <img src={phone.image} alt={phone?.name} />
+        {src ? (
+          <img src={src} alt={altText} />
         ) : (
           <div className="image-placeholder">
             <span>{phone?.name ?? "未选择"}</span>
           </div>
         )}
       </div>
+
+      {colors.length > 1 && (
+        <div className="color-swatches" role="group" aria-label="选择配色">
+          {colors.map((c) => {
+            const on = c.slug === active?.slug;
+            return (
+              <button
+                key={c.slug}
+                type="button"
+                className={`swatch${on ? " is-active" : ""}`}
+                style={c.hex ? { "--swatch": c.hex } : undefined}
+                title={c.name}
+                aria-label={c.name}
+                aria-pressed={on}
+                disabled={!c.image}
+                onClick={() => setPicked(c.slug)}
+              />
+            );
+          })}
+        </div>
+      )}
+
       <PhonePicker value={value} phones={phones} onChange={onChange} />
     </div>
   );
@@ -232,7 +262,7 @@ export default function App() {
           </div>
           {slots.map((id, i) => (
             <div className="header-cell" key={i}>
-              <PhoneHeader value={id} phones={phones} onChange={(nid) => setSlot(i, nid)} />
+              <PhoneHeader key={id} value={id} phones={phones} onChange={(nid) => setSlot(i, nid)} />
             </div>
           ))}
 

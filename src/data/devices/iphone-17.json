@@ -4,8 +4,13 @@
   "release_year": 2025,
   "chipset": {
     "chip": "Apple A19",
-    "ram": ["8GB"],
-    "rom": ["256GB", "512GB"]
+    "ram": [
+      "8GB"
+    ],
+    "rom": [
+      "256GB",
+      "512GB"
+    ]
   },
   "body": {
     "dimensions_mm": {
@@ -32,7 +37,11 @@
       "outdoor_peak": 3000
     },
     "contrast": "2000000:1",
-    "hdr_formats": ["HDR10", "杜比视界", "HLG"]
+    "hdr_formats": [
+      "HDR10",
+      "杜比视界",
+      "HLG"
+    ]
   },
   "battery": {
     "capacity_mah": 3692,
@@ -47,7 +56,10 @@
       "aperture": "f/1.6",
       "focal_length_mm": 26,
       "sensor_size_inch": "1/1.56",
-      "image_stabilization": ["光学防抖（传感器位移式）", "电子防抖"]
+      "image_stabilization": [
+        "光学防抖（传感器位移式）",
+        "电子防抖"
+      ]
     },
     {
       "type": "超广角",
@@ -57,7 +69,9 @@
       "focal_length_mm": 13,
       "field_of_view_deg": 120,
       "sensor_size_inch": "1/2.55",
-      "image_stabilization": ["电子防抖"]
+      "image_stabilization": [
+        "电子防抖"
+      ]
     },
     {
       "type": "前置",
@@ -65,7 +79,37 @@
       "resolution_mp": 18,
       "aperture": "f/1.9",
       "focal_length_mm": 20,
-      "image_stabilization": ["电子防抖"]
+      "image_stabilization": [
+        "电子防抖"
+      ]
+    }
+  ],
+  "colors": [
+    {
+      "slug": "lavender",
+      "name": "薰衣草紫色",
+      "hex": "#C6BEDC",
+      "is_default": true
+    },
+    {
+      "slug": "mist-blue",
+      "name": "青雾蓝色",
+      "hex": "#B3C6D4"
+    },
+    {
+      "slug": "sage",
+      "name": "鼠尾草绿色",
+      "hex": "#A3AF96"
+    },
+    {
+      "slug": "black",
+      "name": "黑色",
+      "hex": "#2B2B2D"
+    },
+    {
+      "slug": "white",
+      "name": "白色",
+      "hex": "#F2F1EF"
     }
   ]
 }
