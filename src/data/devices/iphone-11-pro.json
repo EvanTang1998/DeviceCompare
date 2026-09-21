@@ -1,0 +1,119 @@
+{
+  "name": "iPhone 11 Pro",
+  "brand": "苹果",
+  "release_year": 2019,
+  "release_date": "2019-09",
+  "chipset": {
+    "chip": "Apple A13 Bionic（7nm）",
+    "ram": [
+      "4GB"
+    ],
+    "rom": [
+      "64GB",
+      "256GB",
+      "512GB"
+    ]
+  },
+  "body": {
+    "dimensions_mm": {
+      "height": 144.0,
+      "width": 71.4,
+      "depth": 8.1
+    },
+    "weight_g": 188,
+    "frame_material": "不锈钢边框",
+    "back_material": "磨砂玻璃背板",
+    "front_material": "强化玻璃面板",
+    "water_resistance": "IP68（2 米水深 30 分钟）"
+  },
+  "display": {
+    "size_inch": 5.8,
+    "resolution": "2436 x 1125",
+    "ppi": 458,
+    "refresh_rate": "60Hz",
+    "panel": "OLED",
+    "form": "直屏",
+    "max_brightness_nits": {
+      "typical": 800,
+      "hdr": 1200
+    },
+    "contrast": "2000000:1",
+    "hdr_formats": [
+      "HDR10",
+      "杜比视界",
+      "HLG"
+    ]
+  },
+  "battery": {
+    "capacity_mah": 3046,
+    "charging_watt": 18,
+    "wireless_charging_watt": 7.5
+  },
+  "camera": [
+    {
+      "type": "主摄",
+      "resolution_mp": 12,
+      "aperture": "f/1.8",
+      "focal_length_mm": 26,
+      "image_stabilization": [
+        "光学防抖",
+        "电子防抖"
+      ]
+    },
+    {
+      "type": "超广角",
+      "resolution_mp": 12,
+      "aperture": "f/2.4",
+      "focal_length_mm": 13,
+      "field_of_view_deg": 120,
+      "image_stabilization": [
+        "电子防抖"
+      ]
+    },
+    {
+      "type": "长焦",
+      "resolution_mp": 12,
+      "aperture": "f/2.0",
+      "focal_length_mm": 52,
+      "image_stabilization": [
+        "电子防抖"
+      ],
+      "zoom_ratio": "2x 光学变焦"
+    },
+    {
+      "type": "前置",
+      "resolution_mp": 12,
+      "aperture": "f/2.2",
+      "focal_length_mm": 23,
+      "image_stabilization": [
+        "电子防抖"
+      ]
+    }
+  ],
+  "colors": [
+    {
+      "slug": "gold",
+      "name": "金色",
+      "hex": "#E3C29E",
+      "is_default": false
+    },
+    {
+      "slug": "midnightgreen",
+      "name": "暗夜绿色",
+      "hex": "#4E5851",
+      "is_default": true
+    },
+    {
+      "slug": "silver",
+      "name": "银色",
+      "hex": "#E3E4E0",
+      "is_default": false
+    },
+    {
+      "slug": "spacegrey",
+      "name": "深空灰色",
+      "hex": "#4A4B4D",
+      "is_default": false
+    }
+  ]
+}

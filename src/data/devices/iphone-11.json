@@ -1,0 +1,119 @@
+{
+  "name": "iPhone 11",
+  "brand": "苹果",
+  "release_year": 2019,
+  "release_date": "2019-09",
+  "chipset": {
+    "chip": "Apple A13 Bionic（7nm）",
+    "ram": [
+      "4GB"
+    ],
+    "rom": [
+      "64GB",
+      "256GB"
+    ]
+  },
+  "body": {
+    "dimensions_mm": {
+      "height": 150.9,
+      "width": 75.7,
+      "depth": 8.3
+    },
+    "weight_g": 194,
+    "frame_material": "铝金属",
+    "back_material": "玻璃背板",
+    "front_material": "强化玻璃面板",
+    "water_resistance": "IP68（2 米水深 30 分钟）"
+  },
+  "display": {
+    "size_inch": 6.1,
+    "resolution": "828 x 1792",
+    "ppi": 326,
+    "refresh_rate": "60Hz",
+    "panel": "LCD",
+    "form": "直屏",
+    "max_brightness_nits": {
+      "typical": 625
+    },
+    "contrast": "2000000:1",
+    "hdr_formats": [
+      "HDR10",
+      "杜比视界",
+      "HLG"
+    ]
+  },
+  "battery": {
+    "capacity_mah": 3110,
+    "charging_watt": 18,
+    "wireless_charging_watt": 7.5
+  },
+  "camera": [
+    {
+      "type": "主摄",
+      "resolution_mp": 12,
+      "aperture": "f/1.8",
+      "focal_length_mm": 26,
+      "image_stabilization": [
+        "光学防抖",
+        "电子防抖"
+      ]
+    },
+    {
+      "type": "超广角",
+      "resolution_mp": 12,
+      "aperture": "f/2.4",
+      "focal_length_mm": 13,
+      "field_of_view_deg": 120,
+      "image_stabilization": [
+        "电子防抖"
+      ]
+    },
+    {
+      "type": "前置",
+      "resolution_mp": 12,
+      "aperture": "f/2.2",
+      "focal_length_mm": 23,
+      "image_stabilization": [
+        "电子防抖"
+      ]
+    }
+  ],
+  "colors": [
+    {
+      "slug": "black",
+      "name": "黑色",
+      "hex": "#46484A",
+      "is_default": false
+    },
+    {
+      "slug": "green",
+      "name": "绿色",
+      "hex": "#AEE1CD",
+      "is_default": false
+    },
+    {
+      "slug": "purple",
+      "name": "紫色",
+      "hex": "#A59FC8",
+      "is_default": true
+    },
+    {
+      "slug": "red",
+      "name": "红色",
+      "hex": "#BA0C2F",
+      "is_default": false
+    },
+    {
+      "slug": "white",
+      "name": "白色",
+      "hex": "#F8F4EA",
+      "is_default": false
+    },
+    {
+      "slug": "yellow",
+      "name": "黄色",
+      "hex": "#F5E6A3",
+      "is_default": false
+    }
+  ]
+}

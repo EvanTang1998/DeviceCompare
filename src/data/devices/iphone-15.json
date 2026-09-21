@@ -1,0 +1,115 @@
+{
+  "name": "iPhone 15",
+  "brand": "苹果",
+  "release_year": 2023,
+  "release_date": "2023-09",
+  "chipset": {
+    "chip": "Apple A16 Bionic（4nm）",
+    "ram": [
+      "6GB"
+    ],
+    "rom": [
+      "128GB",
+      "256GB",
+      "512GB"
+    ]
+  },
+  "body": {
+    "dimensions_mm": {
+      "height": 147.6,
+      "width": 71.6,
+      "depth": 7.8
+    },
+    "weight_g": 171,
+    "frame_material": "铝金属",
+    "back_material": "融色玻璃背板",
+    "front_material": "超瓷晶面板",
+    "water_resistance": "IP68（6 米水深 30 分钟）"
+  },
+  "display": {
+    "size_inch": 6.1,
+    "resolution": "2556 x 1179",
+    "ppi": 460,
+    "refresh_rate": "60Hz",
+    "panel": "OLED",
+    "form": "直屏",
+    "max_brightness_nits": {
+      "typical": 1000,
+      "hdr": 1600,
+      "outdoor_peak": 2000
+    },
+    "contrast": "2000000:1",
+    "hdr_formats": [
+      "HDR10",
+      "杜比视界",
+      "HLG"
+    ]
+  },
+  "battery": {
+    "capacity_mah": 3449,
+    "charging_watt": 20,
+    "wireless_charging_watt": 15
+  },
+  "camera": [
+    {
+      "type": "主摄",
+      "resolution_mp": 48,
+      "aperture": "f/1.6",
+      "focal_length_mm": 26,
+      "image_stabilization": [
+        "光学防抖",
+        "电子防抖"
+      ]
+    },
+    {
+      "type": "超广角",
+      "resolution_mp": 12,
+      "aperture": "f/2.4",
+      "focal_length_mm": 13,
+      "field_of_view_deg": 120,
+      "image_stabilization": [
+        "电子防抖"
+      ]
+    },
+    {
+      "type": "前置",
+      "resolution_mp": 12,
+      "aperture": "f/1.9",
+      "image_stabilization": [
+        "电子防抖"
+      ]
+    }
+  ],
+  "colors": [
+    {
+      "slug": "black",
+      "name": "黑色",
+      "hex": "#3B3B3C",
+      "is_default": false
+    },
+    {
+      "slug": "blue",
+      "name": "蓝色",
+      "hex": "#D5DDE4",
+      "is_default": false
+    },
+    {
+      "slug": "green",
+      "name": "绿色",
+      "hex": "#CDD8C6",
+      "is_default": false
+    },
+    {
+      "slug": "pink",
+      "name": "粉色",
+      "hex": "#F0C5C0",
+      "is_default": true
+    },
+    {
+      "slug": "yellow",
+      "name": "黄色",
+      "hex": "#F2E3AC",
+      "is_default": false
+    }
+  ]
+}

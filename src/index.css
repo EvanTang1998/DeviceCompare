@@ -19,35 +19,40 @@ body {
   font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Helvetica Neue", sans-serif;
   background: var(--bg);
   color: var(--text);
-  font-size: 14px;
+  font-size: 15px;
   line-height: 1.6;
 }
 
 .page {
-  max-width: 1280px;
+  max-width: 1640px;
   margin: 0 auto;
-  padding: 24px 16px 48px;
+  padding: 28px 36px 56px;
 }
 
 .site-header {
-  text-align: center;
-  padding: 16px 0 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 4px 0 14px;
 }
 
-.site-header h1 {
-  font-size: 26px;
-  font-weight: 500;
-  letter-spacing: 0.5px;
-}
-
-.site-header p {
+.site-title {
+  font-size: 13px;
   color: var(--text-secondary);
-  margin-top: 6px;
-  font-size: 14px;
+}
+
+.diff-toggle {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 13px;
+  color: var(--text-secondary);
+  cursor: pointer;
+  user-select: none;
 }
 
 .compare-scroll {
-  overflow-x: auto;
+  /* 不做滚动容器：横向溢出交给页面级滚动，吸顶（sticky top）才能相对视口生效 */
   background: var(--surface);
   border: 0.5px solid var(--border);
   border-radius: var(--radius);
@@ -55,58 +60,128 @@ body {
 
 .compare-grid {
   display: grid;
-  grid-template-columns: minmax(130px, 170px) repeat(4, minmax(210px, 1fr));
-  min-width: 960px;
+  /* 固定 4 列：不足 4 列时右侧由虚线占位列补满，页面不空荡 */
+  grid-template-columns: minmax(150px, 190px) repeat(4, minmax(280px, 360px));
+  min-width: 1380px;
 }
 
 .corner-cell {
   position: sticky;
   left: 0;
+  /* 锁定第 1 列：网格是连续流，保证主表头行从第 1 列开始（对齐逻辑同 label-cell） */
+  grid-column: 1;
   z-index: 3;
   background: var(--surface);
   border-bottom: 0.5px solid var(--border);
   display: flex;
-  align-items: flex-end;
-  padding: 12px 14px;
+  align-items: center;
+  justify-content: center;
+  padding: 14px 18px;
 }
 
 .corner-label {
   color: var(--text-secondary);
-  font-size: 13px;
+  font-size: 14px;
 }
 
 .header-cell {
+  position: relative;
   border-bottom: 0.5px solid var(--border);
   border-left: 0.5px solid var(--border);
-  padding: 16px 12px;
+  padding: 20px 16px;
   background: var(--surface);
 }
 
 .phone-image {
-  height: 120px;
+  position: relative;
+  height: 170px;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 12px;
+  margin-bottom: 14px;
 }
 
 .phone-image img {
-  max-height: 120px;
-  max-width: 90%;
+  max-height: 170px;
+  max-width: 88%;
   object-fit: contain;
+}
+
+/* 单元格右上角的删除按钮（方形，完全贴角、弱存在感） */
+.remove-slot-btn {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 22px;
+  height: 22px;
+  border: none;
+  border-radius: 0 0 0 6px;
+  background: rgba(120, 120, 128, 0.06);
+  color: #b6b6bc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 2;
+}
+
+.remove-slot-btn:hover {
+  background: rgba(120, 120, 128, 0.18);
+  color: #6e6e73;
+}
+
+/* 表格末列的新增加号 */
+/* 空位占位列：虚线框贯穿整表，点击新增一列 */
+.ghost-col {
+  margin: 10px;
+  border: 1.5px dashed rgba(0, 0, 0, 0.16);
+  border-radius: 14px;
+  background: transparent;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  color: #b6bcc6;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.ghost-col:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: rgba(0, 102, 204, 0.04);
 }
 
 .color-swatches {
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
-  gap: 9px;
-  margin-bottom: 12px;
+  gap: 10px;
+  /* 色名绝对定位在圆环下方（不占流式空间），这里留出它的高度 */
+  margin-bottom: 26px;
+}
+
+.swatch-slot {
+  position: relative;
+  display: flex;
+  justify-content: center;
+}
+
+.color-name {
+  position: absolute;
+  top: calc(100% + 5px);
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 13px;
+  color: var(--text-secondary);
+  white-space: nowrap;
+  pointer-events: none;
 }
 
 .swatch {
-  width: 18px;
-  height: 18px;
+  width: 20px;
+  height: 20px;
   padding: 0;
   border: 0.5px solid var(--border);
   border-radius: 50%;
@@ -134,9 +209,9 @@ body {
 }
 
 .image-placeholder {
-  width: 74px;
-  height: 112px;
-  border-radius: 14px;
+  width: 88px;
+  height: 134px;
+  border-radius: 16px;
   background: #e8e8ed;
   border: 0.5px solid var(--border);
   display: flex;
@@ -147,12 +222,68 @@ body {
 }
 
 .image-placeholder span {
-  font-size: 11px;
+  font-size: 12px;
   color: var(--text-secondary);
   text-align: center;
   word-break: break-all;
 }
 
+/* 置顶机型栏：下滑越过表头后才渲染，fixed 悬浮在页面顶部，列对齐同表格 */
+.picker-bar {
+  position: fixed;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(1568px, 100%); /* .page max-width 1640 - 左右 padding 36*2 */
+  z-index: 50;
+  display: grid;
+  grid-template-columns: minmax(150px, 190px) repeat(4, minmax(280px, 360px));
+  min-width: 1380px;
+  background: var(--surface);
+  border: 0.5px solid var(--border);
+  border-top: none;
+  border-radius: 0 0 var(--radius) var(--radius);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.14);
+}
+
+.picker-bar-spacer:first-child {
+  /* 标签列占位：横向滚动时吸附左侧，保证与表格列对齐 */
+  position: sticky;
+  left: 0;
+  z-index: 11;
+  background: var(--surface);
+  border-radius: var(--radius) 0 0 var(--radius);
+}
+
+.picker-bar-cell {
+  padding: 8px 12px;
+  border-left: 0.5px solid var(--border);
+  display: flex;
+}
+
+/* 机型选择按钮（点击展开全屏覆盖面板） */
+.model-select-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 9px 12px;
+  border: 0.5px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+  font-size: 14px;
+  color: var(--text);
+  cursor: pointer;
+  text-align: left;
+}
+
+.model-select-btn:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* ===== 列内机型选择器（品牌下拉 + 型号下拉 + 搜索） ===== */
 .picker {
   display: flex;
   flex-direction: column;
@@ -176,35 +307,357 @@ body {
   border-color: var(--accent);
 }
 
+/* 型号下拉按钮：外观与上方品牌 select 完全一致，点击展开全屏机型列表 */
+.picker-model-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 8px 10px;
+  border: 0.5px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+  font-size: 13px;
+  color: var(--text);
+  cursor: pointer;
+  text-align: left;
+}
+
+.picker-model-btn:hover {
+  border-color: var(--accent);
+}
+
+.picker-model-btn:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.picker-model-btn .caret {
+  color: var(--text-secondary);
+  font-size: 11px;
+  flex-shrink: 0;
+}
+
+/* 搜索框 + 候选词浮层：候选词出现在输入框正下方，不遮挡输入框 */
+.picker-search {
+  position: relative;
+}
+
+.picker-suggest {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  z-index: 20;
+  list-style: none;
+  margin: 0;
+  padding: 4px;
+  background: var(--surface);
+  border: 0.5px solid var(--border);
+  border-radius: 8px;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.14);
+}
+
+.picker-suggest button {
+  width: 100%;
+  text-align: left;
+  padding: 7px 10px;
+  border: none;
+  border-radius: 6px;
+  background: none;
+  font-size: 13px;
+  color: var(--text);
+  cursor: pointer;
+}
+
+.picker-suggest button:hover {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.model-select-btn .caret {
+  color: var(--text-secondary);
+  font-size: 12px;
+  flex-shrink: 0;
+}
+
+/* ===== 机型下拉菜单：按钮正下方展开，圆角浮层 ===== */
+.model-menu-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+}
+
+.model-menu {
+  background: rgba(255, 255, 255, 0.88);
+  -webkit-backdrop-filter: blur(14px) saturate(1.4);
+  backdrop-filter: blur(14px) saturate(1.4);
+  border: 0.5px solid var(--border);
+  border-radius: 14px;
+  box-shadow: 0 18px 48px rgba(0, 0, 0, 0.18);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.model-menu-list {
+  flex: 1;
+  overflow-y: auto;
+  padding: 8px;
+}
+
+.model-group-title {
+  font-size: 12px;
+  color: #b6bcc6;
+  /* 上下留白一致 */
+  padding: 6px 12px;
+}
+
+.model-item {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 9px 12px;
+  border: none;
+  border-radius: 8px;
+  background: none;
+  font-size: 14px;
+  color: var(--text);
+  cursor: pointer;
+}
+
+.model-item:hover {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.model-item.is-active {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+/* 主图悬停「更换」遮罩，点击打开全屏网格面板 */
+.image-swap-btn {
+  position: relative;
+  display: block;
+  border: none;
+  background: none;
+  padding: 0;
+  cursor: pointer;
+  height: 100%;
+}
+
+.image-swap-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  background: rgba(0, 0, 0, 0.45);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 500;
+  border-radius: 12px;
+  opacity: 0;
+  transition: opacity 0.15s ease;
+  pointer-events: none;
+}
+
+.image-swap-btn:hover .image-swap-overlay,
+.image-swap-btn:focus-visible .image-swap-overlay {
+  opacity: 1;
+}
+
+.image-swap-btn:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* 全屏覆盖式机型选择 */
+.overlay-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.35);
+  z-index: 100;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 6vh 24px 24px;
+}
+
+.overlay-panel {
+  background: var(--surface);
+  border-radius: 16px;
+  width: min(960px, 100%);
+  max-height: 86vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.22);
+  overflow: hidden;
+}
+
+.overlay-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 20px;
+  border-bottom: 0.5px solid var(--border);
+}
+
+.overlay-header h2 {
+  font-size: 18px;
+  font-weight: 600;
+  margin-right: auto;
+}
+
+.overlay-header input {
+  width: 240px;
+  padding: 8px 12px;
+  border: 0.5px solid var(--border);
+  border-radius: 8px;
+  font-size: 14px;
+  color: var(--text);
+  outline: none;
+}
+
+.overlay-header input:focus {
+  border-color: var(--accent);
+}
+
+.overlay-close {
+  border: none;
+  background: none;
+  font-size: 26px;
+  line-height: 1;
+  color: var(--text-secondary);
+  cursor: pointer;
+  padding: 2px 6px;
+}
+
+.brand-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 14px 20px 0;
+}
+
+.brand-chip {
+  padding: 5px 14px;
+  border-radius: 999px;
+  border: 0.5px solid var(--border);
+  background: var(--surface);
+  font-size: 13px;
+  color: var(--text);
+  cursor: pointer;
+}
+
+.brand-chip.is-active {
+  background: var(--text);
+  border-color: var(--text);
+  color: #fff;
+}
+
+.overlay-body {
+  overflow-y: auto;
+  padding: 4px 20px 24px;
+}
+
+.overlay-group-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text);
+  padding: 18px 0 10px;
+}
+
+.model-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 10px;
+}
+
+.model-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 10px 12px;
+  border: 0.5px solid var(--border);
+  border-radius: 12px;
+  background: var(--surface);
+  cursor: pointer;
+}
+
+.model-card:hover {
+  border-color: var(--accent);
+}
+
+.model-card img {
+  height: 64px;
+  max-width: 100%;
+  object-fit: contain;
+}
+
+.model-card-ph {
+  height: 64px;
+  width: 40px;
+  border-radius: 8px;
+  background: var(--bg);
+}
+
+.model-card-name {
+  font-size: 13px;
+  color: var(--text);
+  text-align: center;
+}
+
+.model-card.is-active {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 1px var(--accent);
+}
+
+.model-empty {
+  padding: 32px 0;
+  font-size: 14px;
+  color: var(--text-secondary);
+  text-align: center;
+}
+
 .section-cell {
   background: var(--bg);
   border-bottom: 0.5px solid var(--border);
   border-left: 0.5px solid var(--border);
-  padding: 10px 14px;
+  padding: 12px 18px;
+}
+
+/* 分区标题行首元素锁定第 1 列（理由同 label-cell） */
+.section-cell.section-head {
+  grid-column: 1;
 }
 
 .section-cell h2 {
-  font-size: 14px;
-  font-weight: 500;
+  font-size: 15px;
+  font-weight: 600;
   color: var(--text);
 }
 
 .label-cell {
   position: sticky;
   left: 0;
+  /* 显式锁定第 1 列：网格自动布局是连续流，末尾多出的加号列会让后续行错位，这里强制每行从第 1 列开始 */
+  grid-column: 1;
   z-index: 2;
   background: var(--surface);
   border-bottom: 0.5px solid var(--border);
-  padding: 10px 14px;
+  padding: 12px 18px;
   color: var(--text-secondary);
-  font-size: 13px;
+  font-size: 14px;
 }
 
 .value-cell {
   border-bottom: 0.5px solid var(--border);
   border-left: 0.5px solid var(--border);
-  padding: 10px 14px;
-  font-size: 13px;
+  padding: 12px 18px;
+  font-size: 14px;
   background: var(--surface);
 }
 
@@ -233,7 +686,7 @@ body {
 
 @media (max-width: 768px) {
   .compare-grid {
-    grid-template-columns: minmax(110px, 130px) repeat(4, minmax(230px, 260px));
+    grid-template-columns: minmax(110px, 130px) repeat(calc(var(--cols) - 1), minmax(230px, 260px)) 48px;
     min-width: 1060px;
   }
 
@@ -254,9 +707,5 @@ body {
   .image-placeholder {
     width: 58px;
     height: 88px;
-  }
-
-  .site-header h1 {
-    font-size: 20px;
   }
 }

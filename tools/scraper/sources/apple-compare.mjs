@@ -19,7 +19,16 @@ const BASE_URL = "https://www.apple.com.cn/iphone/compare/";
 const DEFAULT_BATCH_SIZE = 3;
 
 export const buildCompareUrl = (models, base = BASE_URL) =>
-  `${base}?modelList=${models.join(",")}`;
+  `${base}?modelList=${models.map(appleUrlSegment).join(",")}`;
+
+// 苹果的 modelList 对个别机型的段名与我们的 id 不一致（如 16e 苹果写作 iphone-16e，
+// 我们是 iphone-16-e；传错会被页面静默回退到默认机型）。例外在这里登记。
+const APPLE_URL_ALIASES = {
+  "iphone-16-e": "iphone-16e"
+};
+
+const appleUrlSegment = (model) =>
+  APPLE_URL_ALIASES[String(model).toLowerCase()] ?? model;
 
 /**
  * 主入口

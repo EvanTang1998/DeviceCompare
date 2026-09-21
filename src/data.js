@@ -63,7 +63,23 @@ const resolveColors = (id, declared) => {
   }));
 };
 
-// 按 id 排序，保证每次加载顺序一致（想调顺序就改文件名前缀，如 01-iphone-17-pro）
+// 「新款机型」= 上市 3 个月内（按 JSON 的 release_date 动态判定，随时间自动过期）
+const NEW_WINDOW_MS = 3 * 30 * 24 * 60 * 60 * 1000;
+
+const parseRelease = (p) => {
+  // release_date 形如 "2026-09"，容错只填了年份
+  const raw = p.data.release_date ?? (p.data.release_year ? String(p.data.release_year) : null);
+  if (!raw) return null;
+  const [y, m] = raw.split("-").map(Number);
+  return new Date(y, (m ?? 1) - 1, 1).getTime();
+};
+
+const isNewRelease = (p) => {
+  const t = p.releaseTime;
+  return t !== null && Date.now() - t <= NEW_WINDOW_MS;
+};
+
+// 按发布时间从近到远排序（没有日期的排最后），同日发布的保持 id 顺序稳定
 export const phones = Object.entries(specs)
   .map(([path, spec]) => {
     const id = splitName(path).id;
@@ -74,6 +90,7 @@ export const phones = Object.entries(specs)
       id,
       name: spec.name,
       brand: spec.brand ?? "其他",
+      releaseTime: parseRelease({ data: spec }),
       // 主图：优先用「标记为默认色」那一项的图；单图机型退回裸名图
       image:
         defaultColor?.image ??
@@ -84,6 +101,7 @@ export const phones = Object.entries(specs)
       data: spec
     };
   })
-  .sort((a, b) => a.id.localeCompare(b.id));
+  .map((p) => ({ ...p, isNew: isNewRelease(p) }))
+  .sort((a, b) => (b.releaseTime ?? 0) - (a.releaseTime ?? 0) || a.id.localeCompare(b.id));
 
 export const brands = [...new Set(phones.map((p) => p.brand))];
