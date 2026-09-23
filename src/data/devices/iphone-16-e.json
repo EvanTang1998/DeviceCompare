@@ -1,6 +1,7 @@
 {
   "name": "iPhone 16e",
   "brand": "苹果",
+  "series": "iPhone 16 系列",
   "release_year": 2025,
   "chipset": {
     "chip": "Apple A18（3nm，4 核 GPU）",

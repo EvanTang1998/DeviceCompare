@@ -1,6 +1,7 @@
 {
   "name": "iPhone Air",
   "brand": "苹果",
+  "series": "iPhone 17 系列",
   "release_year": 2025,
   "chipset": {
     "chip": "Apple A19 Pro（3nm）",

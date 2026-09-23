@@ -1,6 +1,7 @@
 {
   "name": "一加 Ace 5 至尊版",
   "brand": "一加",
+  "series": "Ace 系列",
   "release_year": 2025,
   "chipset": {
     "chip": "天玑 9400+",

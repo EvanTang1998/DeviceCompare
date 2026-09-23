@@ -1,6 +1,7 @@
 {
   "name": "iPhone 15 Pro Max",
   "brand": "苹果",
+  "series": "iPhone 15 系列",
   "release_year": 2023,
   "release_date": "2023-09",
   "chipset": {

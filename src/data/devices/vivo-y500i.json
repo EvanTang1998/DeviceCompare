@@ -1,6 +1,7 @@
 {
   "name": "vivo Y500i",
   "brand": "vivo",
+  "series": "Y 系列",
   "release_year": 2026,
   "chipset": {
     "chip": "第二代骁龙4",

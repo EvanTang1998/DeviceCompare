@@ -1,6 +1,7 @@
 {
   "name": "iPhone 15 Plus",
   "brand": "苹果",
+  "series": "iPhone 15 系列",
   "release_year": 2023,
   "chipset": {
     "chip": "Apple A16 Bionic（4nm）",

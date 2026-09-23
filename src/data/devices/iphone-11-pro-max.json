@@ -1,6 +1,7 @@
 {
   "name": "iPhone 11 Pro Max",
   "brand": "苹果",
+  "series": "iPhone 11 系列",
   "release_year": 2019,
   "release_date": "2019-09",
   "chipset": {

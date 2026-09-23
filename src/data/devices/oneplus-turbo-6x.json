@@ -1,6 +1,7 @@
 {
   "name": "一加 Turbo 6X",
   "brand": "一加",
+  "series": "Turbo 系列",
   "release_year": 2026,
   "chipset": {
     "chip": "天玑 7360 SUPER",

@@ -226,6 +226,16 @@ function ppi(w, h, inch) {
   return Math.round(Math.sqrt(w * w + h * h) / inch);
 }
 
+/**
+ * 系列：官网 category.name 形如「X系列」，统一成「X 系列」。
+ * 30 台实测 category 全覆盖；万一缺失就按 slug 首字母兜底。
+ */
+function seriesOf(slug, page) {
+  const raw = clean(page.category?.name ?? "");
+  const m = raw.match(/^([A-Za-z]+)/) ?? slug.match(/^([A-Za-z]+)/);
+  return m ? `${m[1].toUpperCase()} 系列` : null;
+}
+
 function buildDevice(slug, page) {
   const f = flat(page.attrs);
   // 官网个别机型的 product.name 带尾空格（如 "X500 "）
@@ -256,6 +266,7 @@ function buildDevice(slug, page) {
   return {
     name,
     brand: "vivo",
+    series: seriesOf(slug, page),
     release_year: Number(rel[1]),
     chipset: {
       chip: clean(f["CPU型号"]) || null,

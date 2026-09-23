@@ -33,6 +33,8 @@ try {
   for (const p of phones) {
     const d = p.data;
     checks.push([`${p.name} 品牌已标注`, Boolean(p.brand) && p.brand !== "其他"]);
+    // 系列供机型选择弹框分组，缺了会掉进「其他」分组
+    checks.push([`${p.name} 系列已标注`, Boolean(p.series) && p.series !== "其他"]);
     checks.push([`${p.name} 图片已配对`, Boolean(p.image)]);
     checks.push([`${p.name} 配色声明与配图齐全`, p.colors.length > 0 && p.colors.every((c) => c.image)]);
     checks.push([`${p.name} 芯片已解析`, Boolean(d.chipset?.chip)]);

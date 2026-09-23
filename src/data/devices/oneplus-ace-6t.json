@@ -1,6 +1,7 @@
 {
   "name": "一加 Ace 6T",
   "brand": "一加",
+  "series": "Ace 系列",
   "release_year": 2025,
   "chipset": {
     "chip": "第五代骁龙 8",

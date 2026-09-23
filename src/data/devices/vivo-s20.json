@@ -1,6 +1,7 @@
 {
   "name": "vivo S20",
   "brand": "vivo",
+  "series": "S 系列",
   "release_year": 2024,
   "chipset": {
     "chip": "第三代骁龙7",

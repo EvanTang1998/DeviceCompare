@@ -1,6 +1,7 @@
 {
   "name": "iPhone 16 Pro",
   "brand": "苹果",
+  "series": "iPhone 16 系列",
   "release_year": 2024,
   "chipset": {
     "chip": "Apple A18 Pro（3nm）",

@@ -1,6 +1,6 @@
 # 灵眸 · 手机对比网站
 
-仿 Apple iPhone Compare 风格的手机参数对比网站，React + Vite 纯前端实现，机型数据为本地 JSON。设计需求与规划见 [designer-document/设计说明.md](designer-document/设计说明.md)。
+仿 Apple iPhone Compare 风格的手机参数对比网站，React + Vite 纯前端实现，机型数据为本地 JSON。机型选择弹框按「品牌 → 系列」两级分组（系列来自 JSON 的 `series` 字段）。设计需求与规划见 [designer-document/设计说明.md](designer-document/设计说明.md)。
 
 ## 快速开始
 
@@ -55,6 +55,7 @@ npm run preview    # 本地预览构建产物（http://localhost:4173/DeviceComp
 {
   "name": "iPhone 17 Pro",        // 页面显示名
   "brand": "苹果",                 // 用于品牌筛选
+  "series": "iPhone 17 系列",      // 用于机型选择弹框的系列分组（缺失归入「其他」）
   "release_year": 2025,
   "chipset": { "chip": "", "ram": [], "rom": [] },
   "body":    { "dimensions_mm": {}, "weight_g": 0, "frame_material": "", "...": "" },

@@ -1,6 +1,7 @@
 {
   "name": "vivo X200 Ultra",
   "brand": "vivo",
+  "series": "X 系列",
   "release_year": 2025,
   "chipset": {
     "chip": "骁龙8至尊版移动平台",

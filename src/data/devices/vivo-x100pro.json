@@ -1,6 +1,7 @@
 {
   "name": "vivo X100 Pro",
   "brand": "vivo",
+  "series": "X 系列",
   "release_year": 2023,
   "chipset": {
     "chip": "天玑 9300",

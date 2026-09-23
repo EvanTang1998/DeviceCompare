@@ -1,6 +1,7 @@
 {
   "name": "一加 Ace 6 至尊版",
   "brand": "一加",
+  "series": "Ace 系列",
   "release_year": 2026,
   "chipset": {
     "chip": "天玑 9500",

@@ -1,6 +1,7 @@
 {
   "name": "iPhone 12 mini",
   "brand": "苹果",
+  "series": "iPhone 12 系列",
   "release_year": 2020,
   "release_date": "2020-10",
   "chipset": {

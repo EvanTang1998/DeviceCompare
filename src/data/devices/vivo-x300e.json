@@ -1,6 +1,7 @@
 {
   "name": "vivo X300 E",
   "brand": "vivo",
+  "series": "X 系列",
   "release_year": 2026,
   "chipset": {
     "chip": "第五代骁龙8移动平台",

@@ -1,6 +1,7 @@
 {
   "name": "vivo S30 Pro mini",
   "brand": "vivo",
+  "series": "S 系列",
   "release_year": 2025,
   "chipset": {
     "chip": "天玑9300+",

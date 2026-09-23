@@ -1,6 +1,7 @@
 {
   "name": "vivo X300 Ultra",
   "brand": "vivo",
+  "series": "X 系列",
   "release_year": 2026,
   "chipset": {
     "chip": "第五代骁龙8至尊版移动平台",

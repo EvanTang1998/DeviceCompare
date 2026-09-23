@@ -69,7 +69,10 @@ tools/scraper/
 │       ├── specs.mjs            主流程：抓取 → 解码 __NUXT_DATA__ → 生成 JSON → 图片入库
 │       ├── normalize.py         图片归一化（透明底铺白 + 裁剪缩放）
 │       └── recon/
-│           └── dump.mjs         侦察：把解码后的参数结构与配色打出来
+│           ├── dump.mjs         侦察：把解码后的参数结构与配色打出来
+│           └── e2e.cjs          验收：vivo 机型逐台核对图-机型配对与色环切换
+├── recon/
+│   └── picker.cjs               验收：机型选择弹框的「最近发布」浏览态与系列分组（跨数据源）
 ├── out/                         苹果抓图产物（gitignore）
 └── recon-out/                   侦察产物（gitignore）
 ```
@@ -245,6 +248,8 @@ const CURATED = {
 
 `release_date` 是必需的（脚本用它推 `release_year`，缺了会直接抛错）；`hdr_formats`、`water_resistance` 在 specs 页抓不到时才需要人工补。**新增机型的 slug 必须在这里有条目。**
 
+`series`（如「数字系列」「Ace 系列」）不用填 —— 脚本按 slug 自动推导（含 `turbo` → Turbo 系列、含 `ace` → Ace 系列、其余 → 数字系列）；万一某机型的归属不符合这个规律，在 `CURATED` 里显式给 `series` 覆盖即可。这个字段供机型选择弹框按系列分组，vivo 源是从官网 `category.name` 直接取的。
+
 两条实测结论：
 
 - **`hdr_formats` 永远抓不到。** 逐页确认过：一加 specs 页里**没有任何机型**写 HDR10+ / 杜比视界（`grep -i hdr` 在 13 / 13t / 15 / 15t / Ace 5 / Ace 6T / Turbo 全系都是空）——所以它只能靠人工核对后写进 `CURATED`。没把握的机型就别写，前端会显示「—」，不要凭猜补。
@@ -301,6 +306,24 @@ node sources/oneplus/recon/e2e.cjs "一加 Ace 6T" "一加 Turbo 6V"   # 只查�
 
 末尾的 `问题` 应为「无」，`页面报错` 应为「无」，退出码非 0 就是没过。截图落在 `/tmp/oneplus-e2e.png`。
 
+## 验收：机型选择弹框的最近发布与分组
+
+JSON 顶层的 `series` 字段（如「iPhone 17 系列」「X 系列」「Turbo 系列」）驱动弹框分组。弹框默认 chip 是「最近发布」：按品牌分组，每组只铺**最新的 4 台** + 组尾「查看更多」卡片（点击进入该品牌完整列表）。不能按「最新系列」取精选——vivo 全部 X 机型共用一个 series，会把 18 台全放进来。选了品牌或开始搜索后退回完整的「品牌 → 系列」分组列表。这个弹框是点击后才挂载的，`ssr-check` 的整树渲染碰不到，所以要跑浏览器校验（前置同上）：
+
+```bash
+node recon/picker.cjs
+```
+
+它做三件事，期望值直接从浏览器里的 `src/data.js` 取，不另维护一份：
+
+| 检查项 | 抓的是什么问题 |
+|---|---|
+| 浏览态 = 品牌顺序 × 每品牌最新 4 台，组尾「查看更多」提示的剩余台数正确 | 精选口径算错、跳转卡缺失或提示错 |
+| 逐品牌进完整列表，「全量」每张卡按 DOM 顺序与数据比对品牌/系列/新角标，系列标题无缺无重 | **分组错位**（机型掉进错误系列、系列标题漏渲染） |
+| 搜索结果仍带分组 | 分组逻辑与搜索叠加时崩掉 |
+
+截图落在 `/tmp/picker-groups.png`。
+
 ---
 
 # 三、vivo：参数 + 图片一步入库
@@ -343,6 +366,7 @@ node cli.mjs vivo --models https://www.vivo.com.cn/vivo/param/x500pro
 | 分组结构 | `productAttrs[]` = `{ masterAttr.attrName, slaveAttrs: [{attrName, attrValue}] }`，17 个分组（物理规格 / 处理器 / 存储 / 电池信息 / 屏幕显示 / 拍摄功能…）。30 台机型实测**字段名完全统一**，没有一加那种键名变体 |
 | 机型名 | `product.name`（如 "X500 Pro"）+ `product.code`（= slug）；展示名 = `vivo ` + name。注意个别机型 name 带尾空格（"X500 "），要 trim |
 | 发布时间 | `上市时间` = "2026年9月"，直接推 `release_date` / `release_year`，**不需要人工 CURATED**（这点比一加省事） |
+| 系列 | `category.name` = "X系列"（官网 30 台全覆盖），统一成「X 系列」写入 `series`，供机型选择弹框分组 |
 | 多值分隔 | 官网用 `<br>` 分隔多值（厚度分配色、多颗镜头），但也见过 `、`（X100 光圈）和 `+`（Y500 光圈）——光圈解析**不依赖分隔符**，直接按出现顺序抓 `f/数字` |
 | 像素两种口径 | 「5000万像素」→ 50mp，「2亿像素」→ 200mp（亿要 ×100，别跟万一样 ÷100） |
 | 双电芯电池 | X100 系列是双电芯串联，官网同时给电芯容量和「等效于 5000mAh」，取**等效值**口径才可比 |
@@ -366,7 +390,7 @@ node cli.mjs vivo --models https://www.vivo.com.cn/vivo/param/x500pro
 cd ../.. && PATH="/opt/homebrew/bin:$PATH" node scripts/ssr-check.mjs
 ```
 
-vivo 没有单独的浏览器端到端脚本；一加的 `recon/e2e.cjs` 是按「一加机型下拉清单」写的，vivo 机型要验收时照它的思路扩一个 `sources/vivo/recon/e2e.cjs` 即可。
+vivo 的浏览器端到端验收与一加同思路：`node sources/vivo/recon/e2e.cjs` 逐台检查下拉清单、图-机型配对与色环切换。跨品牌的弹框分组验收见 `recon/picker.cjs`（下节）。
 
 ---
 

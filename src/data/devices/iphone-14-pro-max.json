@@ -1,6 +1,7 @@
 {
   "name": "iPhone 14 Pro Max",
   "brand": "苹果",
+  "series": "iPhone 14 系列",
   "release_year": 2022,
   "release_date": "2022-09",
   "chipset": {

@@ -1,6 +1,7 @@
 {
   "name": "一加 Ace 6",
   "brand": "一加",
+  "series": "Ace 系列",
   "release_year": 2025,
   "chipset": {
     "chip": "高通骁龙 8 至尊版",

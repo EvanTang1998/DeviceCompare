@@ -347,6 +347,17 @@ const absolutize = (u) => (u.startsWith("//") ? `https:${u}` : u);
 
 // ---------- schema 组装 ----------
 
+/**
+ * 系列：官网 specs 页没有这个字段，按产品线从 slug 推导（CURATED 里给 series 可覆盖）。
+ * 数字系列的 slug 形如 15 / 13t；Ace / Turbo 系列的 slug 自带产品线名。
+ */
+function seriesOf(slug) {
+  if (/turbo/i.test(slug)) return "Turbo 系列";
+  if (/ace/i.test(slug)) return "Ace 系列";
+  if (/^\d/.test(slug)) return "数字系列";
+  return null;
+}
+
 function buildDevice(slug, raw) {
   const flat = {};
   for (const { key, value } of raw.entries) {
@@ -399,6 +410,7 @@ function buildDevice(slug, raw) {
   const device = {
     name,
     brand: "一加",
+    series: curated.series ?? seriesOf(slug),
     release_year: Number(release_date.slice(0, 4)),
     chipset: {
       chip: normChip(pick("CPU型号", "平台")),

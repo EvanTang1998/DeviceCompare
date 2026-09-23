@@ -1,6 +1,7 @@
 {
   "name": "vivo X200s",
   "brand": "vivo",
+  "series": "X 系列",
   "release_year": 2025,
   "chipset": {
     "chip": "天玑 9400+",

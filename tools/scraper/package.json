@@ -17,6 +17,7 @@
     "recon:oneplus-e2e": "node sources/oneplus/recon/e2e.cjs",
     "recon:vivo-dump": "node sources/vivo/recon/dump.mjs",
     "recon:vivo-e2e": "node sources/vivo/recon/e2e.cjs",
+    "recon:picker": "node recon/picker.cjs",
     "test": "node sources/apple/test/parse.test.mjs"
   },
   "dependencies": {

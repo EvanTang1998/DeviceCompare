@@ -310,8 +310,22 @@ function ModelOverlay({ value, phones, onPick, onClose }) {
   const modelOptions = phones.filter(
     (p) => (!brand || p.brand === brand) && fuzzyHit(p, normSearch(keyword))
   );
-  const newModels = modelOptions.filter((p) => p.isNew);
-  const moreModels = modelOptions.filter((p) => !p.isNew);
+
+  // 按「品牌 → 系列」两级分组。phones 已按发布时间从近到远排好，
+  // 所以品牌与系列的出现顺序天然就是「最新机型优先」，无需另设排序表。
+  const groups = (() => {
+    const byBrand = new Map();
+    for (const p of modelOptions) {
+      if (!byBrand.has(p.brand)) byBrand.set(p.brand, new Map());
+      const seriesMap = byBrand.get(p.brand);
+      if (!seriesMap.has(p.series)) seriesMap.set(p.series, []);
+      seriesMap.get(p.series).push(p);
+    }
+    return [...byBrand].map(([brandName, seriesMap]) => ({
+      brand: brandName,
+      seriesList: [...seriesMap].map(([series, items]) => ({ series, items }))
+    }));
+  })();
 
   const renderCard = (p) => (
     <button
@@ -320,10 +334,41 @@ function ModelOverlay({ value, phones, onPick, onClose }) {
       className={`model-card${p.id === value ? " is-active" : ""}`}
       onClick={() => onPick(p.id)}
     >
+      {p.isNew && <span className="model-card-new">新</span>}
       {p.image ? <img src={p.image} alt="" loading="lazy" /> : <span className="model-card-ph" />}
       <span className="model-card-name">{p.name}</span>
     </button>
   );
+
+  // 浏览态组尾的「查看更多」：进入该品牌的完整分组列表
+  const renderMoreCard = (brandName, restCount) => (
+    <button
+      key={`more-${brandName}`}
+      type="button"
+      className="model-card model-card-more"
+      onClick={() => setBrand(brandName)}
+      aria-label={`查看更多${brandName}机型`}
+    >
+      <span className="model-card-name">查看更多</span>
+      {restCount > 0 && <span className="model-card-hint">还有 {restCount} 台</span>}
+    </button>
+  );
+
+  // 浏览态（没选品牌、没输关键词）：按品牌分组，每组只铺最新的 4 台
+  // （phones 已按发布时间降序），组尾放「查看更多」卡片跳到该品牌完整列表。
+  // 注意不能用「最新系列」当口径——vivo 全部 X 机型共用一个 series，会把 18 台全放进来。
+  const browsing = !brand && !keyword.trim();
+  const featuredSet = new Set();
+  if (browsing) {
+    const per = new Map();
+    for (const p of phones) {
+      const n = per.get(p.brand) ?? 0;
+      if (n < 4) {
+        featuredSet.add(p.id);
+        per.set(p.brand, n + 1);
+      }
+    }
+  }
 
   return (
     <div
@@ -354,7 +399,7 @@ function ModelOverlay({ value, phones, onPick, onClose }) {
             className={`brand-chip${brand === "" ? " is-active" : ""}`}
             onClick={() => setBrand("")}
           >
-            全部
+            最近发布
           </button>
           {brands.map((b) => (
             <button
@@ -369,14 +414,41 @@ function ModelOverlay({ value, phones, onPick, onClose }) {
         </div>
 
         <div className="overlay-body">
-          {newModels.length > 0 && (
+          {browsing ? (
+            groups.map((g) => {
+              const feat = g.seriesList
+                .flatMap((s) => s.items)
+                .filter((p) => featuredSet.has(p.id));
+              const restCount = g.seriesList.reduce(
+                (n, s) => n + s.items.filter((p) => !featuredSet.has(p.id)).length,
+                0
+              );
+              return (
+                <Fragment key={g.brand}>
+                  <div className="overlay-brand-title">{g.brand}</div>
+                  <div className="model-grid">
+                    {feat.map(renderCard)}
+                    {restCount > 0 && renderMoreCard(g.brand, restCount)}
+                  </div>
+                </Fragment>
+              );
+            })
+          ) : (
             <>
-              <div className="overlay-group-title">新款机型</div>
-              <div className="model-grid">{newModels.map(renderCard)}</div>
+              {groups.map((g) => (
+                <Fragment key={g.brand}>
+                  {/* 未筛选品牌时给出一级标题，避免不同品牌的同名系列混在一起 */}
+                  {!brand && <div className="overlay-brand-title">{g.brand}</div>}
+                  {g.seriesList.map((s) => (
+                    <Fragment key={s.series}>
+                      <div className="overlay-series-title">{s.series}</div>
+                      <div className="model-grid">{s.items.map(renderCard)}</div>
+                    </Fragment>
+                  ))}
+                </Fragment>
+              ))}
             </>
           )}
-          <div className="overlay-group-title">更多机型</div>
-          <div className="model-grid">{moreModels.map(renderCard)}</div>
           {modelOptions.length === 0 && (
             <div className="model-empty">没有匹配的机型</div>
           )}

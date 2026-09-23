@@ -489,9 +489,9 @@ body {
 
 .overlay-panel {
   background: var(--surface);
-  border-radius: 16px;
-  width: min(960px, 100%);
-  max-height: 86vh;
+  border-radius: 18px;
+  width: min(1040px, 100%);
+  max-height: 88vh;
   display: flex;
   flex-direction: column;
   box-shadow: 0 24px 64px rgba(0, 0, 0, 0.22);
@@ -501,22 +501,22 @@ body {
 .overlay-header {
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 16px 20px;
+  gap: 14px;
+  padding: 20px 28px;
   border-bottom: 0.5px solid var(--border);
 }
 
 .overlay-header h2 {
-  font-size: 18px;
+  font-size: 19px;
   font-weight: 600;
   margin-right: auto;
 }
 
 .overlay-header input {
-  width: 240px;
-  padding: 8px 12px;
+  width: 280px;
+  padding: 9px 14px;
   border: 0.5px solid var(--border);
-  border-radius: 8px;
+  border-radius: 10px;
   font-size: 14px;
   color: var(--text);
   outline: none;
@@ -539,18 +539,23 @@ body {
 .brand-chips {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
-  padding: 14px 20px 0;
+  gap: 10px;
+  padding: 18px 28px 0;
 }
 
 .brand-chip {
-  padding: 5px 14px;
+  padding: 7px 18px;
   border-radius: 999px;
   border: 0.5px solid var(--border);
   background: var(--surface);
-  font-size: 13px;
+  font-size: 14px;
   color: var(--text);
   cursor: pointer;
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+
+.brand-chip:hover {
+  border-color: var(--border-strong, var(--text-tertiary));
 }
 
 .brand-chip.is-active {
@@ -561,53 +566,99 @@ body {
 
 .overlay-body {
   overflow-y: auto;
-  padding: 4px 20px 24px;
+  padding: 6px 28px 30px;
 }
 
-.overlay-group-title {
-  font-size: 16px;
+/* 弹框里的两级分组：品牌（一级）→ 系列（二级） */
+.overlay-brand-title {
+  font-size: 20px;
   font-weight: 700;
   color: var(--text);
+  padding: 28px 0 4px;
+}
+
+.overlay-series-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-secondary);
   padding: 18px 0 10px;
+}
+
+.overlay-brand-title + .overlay-series-title {
+  padding-top: 6px;
+}
+
+/* 浏览态组尾的「查看更多」卡片：跳到该品牌完整列表 */
+.model-card-more {
+  gap: 6px;
+  color: var(--text-secondary);
+}
+
+.model-card-more:hover {
+  color: var(--text);
+}
+
+.model-card-hint {
+  font-size: 13px;
+  color: var(--text-tertiary);
 }
 
 .model-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-  gap: 10px;
+  grid-template-columns: repeat(auto-fill, minmax(172px, 1fr));
+  gap: 12px;
 }
 
 .model-card {
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 8px;
-  padding: 14px 10px 12px;
+  justify-content: center;
+  gap: 10px;
+  padding: 16px 12px 14px;
   border: 0.5px solid var(--border);
-  border-radius: 12px;
+  border-radius: 14px;
   background: var(--surface);
   cursor: pointer;
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+
+/* 「新款机型」角标 —— 取代原先独占一组的「新款机型」分组 */
+.model-card-new {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: var(--accent);
+  color: #fff;
+  font-size: 11px;
+  line-height: 1.6;
+  font-weight: 500;
 }
 
 .model-card:hover {
   border-color: var(--accent);
+  background: var(--bg);
 }
 
 .model-card img {
-  height: 64px;
+  height: 104px;
   max-width: 100%;
   object-fit: contain;
 }
 
 .model-card-ph {
-  height: 64px;
-  width: 40px;
-  border-radius: 8px;
+  height: 104px;
+  width: 68px;
+  border-radius: 10px;
   background: var(--bg);
 }
 
 .model-card-name {
-  font-size: 13px;
+  font-size: 13.5px;
+  line-height: 1.4;
   color: var(--text);
   text-align: center;
 }

@@ -1,6 +1,7 @@
 {
   "name": "vivo X500 Pro",
   "brand": "vivo",
+  "series": "X 系列",
   "release_year": 2026,
   "chipset": {
     "chip": "天玑 9600 Pro",

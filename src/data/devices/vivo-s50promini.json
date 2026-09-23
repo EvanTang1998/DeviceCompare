@@ -1,6 +1,7 @@
 {
   "name": "vivo S50 Pro mini",
   "brand": "vivo",
+  "series": "S 系列",
   "release_year": 2025,
   "chipset": {
     "chip": "高通第五代骁龙 8 移动平台",
