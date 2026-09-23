@@ -1,0 +1,85 @@
+{
+  "name": "一加 Turbo 6V",
+  "brand": "一加",
+  "release_year": 2026,
+  "chipset": {
+    "chip": "第四代骁龙 7s",
+    "ram": [
+      "8GB LPDDR4X",
+      "12GB LPDDR4X"
+    ],
+    "rom": [
+      "256GB UFS 3.1",
+      "512GB UFS 3.1"
+    ]
+  },
+  "body": {
+    "dimensions_mm": {
+      "height": 162.46,
+      "width": 77.45,
+      "depth": 8.5
+    },
+    "weight_g": 215,
+    "frame_material": null,
+    "back_material": null,
+    "front_material": "晶盾玻璃",
+    "water_resistance": "IP66/IP68/IP69/IP69K"
+  },
+  "display": {
+    "size_inch": 6.78,
+    "resolution": "2772 x 1272",
+    "ppi": 450,
+    "refresh_rate": "60/90/120/144Hz 智能切换，最高支持 144Hz（144Hz 只在部分场景生效）",
+    "panel": "OLED",
+    "form": "直屏",
+    "max_brightness_nits": {
+      "typical": 800,
+      "hdr": 1800
+    }
+  },
+  "battery": {
+    "capacity_mah": 9000,
+    "charging_watt": 80,
+    "wireless_charging_watt": 0
+  },
+  "camera": [
+    {
+      "type": "主摄",
+      "sensor": "未公开",
+      "resolution_mp": 50,
+      "aperture": "f/1.8",
+      "focal_length_mm": 27,
+      "image_stabilization": [
+        "光学防抖"
+      ]
+    },
+    {
+      "type": "前置",
+      "sensor": "未公开",
+      "resolution_mp": 16,
+      "aperture": "f/2.4",
+      "focal_length_mm": 23
+    }
+  ],
+  "colors": [
+    {
+      "slug": "blue",
+      "name": "无畏蓝",
+      "hex": "#cfdbe8",
+      "is_default": true
+    },
+    {
+      "slug": "white",
+      "name": "新星白",
+      "hex": "#e6e6e8",
+      "is_default": false
+    },
+    {
+      "slug": "black",
+      "name": "独行黑",
+      "hex": "#333438",
+      "is_default": false
+    }
+  ],
+  "release_date": "2026-01"
+}

@@ -1,0 +1,109 @@
+{
+  "name": "vivo X100s Pro",
+  "brand": "vivo",
+  "release_year": 2024,
+  "chipset": {
+    "chip": "天玑 9300+",
+    "ram": [
+      "12GB LPDDR5X",
+      "16GB LPDDR5X"
+    ],
+    "rom": [
+      "256GB UFS 4.0",
+      "512GB UFS 4.0",
+      "1TB UFS 4.0"
+    ]
+  },
+  "body": {
+    "dimensions_mm": {
+      "height": 164.05,
+      "width": 75.28,
+      "depth": 8.91
+    },
+    "weight_g": 225,
+    "frame_material": null,
+    "back_material": null,
+    "front_material": null,
+    "water_resistance": null
+  },
+  "display": {
+    "size_inch": 6.78,
+    "resolution": "2800 x 1260",
+    "ppi": 453,
+    "refresh_rate": "最高支持120Hz",
+    "panel": "AMOLED",
+    "form": null,
+    "max_brightness_nits": null,
+    "hdr_formats": null
+  },
+  "battery": {
+    "capacity_mah": 5400,
+    "charging_watt": 100,
+    "wireless_charging_watt": 50
+  },
+  "camera": [
+    {
+      "type": "主摄",
+      "sensor": "未公开",
+      "resolution_mp": 50,
+      "aperture": "f/1.75",
+      "focal_length_mm": null,
+      "image_stabilization": [
+        "光学防抖",
+        "电子防抖"
+      ]
+    },
+    {
+      "type": "长焦",
+      "sensor": "未公开",
+      "resolution_mp": 50,
+      "aperture": "f/2.5",
+      "focal_length_mm": null,
+      "image_stabilization": [
+        "光学防抖",
+        "电子防抖"
+      ]
+    },
+    {
+      "type": "超广角",
+      "sensor": "未公开",
+      "resolution_mp": 50,
+      "aperture": "f/2.0",
+      "focal_length_mm": null,
+      "image_stabilization": [
+        "电子防抖"
+      ]
+    },
+    {
+      "type": "前置",
+      "sensor": "未公开",
+      "resolution_mp": 32,
+      "aperture": "f/2.0",
+      "focal_length_mm": null,
+      "image_stabilization": [
+        "电子防抖"
+      ]
+    }
+  ],
+  "colors": [
+    {
+      "slug": "chenyehei",
+      "name": "辰夜黑",
+      "hex": "#4a4a4a",
+      "is_default": true
+    },
+    {
+      "slug": "baiyueguang",
+      "name": "白月光",
+      "hex": "#f7f7f7",
+      "is_default": false
+    },
+    {
+      "slug": "taise",
+      "name": "钛色",
+      "hex": "#bdb9b6",
+      "is_default": false
+    }
+  ],
+  "release_date": "2024-05"
+}

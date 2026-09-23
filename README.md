@@ -33,13 +33,15 @@ npm run preview    # 本地预览构建产物（http://localhost:4173/DeviceComp
 │       ├── devices/              # ★ 参数数据：每台手机一个 JSON
 │       │   ├── iphone-13-pro.json
 │       │   ├── iphone-17.json
-│       │   ├── iphone-17-pro.json
-│       │   └── oneplus-ace-6.json
-│       └── images/               # ★ 产品图：文件名 = 对应 JSON 的文件名
+│       │   └── oneplus-15.json
+│       └── images/               # ★ 产品图：文件名 = 对应 JSON 的文件名（+ 可选的配色段）
+│           ├── iphone-17.sage.jpg
 │           ├── iphone-13-pro.jpg
-│           ├── iphone-17.png
-│           ├── iphone-17-pro.png
-│           └── oneplus-ace-6.jpg
+│           └── oneplus-15.gold.jpg
+├── tools/scraper/                # 数据采集工具（独立依赖，不参与构建）
+│   ├── sources/apple/            #   苹果官网：只抓产品图
+│   ├── sources/oneplus/          #   一加官网：参数 + 图片一步入库
+│   └── sources/vivo/             #   vivo 官网：参数 + 图片一步入库
 ├── designer-document/            # 设计说明（需求、参数范围、术语表）
 └── scripts/
     └── ssr-check.mjs             # 无浏览器渲染验证（node scripts/ssr-check.mjs）
@@ -72,7 +74,20 @@ npm run preview    # 本地预览构建产物（http://localhost:4173/DeviceComp
 
 机型 id 决定三件事：页面选择器里的取值、图片的配对、默认排序（按 id 字母序）。
 
+## 图片和参数可以从官网自动抓
+
+第 1、2 步里最费事的部分（下载产品图、抄参数）有现成工具，见 **[tools/scraper/README.md](tools/scraper/README.md)**。三个数据源玩法不同：
+
+| 数据源 | 能自动拿到什么 | 命令 |
+|---|---|---|
+| 苹果官网 | **只有产品图**，参数 JSON 仍需手工维护 | `node cli.mjs images --models ...` → `node cli.mjs promote` |
+| 一加官网 | **参数 JSON + 产品图**，一步入库 | `node cli.mjs oneplus --models ...` |
+| vivo 官网 | **参数 JSON + 产品图**，一步入库 | `node cli.mjs vivo --models ...` |
+
+产品图文件名约定：`<机型id>.<配色slug>.jpg`（每个配色各一份）；没有配色维度的机型用 `<机型id>.jpg`。
+
 ## 当前状态
 
+- **数据**：71 台机型（苹果 29 台 / 一加 12 台 / vivo 30 台），281 张产品图
 - 已实现：四列对比、品牌→型号两级选择（带搜索）、参数分类显示、差异行高亮、移动端横滑、产品图与占位回退
 - 未实现（后续阶段）：次要参数（扬声器/网络/解锁等）、差异 Winner 点评、首页、机型详情页

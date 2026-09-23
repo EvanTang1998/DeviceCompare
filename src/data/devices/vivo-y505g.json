@@ -1,0 +1,84 @@
+{
+  "name": "vivo Y50 5G",
+  "brand": "vivo",
+  "release_year": 2025,
+  "chipset": {
+    "chip": "天玑6300",
+    "ram": [
+      "4GB LPDDR4X",
+      "6GB LPDDR4X",
+      "8GB LPDDR4X",
+      "12GB LPDDR4X"
+    ],
+    "rom": [
+      "128GB UFS 2.2",
+      "256GB UFS 2.2"
+    ]
+  },
+  "body": {
+    "dimensions_mm": {
+      "height": 167.3,
+      "width": 76.95,
+      "depth": 8.19
+    },
+    "weight_g": 204,
+    "frame_material": null,
+    "back_material": null,
+    "front_material": null,
+    "water_resistance": null
+  },
+  "display": {
+    "size_inch": 6.74,
+    "resolution": "1600 x 720",
+    "ppi": 260,
+    "refresh_rate": "最大支持90Hz",
+    "panel": "LCD",
+    "form": null,
+    "max_brightness_nits": null,
+    "hdr_formats": null
+  },
+  "battery": {
+    "capacity_mah": 6000,
+    "charging_watt": 44,
+    "wireless_charging_watt": 0
+  },
+  "camera": [
+    {
+      "type": "主摄",
+      "sensor": "未公开",
+      "resolution_mp": 13,
+      "aperture": "f/2.2",
+      "focal_length_mm": null,
+      "image_stabilization": []
+    },
+    {
+      "type": "前置",
+      "sensor": "未公开",
+      "resolution_mp": 5,
+      "aperture": "f/2.2",
+      "focal_length_mm": null,
+      "image_stabilization": []
+    }
+  ],
+  "colors": [
+    {
+      "slug": "zuanhei",
+      "name": "钻黑",
+      "hex": "#595959",
+      "is_default": true
+    },
+    {
+      "slug": "tianqing",
+      "name": "天青",
+      "hex": "#e7f7fd",
+      "is_default": false
+    },
+    {
+      "slug": "baijin",
+      "name": "白金",
+      "hex": "#f2f2f2",
+      "is_default": false
+    }
+  ],
+  "release_date": "2025-07"
+}

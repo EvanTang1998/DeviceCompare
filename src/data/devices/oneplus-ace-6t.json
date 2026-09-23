@@ -1,0 +1,97 @@
+{
+  "name": "一加 Ace 6T",
+  "brand": "一加",
+  "release_year": 2025,
+  "chipset": {
+    "chip": "第五代骁龙 8",
+    "ram": [
+      "12GB LPDDR5X",
+      "16GB LPDDR5X"
+    ],
+    "rom": [
+      "256GB UFS 4.1",
+      "512GB UFS 4.1",
+      "1TB UFS 4.1"
+    ]
+  },
+  "body": {
+    "dimensions_mm": {
+      "height": 163.41,
+      "width": 77.04,
+      "depth": 8.1
+    },
+    "weight_g": 211,
+    "frame_material": "铝合金金属中框",
+    "back_material": "玻璃材质",
+    "front_material": "晶盾玻璃",
+    "water_resistance": "IP66/IP68/IP69/IP69K"
+  },
+  "display": {
+    "size_inch": 6.83,
+    "resolution": "2800 x 1272",
+    "ppi": 450,
+    "refresh_rate": "60/90/120/144/165Hz 智能切换，最高支持 165Hz（144/165Hz 只在部分场景生效）",
+    "panel": "OLED",
+    "form": "直屏",
+    "max_brightness_nits": {
+      "typical": 800,
+      "hdr": 1800
+    },
+    "hdr_formats": [
+      "HDR10+"
+    ]
+  },
+  "battery": {
+    "capacity_mah": 8300,
+    "charging_watt": 100,
+    "wireless_charging_watt": 0
+  },
+  "camera": [
+    {
+      "type": "主摄",
+      "sensor": "未公开",
+      "resolution_mp": 50,
+      "aperture": "f/1.8",
+      "focal_length_mm": 24,
+      "image_stabilization": [
+        "光学防抖"
+      ]
+    },
+    {
+      "type": "超广角",
+      "sensor": "未公开",
+      "resolution_mp": 8,
+      "aperture": "f/2.2",
+      "focal_length_mm": 16,
+      "field_of_view_deg": 112
+    },
+    {
+      "type": "前置",
+      "sensor": "未公开",
+      "resolution_mp": 16,
+      "aperture": "f/2.4",
+      "focal_length_mm": 23
+    }
+  ],
+  "colors": [
+    {
+      "slug": "black",
+      "name": "闪速黑",
+      "hex": "#585965",
+      "is_default": true
+    },
+    {
+      "slug": "green",
+      "name": "掠影绿",
+      "hex": "#e3eed4",
+      "is_default": false
+    },
+    {
+      "slug": "purple",
+      "name": "电光紫",
+      "hex": "#d5d1e8",
+      "is_default": false
+    }
+  ],
+  "release_date": "2025-12"
+}

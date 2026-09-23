@@ -1,0 +1,110 @@
+{
+  "name": "vivo X300 Ultra",
+  "brand": "vivo",
+  "release_year": 2026,
+  "chipset": {
+    "chip": "第五代骁龙8至尊版移动平台",
+    "ram": [
+      "12GB LPDDR5X Ultra",
+      "16GB LPDDR5X Ultra"
+    ],
+    "rom": [
+      "256GB UFS 4.1",
+      "512GB UFS 4.1",
+      "1TB UFS 4.1"
+    ]
+  },
+  "body": {
+    "dimensions_mm": {
+      "height": 162.98,
+      "width": 76.81,
+      "depth": 8.19
+    },
+    "weight_g": 232,
+    "frame_material": null,
+    "back_material": null,
+    "front_material": null,
+    "water_resistance": null
+  },
+  "display": {
+    "size_inch": 6.82,
+    "resolution": "3168 x 1440",
+    "ppi": 510,
+    "refresh_rate": "144Hz",
+    "panel": "AMOLED",
+    "form": null,
+    "max_brightness_nits": null,
+    "hdr_formats": null
+  },
+  "battery": {
+    "capacity_mah": 6600,
+    "charging_watt": 100,
+    "wireless_charging_watt": 40
+  },
+  "camera": [
+    {
+      "type": "主摄",
+      "sensor": "未公开",
+      "resolution_mp": 200,
+      "aperture": "f/1.85",
+      "focal_length_mm": 35,
+      "image_stabilization": [
+        "光学防抖",
+        "电子防抖"
+      ]
+    },
+    {
+      "type": "长焦",
+      "sensor": "未公开",
+      "resolution_mp": 200,
+      "aperture": "f/2.67",
+      "focal_length_mm": 85,
+      "image_stabilization": [
+        "光学防抖",
+        "电子防抖"
+      ]
+    },
+    {
+      "type": "超广角",
+      "sensor": "未公开",
+      "resolution_mp": 50,
+      "aperture": "f/2.0",
+      "focal_length_mm": 14,
+      "image_stabilization": [
+        "光学防抖",
+        "电子防抖"
+      ]
+    },
+    {
+      "type": "前置",
+      "sensor": "未公开",
+      "resolution_mp": 50,
+      "aperture": "f/2.45",
+      "focal_length_mm": null,
+      "image_stabilization": [
+        "电子防抖"
+      ]
+    }
+  ],
+  "colors": [
+    {
+      "slug": "jiaopianlv",
+      "name": "胶片绿",
+      "hex": "#9fb382",
+      "is_default": true
+    },
+    {
+      "slug": "heika",
+      "name": "黑 Ka",
+      "hex": "#474749",
+      "is_default": false
+    },
+    {
+      "slug": "yindiao",
+      "name": "银调",
+      "hex": "#d7d7d7",
+      "is_default": false
+    }
+  ],
+  "release_date": "2026-03"
+}

@@ -1,0 +1,115 @@
+{
+  "name": "vivo X300s",
+  "brand": "vivo",
+  "release_year": 2026,
+  "chipset": {
+    "chip": "天玑 9500",
+    "ram": [
+      "12GB LPDDR5X Ultra",
+      "16GB LPDDR5X Ultra"
+    ],
+    "rom": [
+      "256GB UFS 4.1",
+      "512GB UFS 4.1",
+      "1TB UFS 4.1"
+    ]
+  },
+  "body": {
+    "dimensions_mm": {
+      "height": 161.98,
+      "width": 75.48,
+      "depth": 8
+    },
+    "weight_g": 217,
+    "frame_material": null,
+    "back_material": null,
+    "front_material": null,
+    "water_resistance": null
+  },
+  "display": {
+    "size_inch": 6.78,
+    "resolution": "2800 x 1260",
+    "ppi": 453,
+    "refresh_rate": "1-144Hz",
+    "panel": "AMOLED",
+    "form": null,
+    "max_brightness_nits": null,
+    "hdr_formats": null
+  },
+  "battery": {
+    "capacity_mah": 7100,
+    "charging_watt": 90,
+    "wireless_charging_watt": 40
+  },
+  "camera": [
+    {
+      "type": "主摄",
+      "sensor": "未公开",
+      "resolution_mp": 200,
+      "aperture": "f/1.68",
+      "focal_length_mm": null,
+      "image_stabilization": [
+        "光学防抖",
+        "电子防抖"
+      ]
+    },
+    {
+      "type": "长焦",
+      "sensor": "未公开",
+      "resolution_mp": 50,
+      "aperture": "f/2.57",
+      "focal_length_mm": null,
+      "image_stabilization": [
+        "光学防抖",
+        "电子防抖"
+      ]
+    },
+    {
+      "type": "超广角",
+      "sensor": "未公开",
+      "resolution_mp": 50,
+      "aperture": "f/2.0",
+      "focal_length_mm": null,
+      "image_stabilization": [
+        "电子防抖"
+      ]
+    },
+    {
+      "type": "前置",
+      "sensor": "未公开",
+      "resolution_mp": 50,
+      "aperture": "f/2.0",
+      "focal_length_mm": null,
+      "image_stabilization": [
+        "电子防抖"
+      ]
+    }
+  ],
+  "colors": [
+    {
+      "slug": "jiaopianlv",
+      "name": "胶片绿",
+      "hex": "#76923c",
+      "is_default": true
+    },
+    {
+      "slug": "menghezi",
+      "name": "梦核紫",
+      "hex": "#cdbbed",
+      "is_default": false
+    },
+    {
+      "slug": "yinbai",
+      "name": "银白",
+      "hex": "#d9dad9",
+      "is_default": false
+    },
+    {
+      "slug": "taihei",
+      "name": "钛黑",
+      "hex": "#a3a19d",
+      "is_default": false
+    }
+  ],
+  "release_date": "2026-03"
+}

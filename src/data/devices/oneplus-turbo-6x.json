@@ -1,0 +1,82 @@
+{
+  "name": "一加 Turbo 6X",
+  "brand": "一加",
+  "release_year": 2026,
+  "chipset": {
+    "chip": "天玑 7360 SUPER",
+    "ram": [
+      "8GB",
+      "12GB"
+    ],
+    "rom": [
+      "128GB",
+      "256GB"
+    ]
+  },
+  "body": {
+    "dimensions_mm": {
+      "height": 165.85,
+      "width": 76,
+      "depth": 8.55
+    },
+    "weight_g": 208,
+    "frame_material": null,
+    "back_material": null,
+    "front_material": null,
+    "water_resistance": "IP64"
+  },
+  "display": {
+    "size_inch": 6.72,
+    "resolution": "2400 x 1080",
+    "ppi": 391,
+    "refresh_rate": "60/90/120Hz 智能切换，最高支持 144Hz",
+    "panel": "OLED",
+    "form": "直屏",
+    "max_brightness_nits": {
+      "typical": 800,
+      "hdr": 1000
+    }
+  },
+  "battery": {
+    "capacity_mah": 7000,
+    "charging_watt": 45,
+    "wireless_charging_watt": 0
+  },
+  "camera": [
+    {
+      "type": "主摄",
+      "sensor": "未公开",
+      "resolution_mp": 50,
+      "aperture": "f/1.8",
+      "focal_length_mm": 27
+    },
+    {
+      "type": "前置",
+      "sensor": "未公开",
+      "resolution_mp": 8,
+      "aperture": "f/2.0",
+      "focal_length_mm": 25
+    }
+  ],
+  "colors": [
+    {
+      "slug": "white",
+      "name": "白里挑一",
+      "hex": "#eeeff3",
+      "is_default": true
+    },
+    {
+      "slug": "black",
+      "name": "星耀黑",
+      "hex": "#585965",
+      "is_default": false
+    },
+    {
+      "slug": "green",
+      "name": "踏青云",
+      "hex": "#d8f0e3",
+      "is_default": false
+    }
+  ],
+  "release_date": "2026-06"
+}

@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useMemo, useRef, useState } from "react";
+import { Fragment, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { phones, brands } from "./data.js";
 
@@ -139,8 +139,15 @@ const normSearch = (s) => s.toLowerCase().replace(/[\s-]+/g, "");
 const fuzzyHit = (p, query) =>
   !query || normSearch(p.name).includes(query) || normSearch(p.id).includes(query);
 
-// 机型下拉菜单：贴在触发按钮正下方展开，圆角 + 留白，拉高可滚动
-function ModelMenu({ value, phones, onPick, onClose, anchorEl }) {
+// 机型下拉菜单：贴在触发框正下方展开（圆角 + 留白，拉高可滚动）
+// options = 允许展示的候选机型（调用方决定是否按品牌过滤），不做任何二次筛选
+// 定位规则：高度 = min(内容实际高度, 98% 视口高)；优先贴触发框正下方，下方不够则整体上翻，
+//          两侧都装不下时保持封顶高度、位置贴到视口极限（不是按数量估算，而是量真实高度）
+function ModelMenu({ value, options, onPick, onClose, anchorEl }) {
+  const panelRef = useRef(null);
+  const listRef = useRef(null);
+  const [pos, setPos] = useState(null);
+
   useEffect(() => {
     const onKey = (e) => {
       if (e.key === "Escape") onClose();
@@ -149,25 +156,53 @@ function ModelMenu({ value, phones, onPick, onClose, anchorEl }) {
     return () => document.removeEventListener("keydown", onKey);
   }, [onClose]);
 
-  const newModels = phones.filter((p) => p.isNew);
-  const moreModels = phones.filter((p) => !p.isNew);
+  useLayoutEffect(() => {
+    if (!anchorEl) return;
+    const list = listRef.current;
+    if (!list) return;
 
-  // 面板位置：左缘对齐所在列；高度占视口 98%，上下各留 1%（纯比例）
-  const anchorStyle = anchorEl
-    ? (() => {
-        const r = anchorEl.getBoundingClientRect();
-        const vw = window.innerWidth;
-        const vh = window.innerHeight;
-        const left = Math.max(12, Math.min(r.left, vw - r.width - 12));
-        return {
-          position: "absolute",
-          top: vh * 0.01,
-          left,
-          width: r.width,
-          height: vh * 0.98
-        };
-      })()
-    : undefined;
+    const GAP = 8; // 与触发框之间的间距
+    const EDGE = 12; // 与视口边缘的最小留白
+
+    const place = (e) => {
+      // 面板内部滚动不需要重算（列表自身滚动不改变位置）
+      if (e?.target && panelRef.current?.contains(e.target)) return;
+      const r = anchorEl.getBoundingClientRect();
+      const vw = window.innerWidth;
+      const vh = window.innerHeight;
+      const natural = list.scrollHeight + 1; // 内容完整高度（含面板 0.5px 上边框）
+      // 封顶：内容再多也不超过 98% 视口高（上下各留 1%）
+      const maxH = Math.min(natural, vh * 0.98, vh - EDGE * 2);
+      const below = vh - r.bottom - GAP - EDGE; // 触发框下方的可用高度
+      const above = r.top - GAP - EDGE; // 触发框上方的可用高度
+      const left = Math.max(EDGE, Math.min(r.left, vw - r.width - EDGE));
+
+      let top;
+      if (maxH <= below) {
+        // 装得下：贴正下方，高度即内容高度
+        top = r.bottom + GAP;
+      } else if (maxH <= above) {
+        // 下方装不下、上方装得下：整体上翻，底边贴触发框上方
+        top = r.top - GAP - maxH;
+      } else {
+        // 机型多到两侧都装不下：保持封顶高度，位置贴到视口极限（尽量靠近触发框下方）
+        top = Math.max(EDGE, Math.min(r.bottom + GAP, vh - EDGE - maxH));
+      }
+
+      setPos({ position: "fixed", left, width: r.width, top, maxHeight: Math.max(maxH, 120) });
+    };
+
+    place();
+    window.addEventListener("resize", place);
+    window.addEventListener("scroll", place, true);
+    return () => {
+      window.removeEventListener("resize", place);
+      window.removeEventListener("scroll", place, true);
+    };
+  }, [anchorEl]);
+
+  const newModels = options.filter((p) => p.isNew);
+  const moreModels = options.filter((p) => !p.isNew);
 
   const renderItem = (p) => (
     <button
@@ -187,8 +222,15 @@ function ModelMenu({ value, phones, onPick, onClose, anchorEl }) {
         if (e.target === e.currentTarget) onClose();
       }}
     >
-      <div className="model-menu" style={anchorStyle} role="dialog" aria-modal="true" aria-label="选择机型">
-        <div className="model-menu-list">
+      <div
+        ref={panelRef}
+        className="model-menu"
+        style={pos ?? { visibility: "hidden" }}
+        role="dialog"
+        aria-modal="true"
+        aria-label="选择机型"
+      >
+        <div className="model-menu-list" ref={listRef}>
           {newModels.length > 0 && (
             <>
               <div className="model-group-title">新款机型</div>
@@ -233,7 +275,7 @@ function SlotPickerBar({ slots, phones, onPick }) {
             {openIdx === i && (
               <ModelMenu
                 value={id}
-                phones={phones}
+                options={phones}
                 onPick={(nid) => {
                   onPick(i, nid);
                   setOpenIdx(null);
@@ -364,11 +406,12 @@ function PhonePicker({ value, phones, onChange }) {
     setMenuOpen(false);
   };
 
-  // 型号下拉：当前品牌（+搜索词）过滤出的全部机型；候选词列表再截取前 8 条
-  const modelOptions = phones.filter(
-    (p) => (!brand || p.brand === brand) && fuzzyHit(p, normSearch(keyword))
-  );
-  const candidates = keyword ? modelOptions.slice(0, 8) : [];
+  // 当前品牌下的全部机型 —— 型号下拉面板只展示这些
+  const brandModels = phones.filter((p) => !brand || p.brand === brand);
+  // 搜索候选词：在品牌范围内再叠加关键词模糊匹配，最多 8 条
+  const candidates = keyword
+    ? brandModels.filter((p) => fuzzyHit(p, normSearch(keyword))).slice(0, 8)
+    : [];
 
   return (
     <div className="picker">
@@ -401,7 +444,7 @@ function PhonePicker({ value, phones, onChange }) {
       {menuOpen && (
         <ModelMenu
           value={value}
-          phones={phones}
+          options={brandModels}
           onPick={pick}
           onClose={() => setMenuOpen(false)}
           anchorEl={anchorEl}

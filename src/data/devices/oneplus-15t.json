@@ -1,0 +1,100 @@
+{
+  "name": "一加 15T",
+  "brand": "一加",
+  "release_year": 2026,
+  "chipset": {
+    "chip": "第五代骁龙 8 至尊版",
+    "ram": [
+      "12GB LPDDR5X Ultra Pro",
+      "16GB LPDDR5X Ultra Pro"
+    ],
+    "rom": [
+      "256GB UFS 4.1",
+      "512GB UFS 4.1",
+      "1TB UFS 4.1"
+    ]
+  },
+  "body": {
+    "dimensions_mm": {
+      "height": 150.56,
+      "width": 71.82,
+      "depth": 8.35
+    },
+    "weight_g": 194,
+    "frame_material": "铝合金金属中框",
+    "back_material": "玻纤",
+    "front_material": "OPPO 晶盾玻璃",
+    "water_resistance": "IP66/IP68/IP69/IP69K"
+  },
+  "display": {
+    "size_inch": 6.32,
+    "resolution": "2640 x 1216",
+    "ppi": 460,
+    "refresh_rate": "60/90/120/144/165Hz 智能切换，最高支持 165Hz",
+    "panel": "OLED",
+    "form": "直屏",
+    "max_brightness_nits": {
+      "typical": 800,
+      "hdr": 1800
+    },
+    "hdr_formats": [
+      "HDR10+",
+      "杜比视界"
+    ]
+  },
+  "battery": {
+    "capacity_mah": 7500,
+    "charging_watt": 100,
+    "wireless_charging_watt": 50
+  },
+  "camera": [
+    {
+      "type": "主摄",
+      "sensor": "未公开",
+      "resolution_mp": 50,
+      "aperture": "f/1.8",
+      "focal_length_mm": 24,
+      "image_stabilization": [
+        "光学防抖"
+      ]
+    },
+    {
+      "type": "长焦",
+      "sensor": "未公开",
+      "resolution_mp": 50,
+      "aperture": "f/2.8",
+      "focal_length_mm": 85,
+      "image_stabilization": [
+        "光学防抖"
+      ]
+    },
+    {
+      "type": "前置",
+      "sensor": "未公开",
+      "resolution_mp": 16,
+      "aperture": "f/2.4",
+      "focal_length_mm": 23
+    }
+  ],
+  "colors": [
+    {
+      "slug": "white",
+      "name": "治愈白巧",
+      "hex": "#f5f5ef",
+      "is_default": true
+    },
+    {
+      "slug": "green",
+      "name": "松弛抹茶",
+      "hex": "#a1bc76",
+      "is_default": false
+    },
+    {
+      "slug": "brown",
+      "name": "纯粹可可",
+      "hex": "#65595b",
+      "is_default": false
+    }
+  ],
+  "release_date": "2026-03"
+}

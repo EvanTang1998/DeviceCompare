@@ -1,0 +1,82 @@
+{
+  "name": "vivo Y6",
+  "brand": "vivo",
+  "release_year": 2026,
+  "chipset": {
+    "chip": "第二代骁龙4",
+    "ram": [
+      "8GB LPDDR4X",
+      "12GB LPDDR4X"
+    ],
+    "rom": [
+      "128GB UFS 3.1",
+      "256GB UFS 3.1"
+    ]
+  },
+  "body": {
+    "dimensions_mm": {
+      "height": 166.64,
+      "width": 78.43,
+      "depth": 8.39
+    },
+    "weight_g": 219,
+    "frame_material": null,
+    "back_material": null,
+    "front_material": null,
+    "water_resistance": null
+  },
+  "display": {
+    "size_inch": 6.75,
+    "resolution": "1570 x 720",
+    "ppi": 256,
+    "refresh_rate": "最大支持120Hz",
+    "panel": "LCD",
+    "form": null,
+    "max_brightness_nits": null,
+    "hdr_formats": null
+  },
+  "battery": {
+    "capacity_mah": 7200,
+    "charging_watt": 44,
+    "wireless_charging_watt": 0
+  },
+  "camera": [
+    {
+      "type": "主摄",
+      "sensor": "未公开",
+      "resolution_mp": 50,
+      "aperture": "f/2.2",
+      "focal_length_mm": null,
+      "image_stabilization": []
+    },
+    {
+      "type": "前置",
+      "sensor": "未公开",
+      "resolution_mp": 8,
+      "aperture": "f/2.05",
+      "focal_length_mm": null,
+      "image_stabilization": []
+    }
+  ],
+  "colors": [
+    {
+      "slug": "xingheyin",
+      "name": "星河银",
+      "hex": "#dfe3e8",
+      "is_default": true
+    },
+    {
+      "slug": "fengyingjin",
+      "name": "凤迎金",
+      "hex": "#f8ebde",
+      "is_default": false
+    },
+    {
+      "slug": "yaoshihei",
+      "name": "曜石黑",
+      "hex": "#5a5f6d",
+      "is_default": false
+    }
+  ],
+  "release_date": "2026-04"
+}

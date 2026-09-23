@@ -1,0 +1,87 @@
+{
+  "name": "一加 Turbo 6X Pro",
+  "brand": "一加",
+  "release_year": 2026,
+  "chipset": {
+    "chip": "天玑 7400 SUPER",
+    "ram": [
+      "8GB",
+      "12GB"
+    ],
+    "rom": [
+      "128GB",
+      "256GB"
+    ]
+  },
+  "body": {
+    "dimensions_mm": {
+      "height": 162.6,
+      "width": 77.6,
+      "depth": 8.8
+    },
+    "weight_g": 213,
+    "frame_material": null,
+    "back_material": null,
+    "front_material": null,
+    "water_resistance": "IP66/IP68/IP69/IP69K"
+  },
+  "display": {
+    "size_inch": 6.78,
+    "resolution": "2772 x 1272",
+    "ppi": 450,
+    "refresh_rate": "60/90/120Hz 智能切换，最高支持 144Hz",
+    "panel": "OLED",
+    "form": "直屏",
+    "max_brightness_nits": {
+      "typical": 800,
+      "hdr": 1400
+    }
+  },
+  "battery": {
+    "capacity_mah": 8000,
+    "charging_watt": 80,
+    "wireless_charging_watt": 0
+  },
+  "camera": [
+    {
+      "type": "主摄",
+      "sensor": "未公开",
+      "resolution_mp": 50,
+      "aperture": "f/1.8",
+      "focal_length_mm": 27,
+      "image_stabilization": [
+        "光学防抖"
+      ]
+    },
+    {
+      "type": "超广角",
+      "sensor": "未公开",
+      "resolution_mp": 8,
+      "aperture": "f/2.2",
+      "focal_length_mm": 16,
+      "field_of_view_deg": 112
+    },
+    {
+      "type": "前置",
+      "sensor": "未公开",
+      "resolution_mp": 16,
+      "aperture": "f/2.4",
+      "focal_length_mm": 23
+    }
+  ],
+  "colors": [
+    {
+      "slug": "orange",
+      "name": "心想事橙",
+      "hex": "#fdb676",
+      "is_default": true
+    },
+    {
+      "slug": "black",
+      "name": "跃马黑",
+      "hex": "#73737d",
+      "is_default": false
+    }
+  ],
+  "release_date": "2026-06"
+}

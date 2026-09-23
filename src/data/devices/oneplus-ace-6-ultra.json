@@ -1,0 +1,91 @@
+{
+  "name": "一加 Ace 6 至尊版",
+  "brand": "一加",
+  "release_year": 2026,
+  "chipset": {
+    "chip": "天玑 9500",
+    "ram": [
+      "12GB LPDDR5X Ultra",
+      "16GB LPDDR5X Ultra"
+    ],
+    "rom": [
+      "256GB UFS 4.1",
+      "512GB UFS 4.1",
+      "1TB UFS 4.1"
+    ]
+  },
+  "body": {
+    "dimensions_mm": {
+      "height": 162.45,
+      "width": 77.47,
+      "depth": 8.45
+    },
+    "weight_g": 217,
+    "frame_material": "铝合金金属中框",
+    "back_material": "晶盾玻璃",
+    "front_material": "晶盾玻璃",
+    "water_resistance": "IP66/IP68/IP69/IP69K"
+  },
+  "display": {
+    "size_inch": 6.78,
+    "resolution": "2772 x 1272",
+    "ppi": 450,
+    "refresh_rate": "60/90/120/144/165Hz 智能切换，最高支持 165Hz（144/165Hz 只在部分场景生效）",
+    "panel": "OLED",
+    "form": "直屏",
+    "max_brightness_nits": {
+      "typical": 800,
+      "hdr": 1800
+    },
+    "hdr_formats": [
+      "HDR10+"
+    ]
+  },
+  "battery": {
+    "capacity_mah": 8600,
+    "charging_watt": 120,
+    "wireless_charging_watt": 0
+  },
+  "camera": [
+    {
+      "type": "主摄",
+      "sensor": "未公开",
+      "resolution_mp": 50,
+      "aperture": "f/1.8",
+      "focal_length_mm": 23,
+      "image_stabilization": [
+        "光学防抖"
+      ]
+    },
+    {
+      "type": "超广角",
+      "sensor": "未公开",
+      "resolution_mp": 8,
+      "aperture": "f/2.2",
+      "focal_length_mm": 16,
+      "field_of_view_deg": 112
+    },
+    {
+      "type": "前置",
+      "sensor": "未公开",
+      "resolution_mp": 16,
+      "aperture": "f/2.4",
+      "focal_length_mm": 23
+    }
+  ],
+  "colors": [
+    {
+      "slug": "black",
+      "name": "王牌觉醒",
+      "hex": "#3d4048",
+      "is_default": true
+    },
+    {
+      "slug": "titanium",
+      "name": "金属风暴",
+      "hex": "#d4cfca",
+      "is_default": false
+    }
+  ],
+  "release_date": "2026-04"
+}

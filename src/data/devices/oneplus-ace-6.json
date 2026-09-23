@@ -87,5 +87,10 @@
       ]
     }
   ],
+  "colors": [
+    { "slug": "silver", "name": "快银", "hex": "#bec0c6", "is_default": true },
+    { "slug": "black", "name": "竞黑", "hex": "#171f28", "is_default": false },
+    { "slug": "white", "name": "闪白", "hex": "#e5e5e9", "is_default": false }
+  ],
   "release_date": "2025-10"
 }

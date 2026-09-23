@@ -1,0 +1,114 @@
+{
+  "name": "vivo X500",
+  "brand": "vivo",
+  "release_year": 2026,
+  "chipset": {
+    "chip": "天玑 9600M",
+    "ram": [
+      "12GB LPDDR5X Ultra"
+    ],
+    "rom": [
+      "256GB UFS 4.1",
+      "512GB UFS 4.1",
+      "1TB UFS 4.1"
+    ]
+  },
+  "body": {
+    "dimensions_mm": {
+      "height": 157.01,
+      "width": 74.49,
+      "depth": 8.15
+    },
+    "weight_g": 213,
+    "frame_material": null,
+    "back_material": null,
+    "front_material": null,
+    "water_resistance": null
+  },
+  "display": {
+    "size_inch": 6.59,
+    "resolution": "2750 x 1260",
+    "ppi": 459,
+    "refresh_rate": "30/60/90/120/144Hz",
+    "panel": "AMOLED",
+    "form": null,
+    "max_brightness_nits": null,
+    "hdr_formats": null
+  },
+  "battery": {
+    "capacity_mah": 7500,
+    "charging_watt": 90,
+    "wireless_charging_watt": 40
+  },
+  "camera": [
+    {
+      "type": "主摄",
+      "sensor": "未公开",
+      "resolution_mp": 50,
+      "aperture": "f/1.68",
+      "focal_length_mm": null,
+      "image_stabilization": [
+        "光学防抖",
+        "电子防抖"
+      ]
+    },
+    {
+      "type": "长焦",
+      "sensor": "未公开",
+      "resolution_mp": 64,
+      "aperture": "f/2.55",
+      "focal_length_mm": null,
+      "image_stabilization": [
+        "光学防抖",
+        "电子防抖"
+      ]
+    },
+    {
+      "type": "超广角",
+      "sensor": "未公开",
+      "resolution_mp": 50,
+      "aperture": "f/2.0",
+      "focal_length_mm": null,
+      "image_stabilization": [
+        "电子防抖"
+      ]
+    },
+    {
+      "type": "前置",
+      "sensor": "未公开",
+      "resolution_mp": 50,
+      "aperture": "f/2.0",
+      "focal_length_mm": null,
+      "image_stabilization": [
+        "电子防抖"
+      ]
+    }
+  ],
+  "colors": [
+    {
+      "slug": "qingtian",
+      "name": "晴天",
+      "hex": "#f7f7f7",
+      "is_default": true
+    },
+    {
+      "slug": "chenxi",
+      "name": "晨曦",
+      "hex": "#f6e9f1",
+      "is_default": false
+    },
+    {
+      "slug": "dadihuisheng",
+      "name": "大地回声",
+      "hex": "#afb5bb",
+      "is_default": false
+    },
+    {
+      "slug": "sheye",
+      "name": "摄夜",
+      "hex": "#414448",
+      "is_default": false
+    }
+  ],
+  "release_date": "2026-09"
+}

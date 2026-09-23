@@ -1,0 +1,121 @@
+{
+  "name": "vivo X200 Pro mini",
+  "brand": "vivo",
+  "release_year": 2024,
+  "chipset": {
+    "chip": "天玑 9400",
+    "ram": [
+      "12GB LPDDR5X",
+      "16GB LPDDR5X"
+    ],
+    "rom": [
+      "256GB UFS 4.0",
+      "512GB UFS 4.0",
+      "1TB UFS 4.0"
+    ]
+  },
+  "body": {
+    "dimensions_mm": {
+      "height": 150.83,
+      "width": 71.76,
+      "depth": 8.15
+    },
+    "weight_g": 187,
+    "frame_material": null,
+    "back_material": null,
+    "front_material": null,
+    "water_resistance": null
+  },
+  "display": {
+    "size_inch": 6.31,
+    "resolution": "2640 x 1216",
+    "ppi": 461,
+    "refresh_rate": "1~120Hz",
+    "panel": "AMOLED",
+    "form": null,
+    "max_brightness_nits": null,
+    "hdr_formats": null
+  },
+  "battery": {
+    "capacity_mah": 5700,
+    "charging_watt": 90,
+    "wireless_charging_watt": 30
+  },
+  "camera": [
+    {
+      "type": "主摄",
+      "sensor": "未公开",
+      "resolution_mp": 50,
+      "aperture": "f/1.57",
+      "focal_length_mm": null,
+      "image_stabilization": [
+        "光学防抖",
+        "电子防抖"
+      ]
+    },
+    {
+      "type": "长焦",
+      "sensor": "未公开",
+      "resolution_mp": 50,
+      "aperture": "f/2.57",
+      "focal_length_mm": null,
+      "image_stabilization": [
+        "光学防抖",
+        "电子防抖"
+      ]
+    },
+    {
+      "type": "超广角",
+      "sensor": "未公开",
+      "resolution_mp": 50,
+      "aperture": "f/2.0",
+      "focal_length_mm": null,
+      "image_stabilization": [
+        "电子防抖"
+      ]
+    },
+    {
+      "type": "前置",
+      "sensor": "未公开",
+      "resolution_mp": 32,
+      "aperture": "f/2.0",
+      "focal_length_mm": null,
+      "image_stabilization": [
+        "电子防抖"
+      ]
+    }
+  ],
+  "colors": [
+    {
+      "slug": "jianhei",
+      "name": "简黑",
+      "hex": "#000000",
+      "is_default": true
+    },
+    {
+      "slug": "zhibai",
+      "name": "直白",
+      "hex": "#f0f0f0",
+      "is_default": false
+    },
+    {
+      "slug": "weifen",
+      "name": "微粉",
+      "hex": "#f3e4e6",
+      "is_default": false
+    },
+    {
+      "slug": "taiqing",
+      "name": "钛青",
+      "hex": "#cfdbce",
+      "is_default": false
+    },
+    {
+      "slug": "danzi",
+      "name": "淡紫",
+      "hex": "#e5e0ec",
+      "is_default": false
+    }
+  ],
+  "release_date": "2024-10"
+}

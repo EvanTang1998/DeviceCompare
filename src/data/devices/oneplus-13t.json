@@ -1,0 +1,97 @@
+{
+  "name": "一加 13T",
+  "brand": "一加",
+  "release_year": 2025,
+  "chipset": {
+    "chip": "骁龙 8 至尊版",
+    "ram": [
+      "12GB LPDDR5X",
+      "16GB LPDDR5X"
+    ],
+    "rom": [
+      "256GB UFS 4.0",
+      "512GB UFS 4.0",
+      "1TB UFS 4.0"
+    ]
+  },
+  "body": {
+    "dimensions_mm": {
+      "height": 150.81,
+      "width": 71.7,
+      "depth": 8.15
+    },
+    "weight_g": 185,
+    "frame_material": "铝合金金属中框",
+    "back_material": "丝绸玻璃工艺",
+    "front_material": "OPPO 晶盾玻璃",
+    "water_resistance": "IP65"
+  },
+  "display": {
+    "size_inch": 6.32,
+    "resolution": "2640 x 1216",
+    "ppi": 460,
+    "refresh_rate": "1-120Hz 智能切换，最高支持 120Hz",
+    "panel": "OLED",
+    "form": "直屏",
+    "max_brightness_nits": {
+      "typical": 800,
+      "hdr": 1600
+    },
+    "hdr_formats": [
+      "HDR10+",
+      "杜比视界"
+    ]
+  },
+  "battery": {
+    "capacity_mah": 6260,
+    "charging_watt": 80,
+    "wireless_charging_watt": 0
+  },
+  "camera": [
+    {
+      "type": "主摄",
+      "sensor": "未公开",
+      "resolution_mp": 50,
+      "aperture": "f/1.8",
+      "focal_length_mm": 24,
+      "image_stabilization": [
+        "光学防抖"
+      ]
+    },
+    {
+      "type": "长焦",
+      "sensor": "未公开",
+      "resolution_mp": 50,
+      "aperture": "f/2.0",
+      "focal_length_mm": null
+    },
+    {
+      "type": "前置",
+      "sensor": "未公开",
+      "resolution_mp": 16,
+      "aperture": "f/2.4",
+      "focal_length_mm": 24
+    }
+  ],
+  "colors": [
+    {
+      "slug": "grey",
+      "name": "晨雾灰",
+      "hex": "#c3c6cd",
+      "is_default": true
+    },
+    {
+      "slug": "pink",
+      "name": "怦然粉",
+      "hex": "#f5e5e8",
+      "is_default": false
+    },
+    {
+      "slug": "black",
+      "name": "云墨黑",
+      "hex": "#5a5a5a",
+      "is_default": false
+    }
+  ],
+  "release_date": "2025-04"
+}

@@ -15,20 +15,30 @@ try {
   const { phones } = await vite.ssrLoadModule("/src/data.js");
   const html = renderToString(React.createElement(App));
 
+  // 首屏 4 列默认取「最新的 4 台」（App.jsx 里是 phones.slice(0, SLOT_COUNT)），
+  // 所以断言不能写死具体机型 —— 每加一批新机型都会假报警。这里跟着 phones 算出来。
+  // 另外不再断言具体机型的芯片/传感器型号：那是某几台的数据细节，不是「页面渲染正常」的证据，
+  // 机型一旦滑出首屏就会误报。芯片/传感器是否抓到了，由下面的数据完整性检查逐台覆盖。
+  const SLOT_COUNT = 4; // 与 App.jsx 的 SLOT_COUNT 保持一致
+
   const checks = [
     ["站点标题", html.includes("灵眸")],
-    ["iPhone 17 Pro", html.includes("iPhone 17 Pro")],
-    ["一加 Ace 6", html.includes("一加 Ace 6")],
-    ["芯片参数 A19 Pro", html.includes("A19 Pro")],
-    ["芯片参数 骁龙 8 至尊版", html.includes("骁龙 8 至尊版")],
-    ["传感器型号 IMX903", html.includes("IMX903")],
-    ["摄像头分组行", html.includes("摄像头 · 主摄")]
+    ...phones.slice(0, SLOT_COUNT).map((p) => [`首屏列：${p.name}`, html.includes(p.name)]),
+    ["分区标题 芯片组", html.includes("芯片组")],
+    ["分区标题 摄像头", html.includes("摄像头")]
   ];
 
-  // 数据完整性检查：每台机型都应有显示名、品牌、配对图片
+  // 数据完整性检查：逐台核对「能不能上对比表」的必填项，
+  // 抓到一半就落库（缺芯片/电池/摄像头/发布日期）这种问题靠这一组断言兜住
   for (const p of phones) {
+    const d = p.data;
     checks.push([`${p.name} 品牌已标注`, Boolean(p.brand) && p.brand !== "其他"]);
     checks.push([`${p.name} 图片已配对`, Boolean(p.image)]);
+    checks.push([`${p.name} 配色声明与配图齐全`, p.colors.length > 0 && p.colors.every((c) => c.image)]);
+    checks.push([`${p.name} 芯片已解析`, Boolean(d.chipset?.chip)]);
+    checks.push([`${p.name} 电池容量已解析`, d.battery?.capacity_mah != null]);
+    checks.push([`${p.name} 摄像头非空`, Array.isArray(d.camera) && d.camera.length > 0]);
+    checks.push([`${p.name} 发布日期已填`, Boolean(d.release_date)]);
   }
   console.log(`机型数：${phones.length}（${phones.map((p) => p.id).join(" / ")}）`);
 

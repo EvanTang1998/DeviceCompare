@@ -1,0 +1,114 @@
+{
+  "name": "vivo S30 Pro mini",
+  "brand": "vivo",
+  "release_year": 2025,
+  "chipset": {
+    "chip": "天玑9300+",
+    "ram": [
+      "12GB LPDDR5X",
+      "16GB LPDDR5X"
+    ],
+    "rom": [
+      "256GB UFS 3.1",
+      "512GB UFS 3.1"
+    ]
+  },
+  "body": {
+    "dimensions_mm": {
+      "height": 150.83,
+      "width": 71.76,
+      "depth": 7.99
+    },
+    "weight_g": 186,
+    "frame_material": null,
+    "back_material": null,
+    "front_material": null,
+    "water_resistance": null
+  },
+  "display": {
+    "size_inch": 6.31,
+    "resolution": "2640 x 1216",
+    "ppi": 461,
+    "refresh_rate": "最高支持120Hz",
+    "panel": "AMOLED",
+    "form": null,
+    "max_brightness_nits": null,
+    "hdr_formats": null
+  },
+  "battery": {
+    "capacity_mah": 6500,
+    "charging_watt": 90,
+    "wireless_charging_watt": 0
+  },
+  "camera": [
+    {
+      "type": "主摄",
+      "sensor": "未公开",
+      "resolution_mp": 50,
+      "aperture": "f/1.88",
+      "focal_length_mm": null,
+      "image_stabilization": [
+        "光学防抖",
+        "电子防抖"
+      ]
+    },
+    {
+      "type": "长焦",
+      "sensor": "未公开",
+      "resolution_mp": 50,
+      "aperture": "f/2.65",
+      "focal_length_mm": null,
+      "image_stabilization": [
+        "光学防抖",
+        "电子防抖"
+      ]
+    },
+    {
+      "type": "超广角",
+      "sensor": "未公开",
+      "resolution_mp": null,
+      "aperture": "f/2.2",
+      "focal_length_mm": null,
+      "image_stabilization": [
+        "电子防抖"
+      ]
+    },
+    {
+      "type": "前置",
+      "sensor": "未公开",
+      "resolution_mp": 50,
+      "aperture": "f/2.0",
+      "focal_length_mm": null,
+      "image_stabilization": [
+        "电子防抖"
+      ]
+    }
+  ],
+  "colors": [
+    {
+      "slug": "kekehei",
+      "name": "可可黑",
+      "hex": "#333336",
+      "is_default": true
+    },
+    {
+      "slug": "ningmenghuang",
+      "name": "柠檬黄",
+      "hex": "#f7e7d1",
+      "is_default": false
+    },
+    {
+      "slug": "boheqing",
+      "name": "薄荷青",
+      "hex": "#cce3ec",
+      "is_default": false
+    },
+    {
+      "slug": "kumeifen",
+      "name": "酷莓粉",
+      "hex": "#f6bfd7",
+      "is_default": false
+    }
+  ],
+  "release_date": "2025-05"
+}

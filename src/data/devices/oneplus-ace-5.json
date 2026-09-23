@@ -1,0 +1,101 @@
+{
+  "name": "一加 Ace 5",
+  "brand": "一加",
+  "release_year": 2024,
+  "chipset": {
+    "chip": "第三代骁龙 8",
+    "ram": [
+      "12GB LPDDR5X",
+      "16GB LPDDR5X"
+    ],
+    "rom": [
+      "256GB UFS 4.0",
+      "512GB UFS 4.0",
+      "1TB UFS 4.0"
+    ]
+  },
+  "body": {
+    "dimensions_mm": {
+      "height": 161.72,
+      "width": 75.77,
+      "depth": 8.02
+    },
+    "weight_g": 206,
+    "frame_material": null,
+    "back_material": "OPPO 晶盾玻璃",
+    "front_material": "OPPO 晶盾玻璃",
+    "water_resistance": "IP65"
+  },
+  "display": {
+    "size_inch": 6.78,
+    "resolution": "2780 x 1264",
+    "ppi": 450,
+    "refresh_rate": "1-120Hz智能切换，最高支持120Hz",
+    "panel": "OLED",
+    "form": "直屏",
+    "max_brightness_nits": {
+      "typical": 800,
+      "hdr": 1600
+    }
+  },
+  "battery": {
+    "capacity_mah": 6415,
+    "charging_watt": 80,
+    "wireless_charging_watt": 0
+  },
+  "camera": [
+    {
+      "type": "主摄",
+      "sensor": "未公开",
+      "resolution_mp": 50,
+      "aperture": "f/1.8",
+      "focal_length_mm": 24,
+      "image_stabilization": [
+        "光学防抖"
+      ]
+    },
+    {
+      "type": "超广角",
+      "sensor": "未公开",
+      "resolution_mp": 8,
+      "aperture": "f/2.2",
+      "focal_length_mm": 16,
+      "field_of_view_deg": 112
+    },
+    {
+      "type": "微距",
+      "sensor": "未公开",
+      "resolution_mp": 2,
+      "aperture": "f/2.4",
+      "focal_length_mm": 22
+    },
+    {
+      "type": "前置",
+      "sensor": "索尼 IMX480",
+      "resolution_mp": 16,
+      "aperture": "f/2.4",
+      "focal_length_mm": null
+    }
+  ],
+  "colors": [
+    {
+      "slug": "gold",
+      "name": "引力钛",
+      "hex": "#b6b0ad",
+      "is_default": true
+    },
+    {
+      "slug": "black",
+      "name": "全速黑",
+      "hex": "#35363a",
+      "is_default": false
+    },
+    {
+      "slug": "blue",
+      "name": "天青瓷-陶瓷特别版",
+      "hex": "#b8c3b5",
+      "is_default": false
+    }
+  ],
+  "release_date": "2024-12"
+}

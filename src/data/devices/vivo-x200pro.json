@@ -1,0 +1,115 @@
+{
+  "name": "vivo X200 Pro",
+  "brand": "vivo",
+  "release_year": 2024,
+  "chipset": {
+    "chip": "天玑 9400",
+    "ram": [
+      "12GB LPDDR5X",
+      "16GB LPDDR5X"
+    ],
+    "rom": [
+      "256GB UFS 4.0",
+      "512GB UFS 4.0",
+      "1TB UFS 4.0"
+    ]
+  },
+  "body": {
+    "dimensions_mm": {
+      "height": 162.36,
+      "width": 75.95,
+      "depth": 8.49
+    },
+    "weight_g": 228,
+    "frame_material": null,
+    "back_material": null,
+    "front_material": null,
+    "water_resistance": null
+  },
+  "display": {
+    "size_inch": 6.78,
+    "resolution": "2800 x 1260",
+    "ppi": 453,
+    "refresh_rate": "0.1~120Hz",
+    "panel": "AMOLED",
+    "form": null,
+    "max_brightness_nits": null,
+    "hdr_formats": null
+  },
+  "battery": {
+    "capacity_mah": 6000,
+    "charging_watt": 90,
+    "wireless_charging_watt": 30
+  },
+  "camera": [
+    {
+      "type": "主摄",
+      "sensor": "未公开",
+      "resolution_mp": 50,
+      "aperture": "f/1.57",
+      "focal_length_mm": null,
+      "image_stabilization": [
+        "光学防抖",
+        "电子防抖"
+      ]
+    },
+    {
+      "type": "长焦",
+      "sensor": "未公开",
+      "resolution_mp": 200,
+      "aperture": "f/2.67",
+      "focal_length_mm": null,
+      "image_stabilization": [
+        "光学防抖",
+        "电子防抖"
+      ]
+    },
+    {
+      "type": "超广角",
+      "sensor": "未公开",
+      "resolution_mp": 50,
+      "aperture": "f/2.0",
+      "focal_length_mm": null,
+      "image_stabilization": [
+        "电子防抖"
+      ]
+    },
+    {
+      "type": "前置",
+      "sensor": "未公开",
+      "resolution_mp": 32,
+      "aperture": "f/2.0",
+      "focal_length_mm": null,
+      "image_stabilization": [
+        "电子防抖"
+      ]
+    }
+  ],
+  "colors": [
+    {
+      "slug": "chenyehei",
+      "name": "辰夜黑",
+      "hex": "#000000",
+      "is_default": true
+    },
+    {
+      "slug": "baiyueguang",
+      "name": "白月光",
+      "hex": "#f7f7f7",
+      "is_default": false
+    },
+    {
+      "slug": "taise",
+      "name": "钛色",
+      "hex": "#bdb9b6",
+      "is_default": false
+    },
+    {
+      "slug": "baoshilan",
+      "name": "宝石蓝",
+      "hex": "#1f3382",
+      "is_default": false
+    }
+  ],
+  "release_date": "2024-10"
+}

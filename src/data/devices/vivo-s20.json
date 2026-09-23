@@ -1,0 +1,98 @@
+{
+  "name": "vivo S20",
+  "brand": "vivo",
+  "release_year": 2024,
+  "chipset": {
+    "chip": "第三代骁龙7",
+    "ram": [
+      "8GB LPDDR4X",
+      "12GB LPDDR4X",
+      "16GB LPDDR4X"
+    ],
+    "rom": [
+      "256GB UFS 2.2",
+      "512GB UFS 2.2"
+    ]
+  },
+  "body": {
+    "dimensions_mm": {
+      "height": 160.35,
+      "width": 74.18,
+      "depth": 7.19
+    },
+    "weight_g": 187,
+    "frame_material": null,
+    "back_material": null,
+    "front_material": null,
+    "water_resistance": null
+  },
+  "display": {
+    "size_inch": 6.67,
+    "resolution": "2800 x 1260",
+    "ppi": 460,
+    "refresh_rate": "最高支持120Hz",
+    "panel": "AMOLED",
+    "form": null,
+    "max_brightness_nits": null,
+    "hdr_formats": null
+  },
+  "battery": {
+    "capacity_mah": 6500,
+    "charging_watt": 90,
+    "wireless_charging_watt": 0
+  },
+  "camera": [
+    {
+      "type": "主摄",
+      "sensor": "未公开",
+      "resolution_mp": 50,
+      "aperture": "f/1.88",
+      "focal_length_mm": null,
+      "image_stabilization": [
+        "光学防抖",
+        "电子防抖"
+      ]
+    },
+    {
+      "type": "超广角",
+      "sensor": "未公开",
+      "resolution_mp": 8,
+      "aperture": "f/2.2",
+      "focal_length_mm": null,
+      "image_stabilization": [
+        "电子防抖"
+      ]
+    },
+    {
+      "type": "前置",
+      "sensor": "未公开",
+      "resolution_mp": 50,
+      "aperture": "f/2.0",
+      "focal_length_mm": null,
+      "image_stabilization": [
+        "电子防抖"
+      ]
+    }
+  ],
+  "colors": [
+    {
+      "slug": "songyanmo",
+      "name": "松烟墨",
+      "hex": "#7c7c7c",
+      "is_default": true
+    },
+    {
+      "slug": "yuloubai",
+      "name": "玉露白",
+      "hex": "#f7f7f7",
+      "is_default": false
+    },
+    {
+      "slug": "fengyujin",
+      "name": "凤羽金",
+      "hex": "#f7f3ea",
+      "is_default": false
+    }
+  ],
+  "release_date": "2024-11"
+}

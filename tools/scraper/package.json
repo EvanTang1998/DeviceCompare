@@ -3,13 +3,21 @@
   "private": true,
   "version": "0.1.0",
   "type": "module",
-  "description": "DeviceCompare 的数据采集工具。依赖完全独立于前端，不参与 vite 构建，也不会被根目录 npm ci 安装。",
+  "description": "DeviceCompare 的数据采集工具。按数据源分成目录：sources/apple（苹果官网，只抓图）、sources/oneplus（一加官网，参数+图片）。依赖完全独立于前端，不参与 vite 构建，也不会被根目录 npm ci 安装。",
   "scripts": {
     "images": "node cli.mjs images",
     "promote": "node cli.mjs promote",
     "list": "node cli.mjs list",
+    "oneplus": "node cli.mjs oneplus",
+    "vivo": "node cli.mjs vivo",
     "recon": "node cli.mjs recon",
-    "test": "node test/parse.test.mjs"
+    "recon:apple-page": "node sources/apple/recon/page.mjs",
+    "recon:apple-swatches": "node sources/apple/recon/swatches.mjs",
+    "recon:oneplus-dom": "node sources/oneplus/recon/dom.mjs",
+    "recon:oneplus-e2e": "node sources/oneplus/recon/e2e.cjs",
+    "recon:vivo-dump": "node sources/vivo/recon/dump.mjs",
+    "recon:vivo-e2e": "node sources/vivo/recon/e2e.cjs",
+    "test": "node sources/apple/test/parse.test.mjs"
   },
   "dependencies": {
     "playwright-core": "^1.56.0"
