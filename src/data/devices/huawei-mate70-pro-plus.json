@@ -1,0 +1,121 @@
+{
+  "name": "HUAWEI Mate 70 Pro+",
+  "brand": "华为",
+  "series": "Mate 系列",
+  "release_year": 2024,
+  "chipset": {
+    "chip": null,
+    "ram": [
+      "16GB"
+    ],
+    "rom": [
+      "512GB",
+      "1TB"
+    ]
+  },
+  "body": {
+    "dimensions_mm": {
+      "height": 164.6,
+      "width": 79.5,
+      "depth": 8.25
+    },
+    "weight_g": 226,
+    "frame_material": "高亮钛",
+    "back_material": null,
+    "front_material": null,
+    "water_resistance": "IP68/IP69"
+  },
+  "display": {
+    "size_inch": 6.9,
+    "resolution": "2832 x 1316",
+    "ppi": 453,
+    "refresh_rate": "1-120Hz",
+    "panel": "OLED",
+    "form": null,
+    "max_brightness_nits": null,
+    "hdr_formats": null
+  },
+  "display_secondary": null,
+  "battery": {
+    "capacity_mah": 5700,
+    "charging_watt": 100,
+    "wireless_charging_watt": 80
+  },
+  "camera": [
+    {
+      "type": "主摄",
+      "sensor": null,
+      "resolution_mp": 50,
+      "aperture": "f/1.4-4.0",
+      "focal_length_mm": 24,
+      "image_stabilization": [
+        "光学防抖"
+      ]
+    },
+    {
+      "type": "超广角",
+      "sensor": null,
+      "resolution_mp": 40,
+      "aperture": "f/2.2",
+      "focal_length_mm": 13,
+      "image_stabilization": null
+    },
+    {
+      "type": "长焦",
+      "sensor": null,
+      "resolution_mp": 48,
+      "aperture": "f/2.1",
+      "focal_length_mm": 92.5,
+      "image_stabilization": [
+        "光学防抖"
+      ]
+    },
+    {
+      "type": "前置",
+      "sensor": null,
+      "resolution_mp": 13,
+      "aperture": "f/2.4",
+      "focal_length_mm": null,
+      "image_stabilization": null
+    }
+  ],
+  "os": "HarmonyOS 4.3",
+  "biometric": {
+    "fingerprint": "侧边指纹",
+    "face_unlock": "支持"
+  },
+  "cellular": {
+    "sim": null,
+    "esim": null,
+    "bands": null,
+    "satellite": "天通卫星通信、北斗卫星消息"
+  },
+  "nfc": "支持读卡器模式，卡模拟模式（华为钱包支付，SIM 卡支付*，HCE 支付）",
+  "colors": [
+    {
+      "slug": "goldbrocade",
+      "name": "金丝银锦",
+      "hex": "#949392",
+      "is_default": true
+    },
+    {
+      "slug": "skycyan",
+      "name": "飞天青",
+      "hex": "#a7b9b0",
+      "is_default": false
+    },
+    {
+      "slug": "featherwhite",
+      "name": "羽衣白",
+      "hex": "#d6d6d6",
+      "is_default": false
+    },
+    {
+      "slug": "inkblack",
+      "name": "墨韵黑",
+      "hex": "#202122",
+      "is_default": false
+    }
+  ],
+  "release_date": "2024-11"
+}

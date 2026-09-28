@@ -2,23 +2,23 @@
 
 给 DeviceCompare 补机型数据用。**一个数据源一个目录**，各自独立、互不引用 —— 要加新品牌就在 `sources/` 下新开一个目录，坏一个不影响另一个。
 
-## 先读这段：三个数据源，三种玩法
+## 先读这段：六个数据源，六种玩法
 
-目前有三个源，玩法**完全不同**，命令和产物也不通用：
+目前有六个源，玩法**完全不同**，命令和产物也不通用：
 
-|  | 苹果 `sources/apple/` | 一加 `sources/oneplus/` | vivo `sources/vivo/` |
-|---|---|---|---|
-| 数据源 | apple.com.cn 的 iPhone 对比页 | oneplus.com/cn/&lt;slug&gt;/specs | vivo.com.cn/vivo/param/&lt;slug&gt; |
-| 采集方式 | Playwright 开真页面，**监听它自己发出的图片请求** | 直接 `fetch` 页面 HTML，解析内嵌的 `window.pageDsl` JSON | 直接 `fetch` 页面 HTML，解码内嵌的 `__NUXT_DATA__`（Nuxt/devalue） |
-| 拿到什么 | **只有图片** | **参数 JSON + 图片** | **参数 JSON + 图片** |
-| 流程形态 | 两阶段：先抓图落 `out/`，再 `promote` 入库 | 一步：直接写 `src/data/` | 一步：直接写 `src/data/` |
-| 参数 JSON | **手工维护**（工具不碰） | 自动生成 | 自动生成 |
-| 色值来源 | 图片取色 | 图片取色 | **官网直接给** `colorCode` |
-| 配色 slug | 官网图片文件名 | 官网图片文件名 | **拼音**（官网没有英文名） |
-| 需要 Chrome | 必须 | 仅旧模板页面需要（如 13） | **不需要** |
-| 需要 Python | 不需要 | 需要（Pillow，做图片归一化与取色） | 需要（Pillow，只做归一化） |
-| 命令 | `images` / `promote` / `list` | `oneplus` | `vivo` |
-| 输出目录 | `tools/scraper/out/`（gitignore） | 直接落 `src/data/`（入库） | 直接落 `src/data/`（入库） |
+|  | 苹果 `sources/apple/` | 一加 `sources/oneplus/` | vivo `sources/vivo/` | OPPO `sources/oppo/` | 小米 `sources/xiaomi/` | 华为 `sources/huawei/` |
+|---|---|---|---|---|---|---|
+| 数据源 | apple.com.cn 的 iPhone 对比页 | oneplus.com/cn/&lt;slug&gt;/specs | vivo.com.cn/vivo/param/&lt;slug&gt; | **参数**：oppo.com/cn specs 页；**图片**：opposhop.cn 商城接口 | **参数**：mi.com/prod/&lt;slug&gt;/specs；**图片**：api2.order.mi.com 商城接口 | consumer.huawei.com/cn/phones/&lt;slug&gt;/specs（**参数与分色图在同一页**） |
+| 采集方式 | Playwright 开真页面，**监听它自己发出的图片请求** | 直接 `fetch` 页面 HTML，解析内嵌的 `window.pageDsl` JSON | 直接 `fetch` 页面 HTML，解码内嵌的 `__NUXT_DATA__`（Nuxt/devalue） | 两处都直接 `fetch`：specs 页是纯 SSR HTML；商城走公开 JSON 接口 `cn/oapi/goods-detail/web/info/pc/sku` | **参数必须开浏览器渲染**（specs 页是 SPA 壳，静态 HTML 只有 SEO meta）；图片直接 `fetch` 商城接口 `product/view`（要带 `Referer: https://www.mi.com/`，否则 406） | 直接 `fetch` 页面 HTML（**纯 SSR，不需要浏览器**），解析手风琴分组；分色图 URL 同一页里就有 |
+| 拿到什么 | **只有图片** | **参数 JSON + 图片** | **参数 JSON + 图片** | **参数 JSON + 图片** | **参数 JSON + 图片**（每个配色一张正反双面图） | **参数 JSON + 图片**（每个配色一张规格图） |
+| 流程形态 | 两阶段：先抓图落 `out/`，再 `promote` 入库 | 一步：直接写 `src/data/` | 一步：直接写 `src/data/` | 一步：直接写 `src/data/`（原图备份在 `out/<run>/oppo-raw/`） | 一步：直接写 `src/data/`（原图备份在 `out/<run>/xiaomi-raw/`） | 一步：直接写 `src/data/` |
+| 参数 JSON | **手工维护**（工具不碰） | 自动生成 | 自动生成 | 自动生成 | 自动生成 | 自动生成 |
+| 色值来源 | 图片取色 | 图片取色 | **官网直接给** `colorCode` | **商城直接给** `colorValue`（渐变双值取第一个） | **图片取色**（商城不给色值；normalize.py 采样背板中值） | **图片取色**（官网不给色值；normalize.py 采样背板中值） |
+| 配色 slug | 官网图片文件名 | 官网图片文件名 | **拼音**（官网没有英文名） | **人工映射表**：`colors.mjs` 的 `COLOR_SLUGS`，中文色名 → 英文（`漫步云端` → `cloudwalk`） | **人工映射表**：`colors.mjs` 的 `COLOR_SLUGS`，中文色名 → 英文（`冷烟紫` → `coolsmokepurple`） | **人工映射表**：`colors.mjs` 的 `COLOR_SLUGS`，中文色名 → 英文（`云杉绿` → `sprucegreen`） |
+| 需要 Chrome | 必须 | 仅旧模板页面需要（如 13） | **不需要** | **不需要** | **必须**（参数页渲染） | **不需要** |
+| 需要 Python | 不需要 | 需要（Pillow，做图片归一化与取色） | 需要（Pillow，只做归一化） | 需要（Pillow，只做归一化） | 需要（Pillow，归一化 + 取色） | 需要（Pillow，归一化 + 取色） |
+| 命令 | `images` / `promote` / `list` | `oneplus` | `vivo` | `oppo` | `xiaomi` | `huawei` |
+| 输出目录 | `tools/scraper/out/`（gitignore） | 直接落 `src/data/`（入库） | 直接落 `src/data/`（入库） | 直接落 `src/data/`（入库） | 直接落 `src/data/`（入库） | 直接落 `src/data/`（入库） |
 
 **为什么不合成一个脚本**：采集机制、产物契约、流程形态三样都不一样，硬合只会到处 `if (brand === ...)`。真正共用的只有「启动系统 Chrome」这一小段，放在 `lib/browser.mjs`，两边都调它。
 
@@ -28,7 +28,7 @@
 
 - **Node**：本机 `/opt/homebrew/bin/node`（v26）
 - **Google Chrome**：工具复用系统已装的 Chrome，不下载 Playwright 自带的 Chromium（那个包约 300MB，国内网络经常超时）。也可以用 Edge。
-- **Python + Pillow**：**一加和 vivo 需要**。取色脚本优先用 `$PYTHON` 环境变量指定的解释器，其次找 `~/.workbuddy/binaries/python/envs/default/bin/python3`，最后退回 `python3`。手动装：`pip install pillow`
+- **Python + Pillow**：**一加、vivo、OPPO、小米、华为需要**（图片归一化；一加、小米、华为还用它取色）。脚本优先用 `$PYTHON` 环境变量指定的解释器，其次找 `~/.workbuddy/binaries/python/envs/default/bin/python3`，最后退回 `python3`。手动装：`pip install pillow`
 - 首次使用装一次依赖：
 
 ```bash
@@ -71,9 +71,57 @@ tools/scraper/
 │       └── recon/
 │           ├── dump.mjs         侦察：把解码后的参数结构与配色打出来
 │           └── e2e.cjs          验收：vivo 机型逐台核对图-机型配对与色环切换
+│   └── oppo/                    数据源：OPPO 官网 specs（参数）+ 官方商城接口（每色一张正背组合图）
+│       ├── specs.mjs            主流程：解析 specs 页 → 生成 JSON（含 os/biometric/cellular/nfc/副屏）
+│       │                        另导出可复用的解析件：parseSections / findVal / CAM_RE / toMegapixels / classifyLens
+│       ├── shop.mjs             商城接口：入口 SKU → 分色 SKU → 逐色下载第 1 张（正背组合图）+ 原图备份（含 hasShopEntry）
+│       ├── colors.mjs           ★ 配色 slug 人工映射表 COLOR_SLUGS（38 台机型的全部中文色名 → 英文）
+│       ├── normalize.py         图片归一化（透明底铺白 + 裁剪缩放，不做任何切分）
+│       └── recon/
+│           ├── dump.cjs         侦察：specs 页分组结构与全部字段（最原始的那个，一直可用）
+│           ├── camera-dump.mjs  巡检：打印各机型「后置/前置」原文 + 归类结果，查镜头漏抓或分错
+│           ├── color-audit.mjs  巡检：参数页配色 vs 商城配色是否对齐（色名、slug、顺序）
+│           ├── specs-probe.mjs  巡检：specs 页可用性（分组数、条目数、配色）
+│           ├── shop-map.mjs     侦察：官网机型页 → 商城入口 SKU 的映射扫描
+│           ├── shop-search.mjs  侦察：商城搜索（找新机型的入口 SKU id）
+│           ├── shop-catalog.mjs 侦察：商城分类接口返回了什么
+│           ├── shop-nav.mjs     侦察：商城导航/分类页可达性
+│           └── shop-gallery.mjs 侦察：商城颜色切换器、图集与接口行为
+│   └── xiaomi/                  数据源：小米官网 specs（参数，浏览器渲染）+ 官方商城接口（分色图）
+│       ├── specs.mjs            主流程：浏览器渲染 specs 页 → 标题切分解析 → 生成 JSON → 图片入库
+│       │                        另导出可复用的解析件：parseSections / classifyLens / buildCameras
+│       ├── shop.mjs             商城接口：product/view（带 viewCache 记忆化）→ 配色 img_url 下载 + 原图备份
+│       ├── colors.mjs           ★ 配色 slug 人工映射表 COLOR_SLUGS（小米全部中文色名 → 英文）
+│       ├── normalize.py         图片归一化（透明底铺白 + 裁剪缩放）+ 背板取色回填 hex
+│       └── recon/               侦察脚本（specs 页两套模板、商城接口、product_id 反查等 11 个）
+│   └── huawei/                  数据源：华为官网 specs（参数 + 分色图同一页，纯 SSR）
+│       ├── specs.mjs            主流程：fetch specs 页 → 手风琴分组解析 → 生成 JSON → 图片入库
+│       │                        另导出可复用的解析件：parseSections / parseColors
+│       ├── legacy.mjs           ★ Mate 60 系列：官网参数页已下架 → 官方存档转录 + CDN 现存图（人工维护）
+│       ├── front.mjs            ★ vmall 正背组合图（正面图唯一官方源）：搜索 XHR 匹配商品 → CDN 原图 → 裸名图
+│       ├── colors.mjs           ★ 配色 slug 人工映射表 COLOR_SLUGS（Mate 60/70/80 中文色名 → 英文）
+│       ├── normalize.py         图片归一化（透明底铺白 + 裁剪缩放）+ 背板取色回填 hex（--bare 走组合图分支）
+│       └── recon/
+│           ├── vmall-probe.mjs  侦察：vmall 商城页可达性（curl，结论：有 WAF 反爬，参数页已含所需一切）
+│           ├── vmall-browser.mjs 侦察：用真浏览器开 vmall（能过 WAF，但商城没有 Mate 60 系列商品）
+│           ├── vmall-search-xhr.mjs / vmall-next-data.mjs  侦察：搜索接口 XHR / 详情页 NEXT_DATA（front.mjs 的链路依据）
+│           ├── front-image-probe1..4.mjs  侦察：官网正面图排查（中文站 specs/产品页、英文站 specs，均无）
+│           └── vmall-all.mjs    侦察：批量试 vmall 各机型详情接口（不采用）
 ├── recon/
-│   └── picker.cjs               验收：机型选择弹框的「最近发布」浏览态与系列分组（跨数据源）
-├── out/                         苹果抓图产物（gitignore）
+│   ├── home-detail.mjs          验收：首页（搜索/热门网格铺满 HOT_ROWS 行/hover 才出现的操作/已添加态整卡换底 + 按钮常显/跟随光标的「查看详情」提示）、参数浮窗（不铺满/从点击处放大/三种关闭）与暂存区浮标（1.5 倍尺寸/可清空/对比页「返回首页」退出）
+│   ├── picker.cjs               验收：机型选择弹框的「全部」浏览态、品牌→系列分组与全局搜索（跨数据源）
+│   ├── sticky-bar.cjs           验收：置顶机型栏点击应弹出机型选择弹框（非就地下拉）
+│   ├── image-fronts.mjs         验收：图片机位（华为轮播含正背组合图、OPPO 单图）与弹框系列折叠
+│   ├── oppo-page.mjs            验收：OPPO 在对比页的配色切换（每色单图，无轮播）、副屏与系统连接分区
+│   ├── ui-fixes.mjs             验收：移动端横滑、占位卡等 UI 修正
+│   └── url-state.mjs            验收：地址栏同步（后退/前进、分享链接直接打开、刷新保持、脏链接清洗、关浮窗走 back 而非 push）
+│
+│   ※ 除 url-state.mjs 外，其余脚本默认停在首页，开头都会先「点卡片加满 4 台 → 进对比页」再跑断言；
+│     对比表不再预填机型 —— 机型由用户从首页加进来（暂存区那份状态就是对比表的内容）。
+│   ※ url-state.mjs 必须用真浏览器：ssr-check 只在 Node 里渲染一次树，碰不到 history / popstate，
+│     而"后退键能不能用"恰恰是这个功能的核心。判断"关浮窗是退回还是新压一条"不能看 history.length
+│     （后退不会让它变短，只是把游标往回挪），要看"前进键还能不能重新打开它"。
+├── out/                         苹果抓图产物 + OPPO 原图备份 oppo-raw/（gitignore）
 └── recon-out/                   侦察产物（gitignore）
 ```
 
@@ -265,7 +313,7 @@ const CURATED = {
 node cli.mjs oneplus --models <机型> --dry-run
 ```
 
-已知 `oneplus-ace-6.json` 是人工增强过的（`camera[].sensor` = 索尼 IMX906、`sensor_size_inch`、`pixel_size_um`），而 `sensor_size_inch` / `pixel_size_um` **脚本不产出**。所以要重抓它之前，先把这两类字段抄回去。判断方法：`sensor` 不是「未公开」、或出现 `sensor_size_inch`，就是人工补的。
+已知 `oneplus-ace-6.json` 是人工增强过的（`camera[].sensor` = 索尼 IMX906、`sensor_size_inch`、`pixel_size_um`），而 `sensor_size_inch` / `pixel_size_um` **脚本不产出**。所以要重抓它之前，先把这两类字段抄回去。判断方法：`sensor` 不为 `null`、或出现 `sensor_size_inch`，就是人工补的。
 
 ## 实现要点（改代码前先读）
 
@@ -280,7 +328,7 @@ node cli.mjs oneplus --models <机型> --dry-run
 | 配色对齐 | 两套机制：新模板靠「机身颜色」「产品图片」「色卡」三个列表**按下标**对应；旧模板官方 `#specs-color` 里每张产品图和色名本来就成对放在同一个滑块节点里，直接配对更可靠 |
 | 色名分隔符各页不同 | `机身颜色` 用 `|` / `｜` / `、` 混着写（Ace 5 至尊版用 `、`），按 `/[|｜、,，/]+/` 统一拆 |
 | 峰值亮度两处写法 | 新模板在一条里写「默认最高亮度：800…激发最高亮度：1800」；旧模板把激发亮度**单列成键**「全局激发最高亮度」，所以 `parseBrightness(s, hdrSource)` 收第二个来源参数 |
-| 传感器型号 | 官网多数机型不写，写了就是有效信息（Ace 5 前置写「SONY IMX480」）。只认 `SONY/索尼 + IMX 编号`这种无歧义写法，其余回落「未公开」——**别放宽正则**，会把规格描述里的数字抓成型号 |
+| 传感器型号 | 官网多数机型不写，写了就是有效信息（Ace 5 前置写「SONY IMX480」）。只认 `SONY/索尼 + IMX 编号`这种无歧义写法，其余回落 `null`（页面按空处理，不显示占位文案）——**别放宽正则**，会把规格描述里的数字抓成型号 |
 | 配色 slug 别名 | slug 从产品图文件名末尾的英文词提取，个别机型文件名是简称（Ace 6 至尊版的「金属风暴」图名是 `OnePlus_Roadster_tai_...`，`tai` 是「钛」的拼音），`COLOR_SLUG_ALIAS` 把它折成 `titanium`，跟其它机型用词一致 |
 | 黑底图 | 官网产品图是 1080×1080 纯黑底，`normalize.py` 从边缘洪泛转白再裁剪缩放 |
 | hex 取色 | 优先「色卡」160×160 图中心中值；无色卡（13）取背板干净区中值 |
@@ -308,19 +356,28 @@ node sources/oneplus/recon/e2e.cjs "一加 Ace 6T" "一加 Turbo 6V"   # 只查�
 
 ## 验收：机型选择弹框的最近发布与分组
 
-JSON 顶层的 `series` 字段（如「iPhone 17 系列」「X 系列」「Turbo 系列」）驱动弹框分组。弹框默认 chip 是「最近发布」：按品牌分组，每组只铺**最新的 4 台** + 组尾「查看更多」卡片（点击进入该品牌完整列表）。不能按「最新系列」取精选——vivo 全部 X 机型共用一个 series，会把 18 台全放进来。选了品牌或开始搜索后退回完整的「品牌 → 系列」分组列表。这个弹框是点击后才挂载的，`ssr-check` 的整树渲染碰不到，所以要跑浏览器校验（前置同上）：
+JSON 顶层的 `series` 字段（如「iPhone 17 系列」「X 系列」「Turbo 系列」）驱动弹框分组。弹框默认 chip 是「最近发布」：按品牌分组，每组只铺**最新的 4 台** + 组尾「查看更多」卡片（点击进入该品牌完整列表）。不能按「最新系列」取精选——vivo 全部 X 机型共用一个 series，会把 18 台全放进来。选了品牌或开始搜索后退回完整的「品牌 → 系列」分组列表。
+
+**系列在组内按「主流旗舰高端 → 低端」排**（用户要求），依据是 `src/data.js` 导出的 `SERIES_ORDER` 产品线定位表：
+OPPO `Find X → Find N → Reno → K → A`、一加 `数字 → Ace → Turbo`、vivo `X → S → Y`。
+没配表的品牌（苹果）沿用「发布时间从近到远」—— 全系同属数字旗舰线，新一代即更高端，天然正确，
+所以**新加系列要不要进表**看它的定位：属于独立产品线的（如以后加「Find N 系列」之外的新折叠线）就要补表。
+没配到表里的系列会沉到该品牌末尾，内部仍按发布时间从近到远。
+
+这个弹框是点击后才挂载的，`ssr-check` 的整树渲染碰不到，所以要跑浏览器校验（前置同上）：
 
 ```bash
 node recon/picker.cjs
 ```
 
-它做三件事，期望值直接从浏览器里的 `src/data.js` 取，不另维护一份：
+它做四件事，期望值直接从浏览器里的 `src/data.js` 取（含 `SERIES_ORDER`），不另维护一份：
 
 | 检查项 | 抓的是什么问题 |
 |---|---|
 | 浏览态 = 品牌顺序 × 每品牌最新 4 台，组尾「查看更多」提示的剩余台数正确 | 精选口径算错、跳转卡缺失或提示错 |
 | 逐品牌进完整列表，「全量」每张卡按 DOM 顺序与数据比对品牌/系列/新角标，系列标题无缺无重 | **分组错位**（机型掉进错误系列、系列标题漏渲染） |
-| 搜索结果仍带分组 | 分组逻辑与搜索叠加时崩掉 |
+| 每个品牌的系列标题顺序 = `SERIES_ORDER` 的定位优先级 | **系列排错**（新系列没进表、表顺序写反） |
+| 搜索结果仍带分组、且系列顺序不变（用「oppo」这种跨 5 个系列的词实测） | 分组逻辑与搜索叠加时崩掉 |
 
 截图落在 `/tmp/picker-groups.png`。
 
@@ -394,12 +451,434 @@ vivo 的浏览器端到端验收与一加同思路：`node sources/vivo/recon/e2
 
 ---
 
-# 四、改了选择器怎么办（侦察脚本）
+# 四、OPPO：官网 specs（参数）+ 官方商城接口（分色图）
 
-苹果、一加都会改版。选择器失效时先用侦察脚本看页面现在长什么样，再回去改对应的 `sources/<源>/` 主流程：
+## 为什么要两个网站
+
+oppo.com 参数页的「产品图」是一张**多色横排拼图**（`productColorImg`），没有分色独立图——不要试图切图。
+分色产品图在官方商城 opposhop.cn，且有公开 JSON 接口（浏览器里切配色时抓包可见）：
+
+```
+GET https://www.opposhop.cn/cn/oapi/goods-detail/web/info/pc/sku?skuId=<id>
+```
+
+- `attributesColorParams[]`：配色名 + 官方色值（`colorValue`，渐变双值逗号分隔，取第一个入库）+ 色块图
+- `attributes.skuItems[]`：每个配色的任一 SKU id
+- 对每个配色再调一次接口：`galleryResource[]` 里 `type=img` 且 `.png` 的条目即该配色的产品图。
+  **只取第 1 张** —— 它是「正面+背面」组合图；第 2 张起全是侧面/斜侧机位，不入库
+  （2026-09-24 定的口径：对比表里不出现侧面图，见 recon/image-fronts.mjs 验收）。
+
+## 用法
 
 ```bash
-node cli.mjs recon          # 列出所有侦察脚本
+cd tools/scraper
+
+# 先预览（强烈建议首次这么做）
+node cli.mjs oppo --models oppo-find-x10,oppo-find-x10-pro-max,oppo-find-n6 --dry-run
+
+# 确认无误后正式入库
+node cli.mjs oppo --models oppo-find-x10,oppo-find-x10-pro-max,oppo-find-n6
+
+# 只处理参数，跳过商城图片（改完解析逻辑后自查用，省掉重新下图）
+node cli.mjs oppo --models oppo-find-x10 --no-images
+
+# 一次跑完全部机型（ids 从 META 取）
+node cli.mjs oppo --models "$(grep -oE '^  \"oppo-[a-z0-9-]+\":' sources/oppo/specs.mjs | sed 's/[\": ]//g' | sort -u | paste -sd, -)" --no-images
+```
+
+`--models` 填**本项目机型 id**（不是官网 slug），因为官网 URL 段、系列、发布日期都记在
+`sources/oppo/specs.mjs` 的 `SPECS_URLS` / `META` 里。
+
+## 加新机型（3 处，都必须补）
+
+| 文件 | 补什么 | 漏了会怎样 |
+|---|---|---|
+| `specs.mjs` → `SPECS_URLS` | 官网 specs 页地址 | 报「未知 OPPO 机型」 |
+| `specs.mjs` → `META` | `name` / `series` / `release_date` | 同上（`release_year` 由 `release_date` 推） |
+| `colors.mjs` → `COLOR_SLUGS` | 每个中文色名 → 英文 slug | 该机型若**没有**商城源，会在抓取时直接抛错点名缺哪个色名 |
+| `shop.mjs` → `DEVICES` | 入口 `skuId`（只要一个 SKU） | 不补则参数照常入库、**图片留空**，不报错 |
+
+入口 `skuId` 怎么找：官网机型页购买区会挂商城商品页链接（形如
+`opposhop.cn/cn/web/products/<id>.html`），拿 `<id>` 调一次
+`https://www.opposhop.cn/cn/oapi/goods-detail/web/info/pc/sku?skuId=<id>` 能返回
+`attributesColorParams` 就说明可用。**商城没有可用的搜索/列表/分类直达页**（都落 404 兜底 SPA），
+所以只能走官网机型页 → 商城商品页这条路，扫描脚本见 `recon/shop-map.mjs`。
+
+## 无商城源的机型：参数页多色图兜底
+
+不是所有机型都有分色图，当前 38 台里 **26 台走商城分色图、12 台走参数页多色图兜底**（参数照常入库）。
+兜底机型取 specs 页 `pageDsl` 里的 `productColorImg`（官方多色横排拼图）归一化为一张整机裸名图
+`<id>.jpg`（画布跟随比例、最大 760×570，与小米 12/11/10 系列 `LEGACY_MODELS` 同口径），
+`colors[]` 仍按参数页色名声明、hex 为 null，前端主图用裸名图、单色切换无图。
+
+| 原因 | 机型 | 图片来源（均为 oppo.com 官方图） |
+|---|---|---|
+| 商城已下架（接口返回 `code 1000043`、0 个配色） | `oppo-reno16`、`oppo-find-x7-ultra` | specs 页 `productColorImg`（x7-ultra 的值带尾随 `?`，正则需容忍） |
+| 官网机型页没挂商城购买链接（老机型 / 低端机） | `oppo-find-x8`、`oppo-find-x8s`、`oppo-find-x7`、`oppo-find-x6`、`oppo-find-x6-pro`、`oppo-a6`、`oppo-a6m`、`oppo-a6t`、`oppo-a6x`、`oppo-reno15c` | 同上；A6m/A6t/A6x 三兄弟共用一张 A6x 家族图（官网本身如此） |
+
+实现：`scrapeOppoSpecs` 把已抓的参数页 HTML 以 `specsHtml` Map 传给 `scrapeOppoShop`，
+后者对无商城源机型抽 `productColorImg` 下载、以 `bare: true` 交给 `normalize.py` 的裸名图分支。
+**不要逐色切拼图**——机位互相遮挡，切出来不是完整产品图。
+
+这类机型的 `colors[].hex` 为 `null`，前端渲染主图正常、单色切换为占位，不会报错。
+**配色也照样入库**——取自 specs 页 `color-list-name` 的顺序，色名是官网原文。
+
+另外有「部分配色不可购」的情况：`reno15`（星星粉）、`reno15-pro`（蜜糖金）参数页有、商城已下架，
+抓取时会打印 `⚠ …在商城已不可购，未入库`，其余配色正常。
+
+## 产出
+
+- `src/data/devices/oppo-<name>.json`：项目 schema + 扩展字段 `os` / `biometric` / `cellular` / `nfc` /
+  `display_secondary`（折叠屏副屏）/ `body.dimensions_folded_mm`（折叠态尺寸），直板机这些为 null
+- `src/data/images/oppo-<name>.<配色slug>.jpg`：612×760 白底，每色一张（正面+背面组合图）
+- 原图备份：`out/<run>/oppo-raw/`（官网 1440 透明 PNG，git 不跟踪）
+
+## 实现要点（改代码前先读）
+
+- specs 页解析**只信中文标签和值特征**：官网把 label 拼成 `data-labeKey`（少了个 b），且英文 key
+  与中文标签/内容存在错位（同一含义两台机器用不同 key），不能当解析依据
+- 配色默认值：specs 页 `color-list-name` 的顺序 = 官网展示顺序，第一个为默认色；
+  注意它与商城接口 `attributesColorParams` 的顺序**恰好相反**（代码里按下标排序对齐，别混用）
+- 图片归一化（`normalize.py`）不做任何切分：商城给的本就是独立分色图，裁紧 → 铺白 → 缩放即可
+- 直板机的「类型/亮度」条目是多行文本，折叠机的值带 `主屏：/副屏：` 前缀且标签独立成行（见 `buildDisplay`）
+
+### 相机条目：三代写法都要兼容
+
+官网的相机写法**隔一两代就换一套**，`buildCameras` 里的正则与归类规则必须同时吃下这三种：
+
+| 代际 | 例子 | 坑 |
+|---|---|---|
+| 新机型（X9/X10/Reno15+） | `5000万像素广角摄像头：f/1.6` | — |
+| 2023-2024 老机型（X6/X7/X8） | `5000万像素1英寸大底广角：ƒ/1.8` | 光圈符号是 `ƒ`（U+0192）**不是** `f`；描述里**没有「摄像头」三个字** |
+| 部分机型用逗号 | `3200万像素摄像头，f/2.4` | 分隔符是 `，` 不是 `：` |
+
+对应的两条硬规则（**别删注释里的理由，容易改错**）：
+
+- **像素单位要换算**：`分辨率` 统一存**百万像素**数值（与既有 71 台一致）。
+  `5000万` → `50`（×0.01）、`2亿` → `200`（×100）、无单位 → 原值。写成 `万 → ×1` 会让 X6 变成 5000MP
+- **电池容量取「典型值」那一行再取等效值**：老机型把**额定**写在**典型**前面
+  （`额定容量：2350mAh（等效于4700mAh）\n典型容量：2400mAh（等效于4800mAh）`），
+  直接 `firstNum()` 会拿到 2350 而不是 4800；折叠机写 `2775+3225 mAh（典型值），等效 6000 mAh`
+
+### 镜头类型：按「关键词优先、焦距兜底」归一
+
+官网对同类镜头有很多营销叫法（`哈苏人像`、`望远长焦`、`超光感潜望长焦`、`丹霞原彩`…），
+统一归到数据集既有取值：**主摄 / 超广角 / 长焦 / 微距 / 景深 / 色彩还原 / 前置**，
+规则在 `classifyLens()`。判定顺序不能乱：
+
+| 顺序 | 规则 | 为什么必须在这一位 |
+|---|---|---|
+| 1 | 超广角 | 必须先判，否则被下面的「广角」吃掉 |
+| 2 | 原彩 / 色彩还原 / 丹霞 → 色彩还原 | 只 X8 Ultra 有（200 万丹霞原彩镜头，做色彩校准） |
+| 3 | 潜望 / 长焦 / 望远 → 长焦 | 要排在「微距」前：`特写潜望长焦` 同时含 特写 与 长焦，实为长焦 |
+| 4 | 黑白 / 景深 / 虚化 → 景深 | A/K 系列的 200 万「黑白摄像头」实为虚化辅助，与 vivo Y500 口径一致 |
+| 5 | 人像 → 看焦距（≥50mm 为长焦） | `哈苏人像摄像头` 是 X8 / X8 Pro 的 73mm 潜望，不是主摄 |
+| 6 | 广角 → 主摄 | — |
+
+改完归类规则后**必须跑一次巡检**，它会把「解析到的镜头数」和「官网原文里『XX像素』出现次数」对比：
+
+```bash
+cd sources/oppo
+node recon/camera-dump.mjs            # 只列对不上的机型，正常应输出「0 台」
+node recon/camera-dump.mjs --all      # 打印全部原文 + 归类结果
+node recon/camera-dump.mjs oppo-find-x8-ultra   # 只看指定机型
+```
+
+同时它会把「同一台机出现多个主摄」标成可疑——正常机型应恰好 **1 个主摄 + 1 个前置**。
+
+## 验收
+
+```bash
+cd tools/scraper
+
+# 1. 抓完先对账（不需要 dev server，纯 fetch 官网）
+node sources/oppo/recon/camera-dump.mjs   # 应为「镜头数对不上的机型：0 台」
+node sources/oppo/recon/color-audit.mjs   # 参数页配色与商城配色应对得上
+
+# 2. 浏览器端验收（前置：dev server 已起在 5173）
+node recon/picker.cjs        # 弹框分组（含 OPPO 品牌与系列）
+node recon/sticky-bar.cjs    # 置顶机型栏：点按钮应弹出选择弹框（不是就地下拉）、选机后列同步
+node recon/oppo-page.mjs     # 对比页：轮播切换、副屏/系统与连接分区、折叠态尺寸行
+
+# 3. 全量数据完整性 + 构建
+cd ../.. && PATH="/opt/homebrew/bin:$PATH" node scripts/ssr-check.mjs
+PATH="/opt/homebrew/bin:$PATH" npm run build
+```
+
+`ssr-check.mjs` 会逐台核对品牌、配图、配色声明与配图是否齐全、芯片、电池容量、摄像头、发布日期。
+「整机留空」的机型（参数入库、图片留空）是**合法状态**，会单独列出来一行，不会算 FAIL；
+要抓的异常是「部分配色有图、部分没图」—— 那说明配色 slug 和图片文件名对错了位。
+当前基线：**164 台机型 / 1319 项 PASS / 0 FAIL（其中小米 15 台、OPPO 12 台为「裸名图」机型——
+单色维度无图但整机有官方多色图，同算合法；华为 Mate 60 / 70 系列 + Pura 80 系列 13 台的芯片为 `null`，
+是官网口径就不公布 SoC，ssr-check 有白名单）**。**输出里没有 `FAIL` 才算加成功。**
+
+---
+
+# 五、小米：官网 specs（参数）+ 官方商城接口（分色图）
+
+## 为什么要浏览器 + 商城接口
+
+- **参数**：`mi.com/prod/<slug>/specs` 是 SPA 壳，静态 HTML 只有 SEO meta，参数必须开浏览器渲染后取参数区（`[class*="_root_div"]`）的纯文本再切分。7 台实测存在**两套模板**（一小节一块 / 标题块+值块相邻），好在都能用「已知小节标题精确匹配全文切分」统一处理（`parseSections`）。
+- **图片**：商城接口 `https://api2.order.mi.com/product/view?product_id=<id>&version=2`（**必须带 `Referer: https://www.mi.com/`，否则 406**）。`goods_list[]` 里每个 版本×配色 一条，`goods_info.img_url` 是**该配色的渲染图**（800×800 透明 PNG，正反双面构图）。`imgs[]` / `gallery_v3` 会随版本变或是全局共享，**都不是分色图，不能用**。
+
+## 用法
+
+```bash
+cd tools/scraper
+
+# 先预览（强烈建议首次这么做；--no-images 省掉重新下图）
+node cli.mjs xiaomi --models xiaomi-17,xiaomi-17-ultra --dry-run --no-images
+
+# 确认无误后正式入库
+node cli.mjs xiaomi --models xiaomi-17,xiaomi-17-pro,xiaomi-17-pro-max,xiaomi-17-ultra,xiaomi-17-max,xiaomi-17t,xiaomi-17t-pro
+```
+
+`--models` 填**本项目机型 id**（`xiaomi-<slug>`），slug 与 product_id 都记在 `sources/xiaomi/specs.mjs` 的 `SPECS_URLS` 与 `shop.mjs` 的 `PRODUCT_IDS` 里。
+
+product_id 怎么找：商城搜索接口直接 curl 会被拒（406「请求来源不合法」），用浏览器开真搜索页抓 DOM 卡片链接 `/shop/buy?product_id=XXX`（侦察脚本 `recon/search-cards.mjs`）。
+
+## 加新机型（3 处，都必须补）
+
+| 文件 | 补什么 | 漏了会怎样 |
+|---|---|---|
+| `specs.mjs` → `SPECS_URLS` | 官网 specs 页地址 | 报「未知小米机型」 |
+| `specs.mjs` → `META` | `name` / `series` / `release_date`（参数页没有发布时间，发布会公开信息人工核对） | 同上 |
+| `colors.mjs` → `COLOR_SLUGS` | 每个中文色名 → 英文 slug | 抓图时抛错点名缺哪个色名 |
+| `shop.mjs` → `PRODUCT_IDS` | 商城 product_id | 参数照常入库、**图片留空**，不报错 |
+| `shop.mjs` → `LEGACY_MODELS` | **12/11/10 系列这类商城接口已下线的老机型**：一张多色全家福图 URL + 色名数组（替代 `PRODUCT_IDS`） | 参数照常入库、**图片留空**，不报错 |
+
+新色名先跑 `node sources/xiaomi/recon/shop-api.mjs <product_id>` 看商城返回的配色列表，确认色名后补映射。
+
+## 参数页为空的机型：OVERRIDES 兜底
+
+小米会先上架商品、后填参数页。**`xiaomi-17t` 的参数页就是空壳**（渲染后只有概述页内容），
+这类机型在 `specs.mjs` 的 `OVERRIDES` 里登记缺的数据（来源：概述页 + 商城关键参数 `class_parameters`，
+人工核对后写入），并在注释里说明来源。17T Pro 的电池容量、前置摄像头也用商城关键参数兜底。
+**官网参数页补全后应删掉对应条目改走页面解析。**
+
+## 13/14 系列的两套老页面（实测 2026-09-24）
+
+| 机型 | 参数页 | 图片 |
+|---|---|---|
+| 14 / 14 Pro / 13 / 13 Pro / 13 Ultra | 老模板 `https://www.mi.com/<slug>/specs`（参数区挂 `component-content__<slug>`，不是 `_root_div`） | 商城在售（搜索卡片或 web 搜 product_id） |
+| 14 Ultra | 老模板 URL 已 404，新模板页在 `/prod/xiaomi-14-ultra/specs` | 同上（1230801639） |
+| 15 / 15 Pro / 15 Ultra / 15S Pro | 新模板 `/prod/<slug>/specs`（15 Pro/Ultra/S Pro 是「值在前、标题在后」变体，body 从全文兜底取） | 产品页「立即购买」链接里挖 product_id（`recon/buy-links.mjs`） |
+
+老模板与 17 系列的解析差异（都已兼容，见 `specs.mjs` 注释）：长焦条目不写像素（`resolution_mp` 为 null，
+忠实于官网）、「超低畸变广角」→ 超广角、频段带（上行/下行 MHz）括注、HDR 行是 `Dolby Vision` 英文、
+指纹写在屏幕卖点行而非独立小节、13/13 Ultra 是 2022 年更老的相机条目格式（54MP 主摄那套，已兼容）。
+
+## 12/11/10 系列：更老模板 + 国际站 + 裸名多色图（实测 2026-09-24）
+
+15 台的参数页与图片来源都不再统一，逐类记一下：
+
+| 机型 | 参数页 | 图片 |
+|---|---|---|
+| 12 / 12 Pro / 12X / 12S / 12S Pro / 12S Ultra | 国行老模板 `https://www.mi.com/<slug>/specs`（标题体系是「影像系统 / 充电续航」，NFC 小节写作 **NFC功能**） | 参数页多色全家福（`LEGACY_MODELS`，手动敲定） |
+| 11 / 11 Pro / 11 Ultra / 11 青春版 | 同上；**11 Pro 的 slug 是大写 P**（`mi11Pro`），少一个字符就 404 | 同上 |
+| 10 至尊纪念版 / 10S / 10 青春版 | 同上；10 至尊纪念版的标题顺序是「处理器 / 内存与容量 / 屏幕与指纹 / 后置相机 / 前置相机 / 充电与电池 / 网络与制式」 | 同上 |
+| 10 / 10 Pro | 国行页已下架 → **UK 国际站** `https://www.mi.com/uk/mi-10/specs`（全英文标题） | 国际站 CDN 多色图 |
+
+老模板的四个新坑（都已在 `specs.mjs` / `shop.mjs` 里兼容）：
+
+1. **国际站标题跨行**：`Network &` / `Connectivity`、`Navigation &` / `positioning` 被页面拆成两行 → `joinSplitTitleLines()` 先把 `&` 收尾的行拼回去。
+2. **国际站频段写裸数字**：`4G: FDD-LTE :1/2/3/…` 没有 `B` 前缀，TDD 段还缩写成 `TD-LTE`（国行是 `TDD-LTE`），且一条 `4G：` 里用 `；` 分两段 → `cleanBand()` 补 `B` 前缀、`seg()` 只在不接 `(F|T)DD?-LTE` 时才按分号截断。
+3. **国际站内存段用英文标签**：`RAM: 8GB` / `ROM: 128GB / 256GB`，类型另起一行（`LPDDR5 memory`）→ `buildChipset()` 两种标签都认。
+4. **老页面不写指纹/屏幕材质**：12/12X/12S/10S 页面通篇没有「指纹」二字，12/12X 只写卖点名「超视感屏」，10 青春版只写「180Hz 采样率」不写刷新率 → 这类「页面确实没写、但实机有」的字段记在 `OVERRIDES`（人工核对，注释里写来源），不影响页面解析。
+
+老机型的**图片没有分色图**（商城接口早已下线），改在 `shop.mjs` 的 `LEGACY_MODELS` 里逐台登记一张官方**多色全家福**（`specs-product.png` 那类，横构图、多个配色并排），
+配 `colors` 色名数组；`fetchLegacyColors()` 只出 name/slug，hex 与 imgUrl 恒为 null。
+裸名图（`<机型id>.jpg`，无配色段）走 `normalize.py` 的 `bare: true` 分支：**画布跟随图片比例**（最大 760×570），不取色、不套 612×760 竖版画幅。
+「配色有声明但一张图都没有」是**合法状态**，`ssr-check.mjs` 认这种 `imageless` 机型（同 OPPO 的 `oppo-a6`/`oppo-a6m`）。
+
+## 商城配色口径
+
+- `fetchXiaomiColors` 会剔除**套装**与**限量定制色**（非真配色，同 17 Ultra 徕卡版口径），
+  以及挂了色名但商城无产品图的不可购配色（⚠ 打印后跳过，同 OPPO 源「不可购不入库」；
+  15 Ultra 的樱花粉/微风蓝/鸢尾紫/金棕色即此情况）。
+- 14 Ultra 的 `钛金属特别版`、15S Pro 的 `龙鳞纤维版` 是真配色，正常入库。
+
+## 产出
+
+- `src/data/devices/xiaomi-<slug>.json`：schema 对齐 OPPO 源（含 `os` / `biometric` / `cellular` / `nfc` / `display_secondary`）
+- `src/data/images/xiaomi-<slug>.<配色slug>.jpg`：612×760 白底，每配色一张
+- 原图备份：`out/<run>/xiaomi-raw/`
+
+## 实现要点（改代码前先读）
+
+| 主题 | 说明 |
+|---|---|
+| 渲染偶发不完整 | SPA 偶尔没渲染完就取了 DOM（实测 17 Pro 出现过一次）。`fetchSpecsTexts` 按「小节标题命中数 ≥3」判断成功，不足则重试最多 3 次；`OVERRIDES` 里的空壳机型不重试 |
+| 参数 → 小节 | `parseSections()` 按 `TITLES` 精确匹配切分全文，不依赖 DOM 块位置（两套模板通吃） |
+| 商城接口只打一次 | `specs.mjs` 一台机型会调 3 次商城数据（关键参数 / 在售版本 / 配色），`shop.mjs` 用 `viewCache` 记忆化，避免重复请求 |
+| 有线/无线充电 | 用前瞻正则取：`([\d.]+)W(?=[^\d\n]*有线(?!反向))` / `无线(?!反向)`，避免把「50W 无线」误当有线 |
+| HDR 认证 | 从整节文本里提 `HDR10+ / HDR Vivid / 杜比视界 / HLG`，竖线分隔的 token 兼容 |
+| 防水等级 | 只写在页尾「特别说明」里（`IP(6[89])`）。**17 Pro / 17 Pro Max 页面与商城关键参数都没写** → `water_resistance` 为 null，忠实于源 |
+| 频段尾巴 | 2G/3G 条目会把「未开通…络和业务部署」等说明折行拼进来，`cleanBand()` 截到最后一个频段 token |
+| 相机解析 | 与 OPPO 同口径（`万 → ×0.01`、ƒ/f 两种光圈符号、`classifyLens` 关键词优先焦距兜底） |
+| 图片取色 | 商城不给色值。`normalize.py` 采样背板干净区（小米构图背面在左，取左下 1/3）中值作 hex |
+| 指纹 | 17/15/14/13 系列参数页写「屏下指纹」，12/11/10 系列多数不写（见上文 OVERRIDES），11 青春版是侧边指纹 |
+
+## 验收
+
+```bash
+cd tools/scraper
+
+# 1. dry-run 对账（省流量）
+node cli.mjs xiaomi --models <机型列表> --dry-run --no-images
+
+# 2. 全量数据完整性 + 构建
+cd ../.. && PATH="/opt/homebrew/bin:$PATH" node scripts/ssr-check.mjs
+PATH="/opt/homebrew/bin:$PATH" npm run build
+```
+
+跨品牌的弹框分组验收见 `recon/picker.cjs`（小米品牌加进 `SERIES_ORDER` 后自动纳入）。
+
+---
+
+# 六、华为：官网 specs（参数 + 分色图同一页）+ vmall 正背组合图
+
+华为分两部分：参数与分色图来自官网 specs 页（不用商城接口、不用浏览器，`fetch` 一次就够）；
+**正面图**来自 vmall 商品图（真浏览器抓，见下文「为什么还要 vmall」）。
+
+## 为什么还要 vmall（正面图）
+
+官网 specs 的分色图是**背面斜视图**，且官网全站没有正面渲染图（中文站 specs / 产品页 design、
+英文站 specs 都排查过，见 `recon/front-image-probe*.mjs`）。唯一的官方正面图是 vmall 的商品图
+—— 多色「背面+正面亮屏」组合图。抓取链路（`front.mjs`，每台约 5-6 秒）：
+
+1. 真浏览器开 `www.vmall.com/search?keyword=<关键词>` 过 WAF，捕获搜索接口 XHR（`openapi.vmall.com/mcp/...`）
+2. 从 `resultList[]` 里按型号词精确匹配（配件「保护套/壳/膜」直接丢弃；只有「官方翻新」在售时
+   退回翻新机条目，商品图与新品相同），拿 `productId + photoPath + photoName`
+3. 拼 CDN 原图 `res.vmallres.com/pimages<photoPath>800_800_<photoName>` 下载 →
+   `normalize.py`（bare 模式，画幅上限 760×570）→ `src/data/images/<id>.jpg` 裸名图
+
+前端把裸名图**追加进每个配色的图片轮播末尾**（`PhoneHeader`），分色图照常切色。
+Mate 60 系列 vmall 已无手机商品 → 没有组合图，维持背面分色图（已知口径）。
+
+```bash
+node cli.mjs huawei-front --dry-run    # 先看每台命中哪个商品
+node cli.mjs huawei-front              # 全量入库（23 台，Mate 60 系自动跳过）
+node cli.mjs huawei-front --models huawei-pura90   # 单台重抓
+```
+
+## 用法
+
+```bash
+cd tools/scraper
+
+# 先预览（强烈建议首次这么做）
+node cli.mjs huawei --models huawei-mate80,huawei-mate80-pro-max --dry-run
+
+# 确认无误后正式入库
+node cli.mjs huawei --models huawei-mate80,huawei-mate80-pro,huawei-mate80-pro-max,huawei-mate80-pro-max-fengchiban,huawei-mate80-rs
+
+# Mate 70 系列（官网在架，同一条链路）
+node cli.mjs huawei --models huawei-mate70,huawei-mate70-pro,huawei-mate70-pro-plus,huawei-mate70-pro-youxiangban,huawei-mate70-air,huawei-mate70-rs
+
+# Mate 60 系列（官网参数页已下架 → 自动走 legacy.mjs，见下文）
+node cli.mjs huawei --models huawei-mate60,huawei-mate60-pro,huawei-mate60-pro-plus,huawei-mate60-rs
+```
+
+`--models` 填**本项目机型 id**（不是官网 slug），映射在 `sources/huawei/specs.mjs` 的 `SPECS_URLS`（在架机型）与 `sources/huawei/legacy.mjs`（Mate 60 系列）。
+
+## 加新机型（3 处，都必须补）
+
+1. `sources/huawei/specs.mjs` 的 `SPECS_URLS`：`<本项目 id>` → `https://consumer.huawei.com/cn/phones/<官网 slug>/specs/`
+2. 同文件 `META`：中文名 / 系列（**产品线**：Mate 系列 / Pura 系列）/ `release_date`。**官网参数页没有发布日期**，得从发布会公开信息填，格式 `YYYY-MM`（Mate 80 系列 `2025-11`、风驰版 `2026-03`、Mate 70 系列 `2024-11`、Pura 90 系列 `2026-04`、Pura 80 系列 `2025-06`、Pura X View `2026-09`）
+3. `sources/huawei/colors.mjs` 的 `COLOR_SLUGS`：该机型所有中文色名 → 英文 slug。缺一个会在解析时抛错并点名是哪个色名
+
+新系列还要在 `src/data.js` 的 `SERIES_ORDER.华为` 里补系列名，弹框分组才有顺序（不补则沉底）。
+
+## Mate 60 系列：官网参数页已下架 → legacy 通道
+
+实测（2026-09）：`/cn/phones/mate60*/specs/` 全部 301 到机型列表页，CDN 上老路径的图被删，
+vmall 也搜不到这几台手机的商品 —— **参数没有现成的官方在线源**。但两样东西活着：
+
+- **官方 CDN 的分色图还在**，只是路径从 `…/specs/<color>.png` 变成了 `…/img/specs-img/<color>.png`（RS 是 `…/img/specs/`）
+- **官网参数页的 Wayback 存档**内容完好（本机网络到 archive.org 不通，用 WebFetch 读，人工转录）
+
+所以 Mate 60 系列走 `sources/huawei/legacy.mjs`：参数 = 官网存档原文**人工转录**（sections 紧凑表），
+图 = 官网 CDN 直链，解析复用 `buildDevice()` —— 焦段按镜头类型回填、瓦数取脚注等规则全部同样生效，
+JSON 形状与 70/80 系列完全一致。`cli.mjs huawei --models` 传 legacy 机型 id 时自动切这条路，不 fetch 页面。
+
+**改 legacy 数据请直接改 `legacy.mjs`**，并更新文件头的核对记录；它不会被抓取结果覆盖。
+
+几个口径决定（都写在 `legacy.mjs` 注释里）：
+
+| 项 | 处理 |
+|---|---|
+| 卫星通信 | 当年参数页不列这一行 → 取官网**产品页**存档口径：Pro / Pro+ / RS「卫星通话、卫星消息」，标准版「双向北斗卫星消息」（无卫星通话） |
+| `sim` / `esim` | 60 系参数页没有 SIM 卡类型 / eSIM 分组 → `null` |
+| 芯片 | 60 / 70 两代官网都不公布 SoC → `chip: null`（见下） |
+| Mate 60 RS 重量 | 官网按配色给两个值（玄黑 242 g / 瑞红 246 g），schema 单值 → 取默认色玄黑的 242 g |
+| Mate 60 标准版人脸 | 官网感应器列表没有人脸识别、前置也没有 3D 深感 → `face_unlock: null` |
+
+## 页面结构（实测 2026-09，Mate 80 系列 5 台一致）
+
+纯 SSR，**不需要浏览器**。参数在 `<li class="large-accordion__item">` 手风琴里：
+
+- 分组名：`<span class="large-accordion__title large-accordion-title">分组名</span>`
+- 组内条目：`<div class="large-accordion__inner">` 里，条目名是 `<div class="large-accordion-subtitle">`（**可选** —— 处理器、电池这类组没有条目名，值直接是 `<p>`）
+- 值：`<p>值</p>`；脚注是 `<p class="large-accordion-subtext">`，**必须排除**，否则会混进值里
+- 配色：`<div class="color-text">色名，色名，…</div>` 给顺序（**第一个是默认色**），配色 `<ul>` 里每色一张 `<img src="/content/dam/…/specs/<file>.png" alt="中文色名">`
+
+取色：官网不给色值 → `normalize.py` 从图片背板干净区（`BACK_BOX`，相对内容 bbox 的左下方）取中值。
+
+## 官网确实不写的字段
+
+这些留 `null` / 空，前端显示「—」，**不要硬凑**：
+
+| 字段 | 处理 |
+|---|---|
+| `chipset.chip`（芯片） | **Mate 60 / 70 两代官网连「处理器」分组都没有**（华为对这两代不公布 SoC）→ `null`；Mate 70 Air 是例外（页面有「处理器」，麒麟 9020A / 9020B）。ssr-check 对这 9 台有白名单 |
+| `cellular.bands`（网络频段） | 恒为 `null`（官网不公布） |
+| `sim` / `esim` | Mate 70 系参数页没有「SIM 卡类型 / eSIM」分组 → `null`（Mate 80 系有） |
+| `display.max_brightness_nits` / `hdr_formats` | 官网不写 |
+| `display.form`（直屏 / 曲屏） | `null` |
+| `display.refresh_rate` | Mate 70 Air 的「屏幕类型」行没写刷新率 → `null`（官网口径） |
+| `ppi` | 官网不给，用「分辨率 + 屏幕尺寸」自算（`ppiOf()`） |
+
+## 实现要点（改代码前先读）
+
+- **取值靠「分组名 + 条目名」**：`rowOf(sections, group, keyRe)`；没有条目名的组传 `null`，直接取第一行
+- **手风琴标题正则**：用 `/large-accordion-title">([\s\S]*?)<\/span>/`。**不要**写成 `class="large-accordion-title">` —— 实际 class 是 `large-accordion__title large-accordion-title`，写窄了 19 个分组会**全部无标题**
+- **eSIM 必须先判「不支持」**：`/支持/.test("不支持")` 为 `true`，顺序写反会把「不支持」判成支持
+- **容量解析先去掉空格**：华为写「16 GB RAM」，`capList()` 要先 `replace(/\s+/g,"")` 再匹配
+- **颜色与图片用色名配对，不按序号**：`parseColors()` 返回 `Map(中文色名 → 图片 URL)`，`buildColors()` 用色名回查，缺了直接抛错
+- **芯片按内存版本区分时原样并入**：Mate 80 Pro 12GB→麒麟 9030 / 16GB→麒麟 9030 Pro；Mate 70 Air 一个 `<p>` 里两型号换行（「麒麟 9020A\n\n麒麟 9020B」）→ 归一成「麒麟9020A / 麒麟9020B」（去「麒麟」后的空格，与「麒麟9030 Pro」同一写法）
+- **焦段按镜头类型回填，不按出现顺序**：官方那句「镜头焦段分别为 …」的顺序和镜头排列顺序并不总是一致 —— Mate 80 是 24/13/90.5（恰等于页面顺序），Mate 70 Air 是 16/24/69 而页面顺序是 主摄/长焦/超广角。规则：超广角拿最小焦段、主摄拿最接近 24 mm 的、长焦按页面顺序分剩下的
+- **有线瓦数可能只在脚注里**：Mate 70 / Mate 60 标准版的「有线充电」行只写「11V/6A」，瓦数（66 W）在脚注「最大支持 66 W 华为有线超级快充」→ `buildBattery` 有脚注兜底；无线只认「N W 华为无线超级快充」，不然会被「20 W 无线反向充电」抢走
+- **「屏内指纹」（60 系）=「屏下指纹」（70/80 系）**，统一成屏下指纹，跨机型可比
+- **重量单位两代写法不同**：Mate 系写「约 211 g（含电池）」，Pura 80 系写「约 211 克（含电池）」→ 正则 `([\d.]+)\s*(?:g\b|克)`
+- **像素单位有「万」也有「亿」**：绝大多数写「5000 万像素」，Pura 90 Pro Max 的长焦写「超大底 2 亿长焦摄像头」（没有「像素」二字）→ `megapixels()` 两种都吃（「N 万像素」→ N/100，「N 亿」→ N×100）；没有像素值的（「第二代红枫原色摄像头」「150 万多光谱通道红枫原色摄像头」）不入库
+- **手工侦察时 curl 必须加 `--compressed`**：`consumer.huawei.com` 的响应是 gzip，不加会拿到二进制乱码、所有正则全部 miss
+
+## 产出
+
+- `src/data/devices/huawei-*.json`（23 台：Mate 15 + Pura 8）
+- `src/data/images/huawei-*.<色 slug>.jpg`（每配色一张，612×760 白底 JPEG，共 80 张）
+- 原图不落盘备份（官网图不大，重抓成本低；Mate 60 系列图走官网 CDN 直链，一样不备份）
+
+## 验收
+
+```bash
+cd tools/scraper
+node cli.mjs huawei --models <机型列表> --dry-run    # 先对账
+
+cd ../.. && PATH="/opt/homebrew/bin:$PATH" node scripts/ssr-check.mjs
+PATH="/opt/homebrew/bin:$PATH" npm run build
+cd tools/scraper && node recon/picker.cjs            # 弹框里应出现「华为 23 台、2 个系列：Mate 系列 → Pura 系列」
+```
+
+---
+
+# 七、改了选择器怎么办（侦察脚本）
+
+苹果、一加、OPPO 都会改版。选择器失效时先用侦察脚本看页面现在长什么样，再回去改对应的 `sources/<源>/` 主流程：
+
+```bash
+node cli.mjs recon          # 列出所有侦察脚本（这份清单是手写的，目录里以实际文件为准）
 
 # 苹果
 node sources/apple/recon/page.mjs [机型列表]         # 页面请求了哪些图、色板/表格结构
@@ -407,6 +886,28 @@ node sources/apple/recon/swatches.mjs [机型] [dpr]   # 深挖色板 DOM 与 2x
 
 # 一加
 node sources/oneplus/recon/dom.mjs                   # 旧模板 specs 页的分区结构
+
+# vivo
+node sources/vivo/recon/dump.mjs [slug]              # 参数分组、配色与 __NUXT_DATA__ 顶层形态
+
+# OPPO —— 改解析逻辑后必跑 camera-dump，它拿官网原文对账
+node sources/oppo/recon/dump.cjs                     # specs 页分组结构与全部字段
+node sources/oppo/recon/camera-dump.mjs [--all|机型…] # 相机原文 + 归类结果，查漏抓/分错
+node sources/oppo/recon/specs-probe.mjs              # 全部机型的 specs 页可用性
+node sources/oppo/recon/color-audit.mjs              # 参数页配色 vs 商城配色是否对齐
+node sources/oppo/recon/shop-gallery.mjs [skuId]     # 商城页颜色切换器、图集与接口行为
+node sources/oppo/recon/shop-map.mjs                 # 官网机型页 → 商城入口 SKU 映射扫描
+
+# 小米 —— 改解析逻辑后用 recon/ 下的脚本看页面现貌
+node sources/xiaomi/recon/raw-text.mjs               # 渲染后参数区全文（切分逻辑的输入）
+node sources/xiaomi/recon/blocks.mjs                 # 参数区 DOM 块结构（两套模板差异）
+node sources/xiaomi/recon/shop-api.mjs [product_id]  # 商城 product/view 返回什么（配色/关键参数）
+node sources/xiaomi/recon/search-cards.mjs           # 真搜索页 DOM 卡片（反查新机型 product_id）
+node sources/xiaomi/recon/overview-text.mjs          # 概述页文本（OVERRIDES 相机数据的来源）
+
+# 华为 —— 页面是纯 SSR，直接 curl 存下来看最快（记得加 --compressed，否则是 gzip 乱码）
+curl -s --compressed https://consumer.huawei.com/cn/phones/mate80/specs/ -o /tmp/hw.html
+node sources/huawei/recon/vmall-probe.mjs            # 侦察：vmall 商城页可达性（有 WAF，不采用）
 ```
 
 也可以直接 `node cli.mjs recon --run page`。

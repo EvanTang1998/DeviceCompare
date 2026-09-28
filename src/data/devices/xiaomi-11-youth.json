@@ -1,0 +1,137 @@
+{
+ "name": "Xiaomi 11 青春版",
+ "brand": "小米",
+ "series": "数字系列",
+ "release_year": 2021,
+ "chipset": {
+  "chip": "骁龙 780G",
+  "ram": [
+   "8GB LPDDR4X"
+  ],
+  "rom": [
+   "128GB UFS",
+   "256GB UFS"
+  ]
+ },
+ "body": {
+  "dimensions_mm": {
+   "height": 160.53,
+   "width": 75.72,
+   "depth": 6.81
+  },
+  "weight_g": 159,
+  "frame_material": null,
+  "back_material": null,
+  "front_material": null,
+  "water_resistance": null
+ },
+ "display": {
+  "size_inch": 6.55,
+  "resolution": "2400 x 1080",
+  "ppi": 402,
+  "refresh_rate": "1-90Hz",
+  "panel": "AMOLED",
+  "form": "直屏",
+  "max_brightness_nits": 800,
+  "hdr_formats": [
+   "HDR10+"
+  ]
+ },
+ "display_secondary": null,
+ "battery": {
+  "capacity_mah": 4250,
+  "charging_watt": 33,
+  "wireless_charging_watt": null
+ },
+ "camera": [
+  {
+   "type": "主摄",
+   "sensor": null,
+   "resolution_mp": 64,
+   "aperture": "f/1.79",
+   "focal_length_mm": null,
+   "image_stabilization": null
+  },
+  {
+   "type": "超广角",
+   "sensor": null,
+   "resolution_mp": 8,
+   "aperture": "f/2.2",
+   "focal_length_mm": null,
+   "image_stabilization": null
+  },
+  {
+   "type": "长焦",
+   "sensor": null,
+   "resolution_mp": 5,
+   "aperture": "f/2.4",
+   "focal_length_mm": null,
+   "image_stabilization": null
+  },
+  {
+   "type": "前置",
+   "sensor": null,
+   "resolution_mp": 20,
+   "aperture": null,
+   "focal_length_mm": null,
+   "image_stabilization": null
+  }
+ ],
+ "os": "MIUI 12（基于 Android 11）",
+ "biometric": {
+  "fingerprint": "侧边指纹",
+  "face_unlock": null
+ },
+ "cellular": {
+  "sim": "双 Nano-SIM 卡",
+  "esim": null,
+  "bands": [
+   "5G NR：n1/n3/n41/n77/n78",
+   "4G LTE FDD：B1/B2/B3/B4/B5/B7/B8/B18/B19/B26",
+   "4G LTE TDD：B34/B38/B39/B40/B41/B42",
+   "3G WCDMA：B1/B2/B4/B5/B6/B8/B19",
+   "2G GSM：B2/B3/B5/B8"
+  ],
+  "satellite": null
+ },
+ "nfc": "在天星金融·钱包App 开通后，通过双击电源键可使用交通卡、Mi Pay、门卡、eID*、电子车钥匙*等功能。\n交通卡：支持 300+ 座城市，支持 40+ 种公交卡*移卡，支持免费旧卡移新机以及卡内余额同步迁移。\n（交通卡支持城市由于技术条件、城市等有所差异，以实际情况为准；刷卡终端可用范围及乘车优惠以当地政府及运营企业发布为准。）\nMi Pay：支持线上支付，线下支付、银联二维码、银联卡支付、银联碰一碰支付。\n门卡：门卡模拟、米家智能门锁、虚拟门卡、自定义空白卡。（仅能模拟未经加密且频段为 13.56MHz 的门卡，有门卡功能的银行卡和带有储值消费、公交消费等功能的门卡暂时不能被模拟，即使模拟成功，这些卡片也不具备银行、公交等功能；）\n智能选卡：智能切换门卡和交通卡。\n具体支持的城市数量、城市名称、银行、卡片数量、 eID 合作酒店名单，电子车钥匙合作车型等，以实际情况为准。进一步了解请关注：\n“小米钱包（即将升级为“天星金融钱包”）”官方微信公众号；\n智能选卡支持的设备以及版本信息，进一步了解：https://www.xiaomi.cn/post/18882483",
+ "colors": [
+  {
+   "name": "冰峰黑提",
+   "slug": "blackgrape",
+   "hex": null,
+   "is_default": true
+  },
+  {
+   "name": "清甜荔枝",
+   "slug": "lycheewhite",
+   "hex": null,
+   "is_default": false
+  },
+  {
+   "name": "奇异果香",
+   "slug": "kiwigreen",
+   "hex": null,
+   "is_default": false
+  },
+  {
+   "name": "樱花蜜粉",
+   "slug": "honeypink",
+   "hex": null,
+   "is_default": false
+  },
+  {
+   "name": "清凉薄荷",
+   "slug": "mintblue",
+   "hex": null,
+   "is_default": false
+  },
+  {
+   "name": "夏日柠檬",
+   "slug": "lemonyellow",
+   "hex": null,
+   "is_default": false
+  }
+ ],
+ "release_date": "2021-04"
+}

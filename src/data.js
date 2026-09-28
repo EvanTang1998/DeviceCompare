@@ -20,8 +20,10 @@ const images = import.meta.glob("./data/images/*.{png,jpg,jpeg,webp}", {
 });
 
 // "./data/images/iphone-17.sage.jpg"        -> { id: "iphone-17", slug: "sage", angle: null }
-// "./data/images/oppo-find-n6.jincheng.2.png" -> { id: "oppo-find-n6", slug: "jincheng", angle: 2 }
-// "./data/images/iphone-13-pro.jpg"         -> { id: "iphone-13-pro", slug: null, angle: null }
+// "./data/images/huawei-mate70-air.jpg"     -> { id: "huawei-mate70-air", slug: null, angle: null }（裸名图）
+// "./data/images/oppo-find-n6.black.2.png"  -> { id: "oppo-find-n6", slug: "black", angle: 2 }
+//   （OPPO 现在每色只有 1 张不带角度号；带角度号的轮播机制保留给多图机型，
+//    如华为：分色图 + vmall 正背组合图两种轮播位）
 const splitName = (path) => {
   const base = path.split("/").pop().replace(/\.(json|png|jpe?g|webp)$/i, "");
   const parts = base.split(".");
@@ -126,6 +128,9 @@ export const phones = Object.entries(specs)
         colors.find((c) => c.image)?.image ??
         bareImages.get(id) ??
         null,
+      // 整机裸名图（机型有分色图时它不参与主图，由 PhoneHeader 追加进每色的
+      // 图片轮播末尾 —— 典型是华为 vmall 的多色正背组合图，补官网缺失的正面图）
+      bare: bareImages.get(id) ?? null,
       colors,
       data: spec
     };
@@ -134,3 +139,28 @@ export const phones = Object.entries(specs)
   .sort((a, b) => (b.releaseTime ?? 0) - (a.releaseTime ?? 0) || a.id.localeCompare(b.id));
 
 export const brands = [...new Set(phones.map((p) => p.brand))];
+
+// 系列展示顺序：机型选择弹框里，同品牌内按「主流旗舰高端 → 低端」排。
+//
+// 粒度为**产品线**，不是代际：华为的 Mate 60/70/80 同属「Mate 系列」，
+// 小米 10~17 同属「数字系列」；同组内历代机型靠 release_date 自然分层。
+//
+// 取材依据是各家的产品线定位，与发布时间无关 —— 所以不能靠「最新机型优先」推导：
+// 一加上一代的数字系列比新一代 Turbo 更早发布，但数字系列仍是旗舰，必须排前面。
+//
+// 没配表的品牌沿用默认顺序（也就是 phones 的发布时间从近到远，见 seriesRank）。
+// 苹果**故意不配表**：全系同属数字旗舰线，新一代即更高端，
+// 默认顺序天然就是 iPhone 18 → 17 → 16 … → 11；配了反而每年要新增一行。
+export const SERIES_ORDER = {
+  OPPO: ["Find X 系列", "Find N 系列", "Reno 系列", "K 系列", "A 系列"],
+  一加: ["数字系列", "Ace 系列", "Turbo 系列"],
+  vivo: ["X 系列", "S 系列", "Y 系列"],
+  小米: ["数字系列"],
+  华为: ["Mate 系列", "Pura 系列"],
+};
+
+/** 系列在同一品牌内的排序权重，越小越靠前；没配表的返回 undefined 排到最后 */
+export const seriesRank = (brand, series) => {
+  const idx = SERIES_ORDER[brand]?.indexOf(series);
+  return idx === undefined || idx === -1 ? undefined : idx;
+};

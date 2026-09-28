@@ -1,0 +1,101 @@
+{
+ "name": "OPPO A6m",
+ "brand": "OPPO",
+ "series": "A 系列",
+ "release_year": 2026,
+ "chipset": {
+  "chip": "天玑6300",
+  "ram": [
+   "6GB LPDDR4X"
+  ],
+  "rom": [
+   "128GB UFS 2.2",
+   "256GB UFS 2.2"
+  ]
+ },
+ "body": {
+  "dimensions_mm": {
+   "height": 166.61,
+   "width": 78.51,
+   "depth": 8.61
+  },
+  "weight_g": 212,
+  "frame_material": null,
+  "back_material": null,
+  "front_material": null,
+  "water_resistance": null
+ },
+ "display": {
+  "size_inch": 6.75,
+  "resolution": "1570 x 720",
+  "ppi": null,
+  "refresh_rate": "1-120Hz",
+  "panel": null,
+  "form": "直屏",
+  "max_brightness_nits": 1125,
+  "hdr_formats": null
+ },
+ "display_secondary": null,
+ "battery": {
+  "capacity_mah": 6500,
+  "charging_watt": 45,
+  "wireless_charging_watt": null
+ },
+ "camera": [
+  {
+   "type": "主摄",
+   "sensor": null,
+   "resolution_mp": 13,
+   "aperture": "f/2.2",
+   "focal_length_mm": 27,
+   "image_stabilization": null
+  },
+  {
+   "type": "前置",
+   "sensor": null,
+   "resolution_mp": 5,
+   "aperture": "f/2.2",
+   "focal_length_mm": 27,
+   "image_stabilization": null
+  }
+ ],
+ "os": "ColorOS 15.0",
+ "biometric": {
+  "fingerprint": "指纹识别",
+  "face_unlock": "支持"
+ },
+ "cellular": {
+  "sim": "Nano-SIM 卡，Nano-USIM 卡",
+  "esim": null,
+  "bands": [
+   "2G GSM：900/1800MHz",
+   "3G WCDMA：频段 1/5/8",
+   "4G LTE FDD：频段 1/3/5/8/28A",
+   "4G LTE TDD：频段 34/38/39/40/41",
+   "5G NR：n1/n3/n5/n8/n28A/n41/n48/n77/n78"
+  ],
+  "satellite": null
+ },
+ "nfc": null,
+ "colors": [
+  {
+   "slug": "bambooblack",
+   "name": "墨竹黑",
+   "hex": null,
+   "is_default": true
+  },
+  {
+   "slug": "purpleglory",
+   "name": "紫气东来",
+   "hex": null,
+   "is_default": false
+  },
+  {
+   "slug": "beyondblue",
+   "name": "青出于蓝",
+   "hex": null,
+   "is_default": false
+  }
+ ],
+ "release_date": "2026-03"
+}

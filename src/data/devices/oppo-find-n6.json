@@ -1,0 +1,136 @@
+{
+ "name": "OPPO Find N6",
+ "brand": "OPPO",
+ "series": "Find N 系列",
+ "release_year": 2026,
+ "chipset": {
+  "chip": "第五代骁龙 8 至尊版",
+  "ram": [
+   "12GB LPDDR5X",
+   "16GB LPDDR5X"
+  ],
+  "rom": [
+   "256GB UFS 4.1",
+   "512GB UFS 4.1"
+  ]
+ },
+ "body": {
+  "dimensions_mm": {
+   "height": 159.87,
+   "width": 145.58,
+   "depth": 4.21
+  },
+  "weight_g": 225,
+  "frame_material": null,
+  "back_material": null,
+  "front_material": null,
+  "water_resistance": null,
+  "dimensions_folded_mm": {
+   "height": 159.87,
+   "width": 74.12,
+   "depth": 8.93
+  }
+ },
+ "display": {
+  "size_inch": 8.12,
+  "resolution": "2480 x 2248",
+  "ppi": 412,
+  "refresh_rate": "1-120Hz",
+  "panel": "OLED",
+  "form": "折叠屏",
+  "max_brightness_nits": 1800,
+  "hdr_formats": null
+ },
+ "display_secondary": {
+  "size_inch": 6.62,
+  "resolution": "2616 x 1140",
+  "ppi": 431,
+  "refresh_rate": "1-120Hz",
+  "panel": "AMOLED",
+  "form": null,
+  "max_brightness_nits": 1800,
+  "hdr_formats": null
+ },
+ "battery": {
+  "capacity_mah": 6000,
+  "charging_watt": 80,
+  "wireless_charging_watt": 50
+ },
+ "camera": [
+  {
+   "type": "主摄",
+   "sensor": null,
+   "resolution_mp": 200,
+   "aperture": "f/1.8",
+   "focal_length_mm": 23,
+   "image_stabilization": [
+    "光学防抖"
+   ]
+  },
+  {
+   "type": "超广角",
+   "sensor": null,
+   "resolution_mp": 50,
+   "aperture": "f/2.0",
+   "focal_length_mm": 15,
+   "image_stabilization": null
+  },
+  {
+   "type": "长焦",
+   "sensor": null,
+   "resolution_mp": 50,
+   "aperture": "f/2.7",
+   "focal_length_mm": 70,
+   "image_stabilization": [
+    "光学防抖"
+   ]
+  },
+  {
+   "type": "前置",
+   "sensor": null,
+   "resolution_mp": 20,
+   "aperture": "f/2.4",
+   "focal_length_mm": 21,
+   "image_stabilization": null
+  }
+ ],
+ "os": "ColorOS 16.0",
+ "biometric": {
+  "fingerprint": "侧边指纹",
+  "face_unlock": "支持"
+ },
+ "cellular": {
+  "sim": "Nano-SIM 卡，Nano-USIM 卡，双卡双待双通（部分 RAT/频段支持双通）",
+  "esim": null,
+  "bands": [
+   "2G GSM：850/900/1800/1900MHz",
+   "3G WCDMA：频段 1/2/4/5/6/8/19",
+   "4G LTE FDD：频段 1/2/3/4/5/7/8/12/13/17/18/19/20/25/26/28/32/66/71",
+   "4G LTE TDD：频段 34/38/39/40/41/42/43/48",
+   "5G NR：n1/n2/n3/n5/n7/n8/n12/n13/n18/n20/n25/n26/n28/n38/n40/n41/n48/n66/n71/n75/n77/n78/n79/n80/n81/n83/n84/n89"
+  ],
+  "satellite": "提供 16GB+1TB 卫星通信版"
+ },
+ "nfc": "支持读写 NFC 卡片（13.56MHz 的 NFC 卡片）\n支持 NFC-SIM（只支持 SIM1 卡槽）\n支持 HCE 支付\n支持 eSE（支持 300+城市地铁公交乘车，支持 OPPO Pay，门禁卡，车钥匙及公民网络电子身份标识（eID）等多项功能。轻触一下，便捷通行，安全支付。）",
+ "colors": [
+  {
+   "slug": "black",
+   "name": "深黑",
+   "hex": "#575757",
+   "is_default": true
+  },
+  {
+   "slug": "titanium",
+   "name": "原钛",
+   "hex": "#A7A7A7",
+   "is_default": false
+  },
+  {
+   "slug": "orange",
+   "name": "金橙",
+   "hex": "#FBA35E",
+   "is_default": false
+  }
+ ],
+ "release_date": "2026-03"
+}

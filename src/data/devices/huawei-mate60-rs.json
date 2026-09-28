@@ -1,0 +1,109 @@
+{
+  "name": "HUAWEI Mate 60 RS 非凡大师",
+  "brand": "华为",
+  "series": "Mate 系列",
+  "release_year": 2023,
+  "chipset": {
+    "chip": null,
+    "ram": [
+      "16GB"
+    ],
+    "rom": [
+      "512GB",
+      "1TB"
+    ]
+  },
+  "body": {
+    "dimensions_mm": {
+      "height": 163.65,
+      "width": 79,
+      "depth": 8.1
+    },
+    "weight_g": 242,
+    "frame_material": null,
+    "back_material": null,
+    "front_material": null,
+    "water_resistance": "IP68"
+  },
+  "display": {
+    "size_inch": 6.82,
+    "resolution": "2720 x 1260",
+    "ppi": 440,
+    "refresh_rate": "1-120Hz",
+    "panel": "OLED",
+    "form": null,
+    "max_brightness_nits": null,
+    "hdr_formats": null
+  },
+  "display_secondary": null,
+  "battery": {
+    "capacity_mah": 5000,
+    "charging_watt": 88,
+    "wireless_charging_watt": 50
+  },
+  "camera": [
+    {
+      "type": "主摄",
+      "sensor": null,
+      "resolution_mp": 48,
+      "aperture": "f/1.4-4.0",
+      "focal_length_mm": 24,
+      "image_stabilization": [
+        "光学防抖"
+      ]
+    },
+    {
+      "type": "超广角",
+      "sensor": null,
+      "resolution_mp": 40,
+      "aperture": "f/2.2",
+      "focal_length_mm": 13,
+      "image_stabilization": null
+    },
+    {
+      "type": "长焦",
+      "sensor": null,
+      "resolution_mp": 48,
+      "aperture": "f/3.0",
+      "focal_length_mm": 90,
+      "image_stabilization": [
+        "光学防抖"
+      ]
+    },
+    {
+      "type": "前置",
+      "sensor": null,
+      "resolution_mp": 13,
+      "aperture": "f/2.4",
+      "focal_length_mm": null,
+      "image_stabilization": null
+    }
+  ],
+  "os": "鸿蒙操作系统 4.0",
+  "biometric": {
+    "fingerprint": "屏下指纹",
+    "face_unlock": "支持"
+  },
+  "cellular": {
+    "sim": null,
+    "esim": null,
+    "bands": null,
+    "satellite": "卫星通话、卫星消息"
+  },
+  "nfc": "支持读卡器模式，卡模拟模式（华为钱包支付，SIM 卡支付*，HCE 支付）",
+  "colors": [
+    {
+      "slug": "deepblack",
+      "name": "玄黑",
+      "hex": "#111213",
+      "is_default": true
+    },
+    {
+      "slug": "auspiciousred",
+      "name": "瑞红",
+      "hex": "#6d0c0e",
+      "is_default": false
+    }
+  ],
+  "release_date": "2023-09"
+}

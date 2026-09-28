@@ -404,7 +404,7 @@ function parseRearCameras(f) {
     const mp = mpM ? (mpM[2] === "亿" ? Number(mpM[1]) * 100 : Number(mpM[1]) / 100) : null;
     return {
       type: camType(desc),
-      sensor: "未公开",
+      sensor: null,
       resolution_mp: mp,
       aperture: apertures[i] ?? null,
       focal_length_mm: focalOf(desc),
@@ -417,7 +417,7 @@ function parseFrontCamera(f) {
   const apM = clean(f["前置摄像头光圈"]).match(/f\/([0-9.]+)/i);
   return {
     type: "前置",
-    sensor: "未公开",
+    sensor: null,
     resolution_mp: mpM ? (mpM[2] === "亿" ? Number(mpM[1]) * 100 : Number(mpM[1]) / 100) : null,
     aperture: apM ? `f/${apM[1]}` : null,
     focal_length_mm: null,

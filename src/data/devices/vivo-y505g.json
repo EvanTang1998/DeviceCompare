@@ -46,7 +46,7 @@
   "camera": [
     {
       "type": "主摄",
-      "sensor": "未公开",
+      "sensor": null,
       "resolution_mp": 13,
       "aperture": "f/2.2",
       "focal_length_mm": null,
@@ -54,7 +54,7 @@
     },
     {
       "type": "前置",
-      "sensor": "未公开",
+      "sensor": null,
       "resolution_mp": 5,
       "aperture": "f/2.2",
       "focal_length_mm": null,

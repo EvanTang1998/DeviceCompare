@@ -1,0 +1,124 @@
+{
+ "name": "OPPO Find X6 Pro",
+ "brand": "OPPO",
+ "series": "Find X 系列",
+ "release_year": 2023,
+ "chipset": {
+  "chip": "第二代骁龙®8 ",
+  "ram": [
+   "12GB LPDDR5X",
+   "16GB LPDDR5X"
+  ],
+  "rom": [
+   "256GB UFS 4.0",
+   "512GB UFS 4.0"
+  ]
+ },
+ "body": {
+  "dimensions_mm": {
+   "height": 164.8,
+   "width": 76.2,
+   "depth": 9.1
+  },
+  "weight_g": 218,
+  "frame_material": null,
+  "back_material": null,
+  "front_material": null,
+  "water_resistance": null
+ },
+ "display": {
+  "size_inch": 6.82,
+  "resolution": "3168 x 1440",
+  "ppi": 510,
+  "refresh_rate": "1-240Hz",
+  "panel": "AMOLED",
+  "form": null,
+  "max_brightness_nits": null,
+  "hdr_formats": null
+ },
+ "display_secondary": null,
+ "battery": {
+  "capacity_mah": 5000,
+  "charging_watt": 100,
+  "wireless_charging_watt": 50
+ },
+ "camera": [
+  {
+   "type": "主摄",
+   "sensor": null,
+   "resolution_mp": 50,
+   "aperture": "f/1.8",
+   "focal_length_mm": 23,
+   "image_stabilization": [
+    "光学防抖"
+   ]
+  },
+  {
+   "type": "超广角",
+   "sensor": null,
+   "resolution_mp": 50,
+   "aperture": "f/2.2",
+   "focal_length_mm": 15,
+   "image_stabilization": null
+  },
+  {
+   "type": "长焦",
+   "sensor": null,
+   "resolution_mp": 50,
+   "aperture": "f/2.6",
+   "focal_length_mm": 65,
+   "image_stabilization": [
+    "光学防抖"
+   ]
+  },
+  {
+   "type": "前置",
+   "sensor": null,
+   "resolution_mp": 32,
+   "aperture": "f/2.4",
+   "focal_length_mm": 21,
+   "image_stabilization": null
+  }
+ ],
+ "os": "ColorOS 13.1",
+ "biometric": {
+  "fingerprint": "屏下指纹",
+  "face_unlock": "支持"
+ },
+ "cellular": {
+  "sim": "Nano-SIM 卡，支持双卡双通",
+  "esim": null,
+  "bands": [
+   "5G SA：频段 n1，n3，n41，n77，n78，n79，n5，n8，n28，n7，n20，n38，n40，n66",
+   "5G NSA：频段 n41，n77，n78，n79",
+   "4G LTE FDD：频段 1，2，3，4，5，7，8，12，17，18，19，20，26，28，66",
+   "4G LTE TDD：频段 34，38，39，40，41",
+   "3G WCDMA：频段 1，2，4，5，8",
+   "2G GSM：频段 850，900，1800，1900MHz",
+   "2G CDMA：频段 BC0"
+  ],
+  "satellite": null
+ },
+ "nfc": "支持读写 NFC 卡片（13.56MHz 的 NFC 卡片）\n支持 NFC-SIM（只支持 SIM1 卡槽），HCE，eSE\n现已支持 300+城市地铁公交乘车，支持 OPPO Pay，门禁卡，车钥匙及公民网络电子身份标识（eID）等多项功能。轻触一下，便捷通行，安全支付。",
+ "colors": [
+  {
+   "slug": "cloudink",
+   "name": "云墨黑",
+   "hex": null,
+   "is_default": true
+  },
+  {
+   "slug": "springgreen",
+   "name": "飞泉绿",
+   "hex": null,
+   "is_default": false
+  },
+  {
+   "slug": "desertsilver",
+   "name": "大漠银月",
+   "hex": null,
+   "is_default": false
+  }
+ ],
+ "release_date": "2023-03"
+}

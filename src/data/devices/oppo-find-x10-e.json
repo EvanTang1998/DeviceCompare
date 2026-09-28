@@ -1,0 +1,116 @@
+{
+ "name": "OPPO Find X10e",
+ "brand": "OPPO",
+ "series": "Find X 系列",
+ "release_year": 2026,
+ "chipset": {
+  "chip": "天玑9500s",
+  "ram": [
+   "12GB LPDDR5X",
+   "16GB LPDDR5X"
+  ],
+  "rom": [
+   "256GB UFS 4.1",
+   "512GB UFS 4.1"
+  ]
+ },
+ "body": {
+  "dimensions_mm": {
+   "height": 156.98,
+   "width": 73.93,
+   "depth": 7.99
+  },
+  "weight_g": 203,
+  "frame_material": null,
+  "back_material": null,
+  "front_material": null,
+  "water_resistance": null
+ },
+ "display": {
+  "size_inch": 6.59,
+  "resolution": "2760 x 1256",
+  "ppi": null,
+  "refresh_rate": "1-120Hz",
+  "panel": null,
+  "form": "直屏",
+  "max_brightness_nits": 1800,
+  "hdr_formats": null
+ },
+ "display_secondary": null,
+ "battery": {
+  "capacity_mah": 7025,
+  "charging_watt": 80,
+  "wireless_charging_watt": 50
+ },
+ "camera": [
+  {
+   "type": "主摄",
+   "sensor": null,
+   "resolution_mp": 50,
+   "aperture": "f/1.6",
+   "focal_length_mm": 23,
+   "image_stabilization": [
+    "光学防抖"
+   ]
+  },
+  {
+   "type": "超广角",
+   "sensor": null,
+   "resolution_mp": 50,
+   "aperture": "f/2.0",
+   "focal_length_mm": 15,
+   "image_stabilization": null
+  },
+  {
+   "type": "长焦",
+   "sensor": null,
+   "resolution_mp": 50,
+   "aperture": "f/2.6",
+   "focal_length_mm": 73,
+   "image_stabilization": [
+    "光学防抖"
+   ]
+  },
+  {
+   "type": "前置",
+   "sensor": null,
+   "resolution_mp": 32,
+   "aperture": "f/2.4",
+   "focal_length_mm": 21,
+   "image_stabilization": null
+  }
+ ],
+ "os": "ColorOS 17.0",
+ "biometric": {
+  "fingerprint": "屏下指纹",
+  "face_unlock": "支持"
+ },
+ "cellular": {
+  "sim": "Nano-SIM 卡，Nano-USIM 卡",
+  "esim": null,
+  "bands": [
+   "2G GSM：850/900/1800MHz",
+   "3G WCDMA：频段 1/2/4/5/6/8/19",
+   "4G LTE FDD：频段 1/2/3/4/5/7/8/18/19/25/26/28/66",
+   "4G LTE TDD：频段 34/38/39/40/41/42/43/48",
+   "5G NR： n1/n2/n3/n5/n7/n8/n18/n25/n26/n28/n34/n38/n39/n40/n41/n48/n66/n77/n78"
+  ],
+  "satellite": null
+ },
+ "nfc": "支持读写 NFC 卡片（13.56MHz 的 NFC 卡片）\n\r\n支持 NFC-SIM（只支持 SIM1 卡槽）\n\r\n支持 HCE 支付\n\r\n支持 eSE（支持 300+城市地铁公交乘车，支持 OPPO Pay，门禁卡，车钥匙及公民网络电子身份标识（eID）等多项功能。轻触一下，便捷通行，安全支付。）",
+ "colors": [
+  {
+   "slug": "titanium",
+   "name": "浅钛",
+   "hex": "#D8D8D8",
+   "is_default": true
+  },
+  {
+   "slug": "iceblue",
+   "name": "冰蓝",
+   "hex": "#E9F6F9",
+   "is_default": false
+  }
+ ],
+ "release_date": "2026-09"
+}

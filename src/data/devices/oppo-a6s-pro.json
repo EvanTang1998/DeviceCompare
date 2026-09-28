@@ -1,0 +1,111 @@
+{
+ "name": "OPPO A6s Pro",
+ "brand": "OPPO",
+ "series": "A 系列",
+ "release_year": 2026,
+ "chipset": {
+  "chip": "天玑6360 MAX",
+  "ram": [
+   "8GB LPDDR4X",
+   "12GB LPDDR4X"
+  ],
+  "rom": [
+   "128GB UFS 2.2",
+   "256GB UFS 2.2",
+   "512GB UFS 2.2"
+  ]
+ },
+ "body": {
+  "dimensions_mm": {
+   "height": 158.38,
+   "width": 75.15,
+   "depth": 8.29
+  },
+  "weight_g": 194,
+  "frame_material": null,
+  "back_material": null,
+  "front_material": null,
+  "water_resistance": null
+ },
+ "display": {
+  "size_inch": 6.57,
+  "resolution": "2372 x 1080",
+  "ppi": 397,
+  "refresh_rate": "1-120Hz",
+  "panel": null,
+  "form": "直屏",
+  "max_brightness_nits": 1400,
+  "hdr_formats": null
+ },
+ "display_secondary": null,
+ "battery": {
+  "capacity_mah": 7000,
+  "charging_watt": 80,
+  "wireless_charging_watt": null
+ },
+ "camera": [
+  {
+   "type": "主摄",
+   "sensor": null,
+   "resolution_mp": 50,
+   "aperture": "f/1.8",
+   "focal_length_mm": 27,
+   "image_stabilization": null
+  },
+  {
+   "type": "景深",
+   "sensor": null,
+   "resolution_mp": 2,
+   "aperture": "f/2.4",
+   "focal_length_mm": 22,
+   "image_stabilization": null
+  },
+  {
+   "type": "前置",
+   "sensor": null,
+   "resolution_mp": 16,
+   "aperture": "f/2.4",
+   "focal_length_mm": 23,
+   "image_stabilization": null
+  }
+ ],
+ "os": "ColorOS 16.0",
+ "biometric": {
+  "fingerprint": "屏下指纹",
+  "face_unlock": "支持"
+ },
+ "cellular": {
+  "sim": "Nano-SIM 卡，Nano-USIM 卡，双卡双待单通",
+  "esim": null,
+  "bands": [
+   "2G GSM：850/900/1800MHz",
+   "3G WCDMA：频段 1/5/8",
+   "4G LTE FDD：频段 1/3/5/8/28A",
+   "4G LTE TDD：频段 34/38/39/40/41/42/48",
+   "5G NR：n1/n3/n5/n8/n28A/n38/n40/n41/n77/n78"
+  ],
+  "satellite": null
+ },
+ "nfc": "支持读写 NFC 卡片（13.56MHz 的 NFC 卡片）\n支持 NFC-SIM（只支持 SIM1 卡槽）\n支持 HCE 支付\n支持 eSE（支持 300+城市地铁公交乘车，支持 OPPO Pay，门禁卡，车钥匙及公民网络电子身份标识（eID）等多项功能。轻触一下，便捷通行，安全支付。）",
+ "colors": [
+  {
+   "slug": "moonglow",
+   "name": "夜月生辉",
+   "hex": "#2F3850",
+   "is_default": true
+  },
+  {
+   "slug": "luckylotus",
+   "name": "好运莲莲",
+   "hex": "#F9F9F9",
+   "is_default": false
+  },
+  {
+   "slug": "skyreach",
+   "name": "青云直上",
+   "hex": "#D3EAF1",
+   "is_default": false
+  }
+ ],
+ "release_date": "2026-04"
+}

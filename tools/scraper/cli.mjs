@@ -7,6 +7,11 @@
 //   images / promote / list / recon  →  sources/apple/    苹果中国官网对比页（只抓图）
 //   oneplus                          →  sources/oneplus/  一加中国官网 specs 页（参数 + 图片）
 //   vivo                             →  sources/vivo/     vivo 中国官网参数页（参数 + 图片）
+//   oppo                             →  sources/oppo/     OPPO 官网 specs 页（参数）
+//                                        + 官方商城接口（分色多角度图，参数页只有拼图）
+//   xiaomi                           →  sources/xiaomi/   小米官网 specs 页（参数，需浏览器渲染）
+//                                        + 官方商城接口（分色图 + 关键参数兜底）
+//   huawei                           →  sources/huawei/   华为官网 specs 页（参数 + 分色图，同一页）
 //
 // 常用：
 //   node cli.mjs images --models iphone-18-pro,iphone-17    # 抓图到 out/
@@ -43,6 +48,14 @@ async function main() {
       return cmdOnePlus();
     case "vivo":
       return cmdVivo();
+    case "huawei":
+      return cmdHuawei();
+    case "huawei-front":
+      return cmdHuaweiFront();
+    case "oppo":
+      return cmdOppo();
+    case "xiaomi":
+      return cmdXiaomi();
     case "promote":
       return cmdPromote();
     case "list":
@@ -166,6 +179,109 @@ async function cmdVivo() {
   }
 }
 
+// ---------- huawei：华为官网 specs（参数 + 分色图，同一页） ----------
+
+async function cmdHuawei() {
+  const models = splitList(flags.models || flags.model);
+  if (!models.length) {
+    throw new Error(
+      `必须用 --models 指定华为机型 id（sources/huawei/specs.mjs 的 SPECS_URLS 键）\n` +
+        `  例：node cli.mjs huawei --models huawei-mate80,huawei-mate80-pro,huawei-mate80-pro-max`
+    );
+  }
+  const { scrapeHuaweiSpecs } = await import("./sources/huawei/specs.mjs");
+
+  console.log("=== 华为官网 specs 页抓取（参数 + 配色分色图） ===");
+  console.log(`机型：${models.join(", ")}`);
+  if (flags["dry-run"]) console.log("（--dry-run：JSON 不写入、图片只落临时目录）");
+
+  const { written } = await scrapeHuaweiSpecs({
+    ids: models,
+    dryRun: Boolean(flags["dry-run"]),
+  });
+
+  console.log(`\n=== 完成 ===`);
+  console.log(`${flags["dry-run"] ? "将写入" : "已写入"} ${written.length} 个参数 JSON`);
+  if (!flags["dry-run"]) {
+    console.log(`图片已归一化并入库到 src/data/images/`);
+    console.log(`下一步：PATH="/opt/homebrew/bin:$PATH" npm run build 验证`);
+  }
+}
+
+// ---------- huawei-front：vmall 正背组合图（裸名图，追加进每色轮播） ----------
+
+async function cmdHuaweiFront() {
+  const models = splitList(flags.models || flags.model);
+  const { scrapeHuaweiFronts } = await import("./sources/huawei/front.mjs");
+
+  console.log("=== 华为 vmall 正背组合图（官网没有正面图，见 front.mjs 头部说明） ===");
+  console.log(models.length ? `机型：${models.join(", ")}` : "机型：全部（Mate 60 系列会自动跳过）");
+  if (flags["dry-run"]) console.log("（--dry-run：图片只落 out/ 临时目录）");
+  await scrapeHuaweiFronts({ ids: models.length ? models : undefined, dryRun: Boolean(flags["dry-run"]) });
+}
+
+// ---------- oppo：OPPO 官网 specs（参数）+ 官方商城接口（分色图） ----------
+
+async function cmdOppo() {
+  const models = splitList(flags.models || flags.model);
+  if (!models.length) {
+    throw new Error(
+      `必须用 --models 指定 OPPO 机型 id\n` +
+        `  例：node cli.mjs oppo --models oppo-find-x10,oppo-find-x10-pro-max,oppo-find-n6`
+    );
+  }
+  const { scrapeOppoSpecs } = await import("./sources/oppo/specs.mjs");
+
+  console.log("=== OPPO 官网 specs + 商城分色图 ===");
+  console.log(`机型：${models.join(", ")}`);
+  if (flags["dry-run"]) console.log("（--dry-run：JSON 只预览、图片只备份不归一化）");
+  if (flags["no-images"]) console.log("（--no-images：跳过图片，只处理参数）");
+
+  const { written } = await scrapeOppoSpecs({
+    ids: models,
+    dryRun: Boolean(flags["dry-run"]),
+    withImages: !flags["no-images"],
+  });
+
+  console.log(`\n=== 完成 ===`);
+  console.log(`${flags["dry-run"] ? "将写入" : "已写入"} ${written.length} 个参数 JSON`);
+  if (!flags["dry-run"] && !flags["no-images"]) {
+    console.log(`图片已归一化并入库到 src/data/images/（原图备份在 tools/scraper/out/）`);
+    console.log(`下一步：PATH="/opt/homebrew/bin:$PATH" npm run build 验证`);
+  }
+}
+
+// ---------- xiaomi：小米官网 specs（参数）+ 官方商城接口（分色图） ----------
+
+async function cmdXiaomi() {
+  const models = splitList(flags.models || flags.model);
+  if (!models.length) {
+    throw new Error(
+      `必须用 --models 指定小米机型 id\n` +
+        `  例：node cli.mjs xiaomi --models xiaomi-17,xiaomi-17-pro,xiaomi-17-ultra`
+    );
+  }
+  const { scrapeXiaomiSpecs } = await import("./sources/xiaomi/specs.mjs");
+
+  console.log("=== 小米官网 specs + 商城分色图 ===");
+  console.log(`机型：${models.join(", ")}`);
+  if (flags["dry-run"]) console.log("（--dry-run：JSON 只预览、图片只落临时目录不归一化）");
+  if (flags["no-images"]) console.log("（--no-images：跳过图片，只处理参数）");
+
+  const { written } = await scrapeXiaomiSpecs({
+    ids: models,
+    dryRun: Boolean(flags["dry-run"]),
+    withImages: !flags["no-images"],
+  });
+
+  console.log(`\n=== 完成 ===`);
+  console.log(`${flags["dry-run"] ? "将写入" : "已写入"} ${written.length} 个参数 JSON`);
+  if (!flags["dry-run"] && !flags["no-images"]) {
+    console.log(`图片已归一化并入库到 src/data/images/（原图备份在 tools/scraper/out/）`);
+    console.log(`下一步：PATH="/opt/homebrew/bin:$PATH" npm run build 验证`);
+  }
+}
+
 // ---------- promote：苹果图片入库 ----------
 
 async function cmdPromote() {
@@ -232,6 +348,13 @@ async function cmdRecon() {
   console.log("");
   console.log("vivo —— 扒参数页解码后的结构");
   console.log("  node sources/vivo/recon/dump.mjs [slug]             看参数分组、配色与 __NUXT_DATA__ 顶层形态");
+  console.log("");
+  console.log("OPPO —— 扒 specs 页字段结构 / 商城页颜色切换行为");
+  console.log("  node sources/oppo/recon/dump.cjs [find-x10|find-n6] 看参数分组与全部字段");
+  console.log("  node sources/oppo/recon/camera-dump.mjs [--all]   相机原文 + 归类，查漏抓与分错");
+  console.log("  node sources/oppo/recon/specs-probe.mjs           全部机型 specs 页可用性");
+  console.log("  node sources/oppo/recon/color-audit.mjs           参数页配色 vs 商城配色对齐");
+  console.log("  node sources/oppo/recon/shop-gallery.mjs [skuId]  看商城颜色切换器与图集接口");
   console.log("");
   console.log("自检：node sources/apple/test/parse.test.mjs（或 npm test）");
   console.log("");
@@ -325,11 +448,39 @@ vivo 选项（vivo，--models 填官网 /vivo/param/<slug> 里的 slug）：
   --models    逗号分隔，如 x500pro,x300,x100；也可直接贴完整 URL
   --dry-run   JSON 不写入、图片只落临时目录，用于先检查
 
+huawei 选项（华为，--models 填本项目机型 id，参数与分色图同来自官网 specs 页）：
+  --models    逗号分隔，如 huawei-mate80,huawei-pura90-pro-max,huawei-mate60-rs
+  --dry-run   JSON 不写入、图片只落临时目录，用于先检查
+              （Mate 60 系列官网参数页已下架，自动走 sources/huawei/legacy.mjs 的官方存档数据）
+
+   跑全部机型：
+     node cli.mjs huawei --models "$(grep -oE '^  \"huawei-[a-z0-9-]+\":' sources/huawei/specs.mjs | sed 's/[\": ]//g' | sort -u | paste -sd, -)"
+
+oppo 选项（OPPO，--models 填本项目机型 id，参数来自官网 specs 页、分色图来自官方商城接口）：
+  --models      逗号分隔，如 oppo-find-x10,oppo-find-x10-pro-max,oppo-find-n6
+  --dry-run     JSON 只预览、图片只备份不归一化
+  --no-images   只处理参数，跳过商城图片（改完解析逻辑自查用）
+
+xiaomi 选项（小米，--models 填本项目机型 id，参数来自官网 specs 页、分色图来自官方商城接口）：
+  --models      逗号分隔，如 xiaomi-17,xiaomi-17-pro-max,xiaomi-17-ultra
+  --dry-run     JSON 只预览、图片只落临时目录
+  --no-images   只处理参数，跳过商城图片
+
+   跑全部机型：
+     node cli.mjs xiaomi --models xiaomi-17,xiaomi-17-pro,xiaomi-17-pro-max,xiaomi-17-ultra,xiaomi-17-max,xiaomi-17t,xiaomi-17t-pro
+
+   跑全部机型：
+     node cli.mjs oppo --models "$(grep -oE '^  \"oppo-[a-z0-9-]+\":' sources/oppo/specs.mjs | sed 's/[\": ]//g' | sort -u | paste -sd, -)" --no-images
+   ⚠ 商城已下架 / 官网没挂购买链接的机型没有分色图，参数照常入库、图片留空（正常，非报错）
+
 示例：
   node cli.mjs images --models iphone-18-pro,iphone-17
   node cli.mjs promote --devices iphone-18-pro --dry-run
   node cli.mjs oneplus --models 15,15t --dry-run
   node cli.mjs oneplus --models https://www.oneplus.com/cn/ace-5-ultra-specs
   node cli.mjs vivo --models x500pro,x300 --dry-run
+  node cli.mjs oppo --models oppo-find-x10-e --no-images
+  node cli.mjs xiaomi --models xiaomi-17,xiaomi-17-ultra --dry-run
+  node cli.mjs huawei --models huawei-mate80,huawei-mate80-pro-max --dry-run
 `);
 }

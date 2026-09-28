@@ -1,0 +1,133 @@
+{
+ "name": "OPPO Find X9 Ultra",
+ "brand": "OPPO",
+ "series": "Find X 系列",
+ "release_year": 2026,
+ "chipset": {
+  "chip": "第五代骁龙 8 至尊版",
+  "ram": [
+   "12GB LPDDR5X",
+   "16GB LPDDR5X"
+  ],
+  "rom": [
+   "256GB UFS 4.1",
+   "512GB UFS 4.1",
+   "1TB UFS 4.1"
+  ]
+ },
+ "body": {
+  "dimensions_mm": {
+   "height": 163.16,
+   "width": 76.97,
+   "depth": 9.1
+  },
+  "weight_g": 236,
+  "frame_material": null,
+  "back_material": null,
+  "front_material": null,
+  "water_resistance": null
+ },
+ "display": {
+  "size_inch": 6.82,
+  "resolution": "3168 x 1440",
+  "ppi": 510,
+  "refresh_rate": "1-144Hz",
+  "panel": null,
+  "form": "直屏",
+  "max_brightness_nits": 1800,
+  "hdr_formats": null
+ },
+ "display_secondary": null,
+ "battery": {
+  "capacity_mah": 7050,
+  "charging_watt": 100,
+  "wireless_charging_watt": 50
+ },
+ "camera": [
+  {
+   "type": "主摄",
+   "sensor": null,
+   "resolution_mp": 200,
+   "aperture": "f/1.5",
+   "focal_length_mm": 23,
+   "image_stabilization": [
+    "光学防抖"
+   ]
+  },
+  {
+   "type": "超广角",
+   "sensor": null,
+   "resolution_mp": 50,
+   "aperture": "f/2.0",
+   "focal_length_mm": 14,
+   "image_stabilization": null
+  },
+  {
+   "type": "长焦",
+   "sensor": null,
+   "resolution_mp": 200,
+   "aperture": "f/2.2",
+   "focal_length_mm": 70,
+   "image_stabilization": [
+    "光学防抖"
+   ]
+  },
+  {
+   "type": "长焦",
+   "sensor": null,
+   "resolution_mp": 50,
+   "aperture": "f/3.5",
+   "focal_length_mm": 230,
+   "image_stabilization": [
+    "光学防抖"
+   ]
+  },
+  {
+   "type": "前置",
+   "sensor": null,
+   "resolution_mp": 50,
+   "aperture": "f/2.4",
+   "focal_length_mm": 21,
+   "image_stabilization": null
+  }
+ ],
+ "os": "ColorOS 16.0",
+ "biometric": {
+  "fingerprint": "屏下指纹",
+  "face_unlock": "支持"
+ },
+ "cellular": {
+  "sim": "Nano-SIM 卡，Nano-USIM 卡，双卡双待双通（部分 RAT/频段支持双通）",
+  "esim": null,
+  "bands": [
+   "2G GSM：850/900/1800MHz",
+   "3G WCDMA：频段 1/2/4/5/6/8/19",
+   "4G LTE FDD：频段 1/2/3/4/5/7/8/12/17/18/19/20/25/26/28/66",
+   "4G LTE TDD：频段 34/38/39/40/41/42/43/48",
+   "5G NR：n1/n2/n3/n5/n7/n8/n12/n18/n20/n25/n26/n28/n38/n40/n41/n48/n66/n77/n78/n79/n80/n81/n83/n84/n89"
+  ],
+  "satellite": null
+ },
+ "nfc": "支持读写 NFC 卡片（13.56MHz 的 NFC 卡片）\n支持 NFC-SIM（只支持 SIM1 卡槽）\n支持 HCE 支付\n支持 eSE（支持 300+城市地铁公交乘车，支持 OPPO Pay，门禁卡，车钥匙及公民网络电子身份标识（eID）等多项功能。轻触一下，便捷通行，安全支付。）",
+ "colors": [
+  {
+   "slug": "canyon",
+   "name": "绒砂峡谷",
+   "hex": "#FFB17F",
+   "is_default": true
+  },
+  {
+   "slug": "glacier",
+   "name": "极地冰川",
+   "hex": "#F1F1F3",
+   "is_default": false
+  },
+  {
+   "slug": "tundra",
+   "name": "大地苔原",
+   "hex": "#303032",
+   "is_default": false
+  }
+ ],
+ "release_date": "2026-04"
+}

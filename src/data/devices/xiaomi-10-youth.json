@@ -1,0 +1,141 @@
+{
+ "name": "Xiaomi 10 青春版",
+ "brand": "小米",
+ "series": "数字系列",
+ "release_year": 2020,
+ "chipset": {
+  "chip": "骁龙 765G",
+  "ram": [
+   "6GB LPDDR4X",
+   "8GB LPDDR4X"
+  ],
+  "rom": [
+   "64GB UFS",
+   "128GB UFS",
+   "256GB UFS"
+  ]
+ },
+ "body": {
+  "dimensions_mm": {
+   "height": 164.02,
+   "width": 74.77,
+   "depth": 7.88
+  },
+  "weight_g": 192,
+  "frame_material": null,
+  "back_material": null,
+  "front_material": null,
+  "water_resistance": null
+ },
+ "display": {
+  "size_inch": 6.57,
+  "resolution": "2400 x 1080",
+  "ppi": 401,
+  "refresh_rate": 60,
+  "panel": "AMOLED",
+  "form": null,
+  "max_brightness_nits": 800,
+  "hdr_formats": null
+ },
+ "display_secondary": null,
+ "battery": {
+  "capacity_mah": 4160,
+  "charging_watt": 22.5,
+  "wireless_charging_watt": null
+ },
+ "camera": [
+  {
+   "type": "主摄",
+   "sensor": null,
+   "resolution_mp": 48,
+   "aperture": "f/1.79",
+   "focal_length_mm": null,
+   "image_stabilization": null
+  },
+  {
+   "type": "长焦",
+   "sensor": null,
+   "resolution_mp": 8,
+   "aperture": null,
+   "focal_length_mm": null,
+   "image_stabilization": [
+    "光学防抖"
+   ]
+  },
+  {
+   "type": "超广角",
+   "sensor": null,
+   "resolution_mp": 8,
+   "aperture": "f/2.2",
+   "focal_length_mm": null,
+   "image_stabilization": null
+  },
+  {
+   "type": "微距",
+   "sensor": null,
+   "resolution_mp": null,
+   "aperture": null,
+   "focal_length_mm": null,
+   "image_stabilization": null
+  },
+  {
+   "type": "前置",
+   "sensor": null,
+   "resolution_mp": 16,
+   "aperture": null,
+   "focal_length_mm": null,
+   "image_stabilization": null
+  }
+ ],
+ "os": "MIUI 11（基于 Android 10）",
+ "biometric": {
+  "fingerprint": "屏下指纹",
+  "face_unlock": null
+ },
+ "cellular": {
+  "sim": "双 Nano-SIM 卡",
+  "esim": null,
+  "bands": [
+   "5G NR：n1/n41/n78/n79",
+   "4G LTE FDD：B1/B2/B3/B4/B5/B7/B8",
+   "4G LTE TDD：B34/B38/B39/B40/B41",
+   "3G WCDMA：B1/B2/B5/B8",
+   "2G GSM：B2/B3/B5/B8"
+  ],
+  "satellite": null
+ },
+ "nfc": "在小米钱包APP 开通后，通过双击电源键可使用小米公交、Mi Pay、小米门卡、eID*、电子车钥匙*等功能。\n·小米钱包公交卡：支持 311 余座城市*，支持 28 种公交卡*移卡，支持免费旧卡移新机以及卡内余额同步迁移。 （在初期销售批次手机中，小米公交支持城市由于技术条件、城市等有所差异，以产品完成测试时间为准；使用时请认准刷卡终端的“交通联合”标识，具体可用范围及乘车优惠以当地政府及运营企业发布为准。）\n·Mi Pay：支持 118 家银行*，线上支付，线下支付、银联二维码、银联卡支付、银联碰一碰支付。\n·小米钱包门卡：门卡模拟、米家智能门锁、虚拟门卡、自定义空白卡。（仅能模拟未经加密且频段为 13.56MHz 的门卡，有门卡功能的银行卡和带有储值消费、公交消费等功能的门卡暂时不 能被模拟，即使模拟成功，这些卡片 也不具备银行、公交等功能；）\n·小米钱包智能选卡：智能切换小米钱包门卡和小米钱包公交卡。\n* 具体支持的城市数量、城市名称、银行、卡片数量、 eID 合作酒店名单，电子车钥匙合作车型等，以实际情况为准。 进一步了解请关注“小米钱包”官方微信公众号。\n智能选卡支持的设备以及版本信息，进一步了解：https://www.xiaomi.cn/post/18882483",
+ "colors": [
+  {
+   "name": "黑巧风暴",
+   "slug": "chocostorm",
+   "hex": null,
+   "is_default": true
+  },
+  {
+   "name": "蓝莓薄荷",
+   "slug": "blueberrymint",
+   "hex": null,
+   "is_default": false
+  },
+  {
+   "name": "桃子西柚",
+   "slug": "peachgrapefruit",
+   "hex": null,
+   "is_default": false
+  },
+  {
+   "name": "四季春奶绿",
+   "slug": "milkteagreen",
+   "hex": null,
+   "is_default": false
+  },
+  {
+   "name": "白桃乌龙",
+   "slug": "whitepeachoolong",
+   "hex": null,
+   "is_default": false
+  }
+ ],
+ "release_date": "2020-04"
+}

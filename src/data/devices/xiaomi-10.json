@@ -1,0 +1,121 @@
+{
+ "name": "Xiaomi 10",
+ "brand": "小米",
+ "series": "数字系列",
+ "release_year": 2020,
+ "chipset": {
+  "chip": "Qualcomm Snapdragon 865 flagship platform",
+  "ram": [
+   "8GB LPDDR5"
+  ],
+  "rom": [
+   "128GB UFS3.0",
+   "256GB UFS3.0"
+  ]
+ },
+ "body": {
+  "dimensions_mm": {
+   "height": 162.5,
+   "width": 74.8,
+   "depth": 8.96
+  },
+  "weight_g": 208,
+  "frame_material": null,
+  "back_material": null,
+  "front_material": null,
+  "water_resistance": null
+ },
+ "display": {
+  "size_inch": 6.67,
+  "resolution": "2340 x 1080",
+  "ppi": 386,
+  "refresh_rate": "1-90Hz",
+  "panel": "AMOLED",
+  "form": null,
+  "max_brightness_nits": 800,
+  "hdr_formats": null
+ },
+ "display_secondary": null,
+ "battery": {
+  "capacity_mah": 4780,
+  "charging_watt": 30,
+  "wireless_charging_watt": 30
+ },
+ "camera": [
+  {
+   "type": "主摄",
+   "sensor": null,
+   "resolution_mp": 108,
+   "aperture": "f/1.69",
+   "focal_length_mm": null,
+   "image_stabilization": [
+    "光学防抖"
+   ]
+  },
+  {
+   "type": "超广角",
+   "sensor": null,
+   "resolution_mp": 13,
+   "aperture": "f/2.4",
+   "focal_length_mm": null,
+   "image_stabilization": null
+  },
+  {
+   "type": "景深",
+   "sensor": null,
+   "resolution_mp": 2,
+   "aperture": "f/2.4",
+   "focal_length_mm": null,
+   "image_stabilization": null
+  },
+  {
+   "type": "微距",
+   "sensor": null,
+   "resolution_mp": 2,
+   "aperture": "f/2.4",
+   "focal_length_mm": null,
+   "image_stabilization": null
+  },
+  {
+   "type": "前置",
+   "sensor": null,
+   "resolution_mp": 20,
+   "aperture": null,
+   "focal_length_mm": null,
+   "image_stabilization": null
+  }
+ ],
+ "os": "MIUI 11",
+ "biometric": {
+  "fingerprint": "屏下指纹",
+  "face_unlock": null
+ },
+ "cellular": {
+  "sim": "双 Nano-SIM 卡",
+  "esim": null,
+  "bands": [
+   "5G NR：n1/n3/n7/n28/n77/n78",
+   "4G LTE FDD：B1/B2/B3/B4/B5/B7/B8/B20/B28/B32",
+   "4G LTE TDD：B38/B40",
+   "3G WCDMA：B1/B2/B4/B5/B8",
+   "2G GSM：B2/B3/B5/B8"
+  ],
+  "satellite": null
+ },
+ "nfc": "Supports Google Pay",
+ "colors": [
+  {
+   "name": "Coral Green",
+   "slug": "coralgreen",
+   "hex": null,
+   "is_default": true
+  },
+  {
+   "name": "Twilight Grey",
+   "slug": "twilightgrey",
+   "hex": null,
+   "is_default": false
+  }
+ ],
+ "release_date": "2020-02"
+}

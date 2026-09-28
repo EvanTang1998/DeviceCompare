@@ -1,0 +1,134 @@
+{
+ "name": "Xiaomi 14",
+ "brand": "小米",
+ "series": "数字系列",
+ "release_year": 2023,
+ "chipset": {
+  "chip": "第三代骁龙 8",
+  "ram": [
+   "8GB LPDDR5X",
+   "12GB LPDDR5X",
+   "16GB LPDDR5X"
+  ],
+  "rom": [
+   "256GB UFS",
+   "512GB UFS",
+   "1TB UFS"
+  ]
+ },
+ "body": {
+  "dimensions_mm": {
+   "height": 152.8,
+   "width": 71.5,
+   "depth": 8.2
+  },
+  "weight_g": 193,
+  "frame_material": null,
+  "back_material": null,
+  "front_material": null,
+  "water_resistance": "IP68"
+ },
+ "display": {
+  "size_inch": 6.36,
+  "resolution": "2670 x 1200",
+  "ppi": 460,
+  "refresh_rate": "1-120Hz",
+  "panel": "OLED",
+  "form": "直屏",
+  "max_brightness_nits": 3000,
+  "hdr_formats": [
+   "HDR10+",
+   "HDR Vivid",
+   "杜比视界"
+  ]
+ },
+ "display_secondary": null,
+ "battery": {
+  "capacity_mah": 4610,
+  "charging_watt": 90,
+  "wireless_charging_watt": 50
+ },
+ "camera": [
+  {
+   "type": "主摄",
+   "sensor": null,
+   "resolution_mp": 50,
+   "aperture": "f/1.6",
+   "focal_length_mm": 23,
+   "image_stabilization": [
+    "光学防抖"
+   ]
+  },
+  {
+   "type": "长焦",
+   "sensor": null,
+   "resolution_mp": null,
+   "aperture": "f/2.0",
+   "focal_length_mm": 75,
+   "image_stabilization": [
+    "光学防抖"
+   ]
+  },
+  {
+   "type": "超广角",
+   "sensor": null,
+   "resolution_mp": 50,
+   "aperture": "f/2.2",
+   "focal_length_mm": 14,
+   "image_stabilization": null
+  },
+  {
+   "type": "前置",
+   "sensor": null,
+   "resolution_mp": 32,
+   "aperture": null,
+   "focal_length_mm": null,
+   "image_stabilization": null
+  }
+ ],
+ "os": "Xiaomi HyperOS",
+ "biometric": {
+  "fingerprint": "屏下指纹",
+  "face_unlock": null
+ },
+ "cellular": {
+  "sim": "双 Nano-SIM 卡",
+  "esim": null,
+  "bands": [
+   "5G NR：n1/n3/n5/n8/n28a/n38/n40/n41/n48/n66/n77/n78",
+   "4G LTE FDD：B1/B3/B4/B5/B8/B18/B19/B26/B28a/B66",
+   "4G LTE TDD：B34/B38/B39/B40/B41/B42/B48",
+   "3G WCDMA：B1/B4/B5/B6/B8/B19",
+   "2G GSM：B3/B5/B8"
+  ],
+  "satellite": null
+ },
+ "nfc": "在钱包应用开通NFC相关服务后，通过双击电源键可使用交通卡、Mi Pay、门卡、车钥匙功能。\n交通卡：支持 300+ 座城市，支持 40+ 张公交卡免费从旧手机迁移至新手机（交通卡支持城市由于技术条件、\n城市有所差异，以实际情况为准；刷卡终端可用范围及乘车优惠以当地政府及运营企业发布为准）。\nMi Pay：支持线上应用内支付、线下刷卡、银联二维码支付、银联标签碰一碰支付。\n门卡：支持实体门卡、智能门锁、社区门卡、自定义空白卡（仅能模拟频段为 13.56MHz 的门卡，有门卡功能\n的银行卡和带有储值消费、公交消费功能的门卡即使模拟成功，这些卡片也不具备银行、公交功能）。\n车钥匙：支持手机NFC解闭锁、启动引擎功能。\n具体支持的城市数量、城市名称、银行、卡片数量，车钥匙合作车型，以实际情况为准。进一步了解请参阅\n（https://www.mipay.com）。",
+ "colors": [
+  {
+   "name": "白色",
+   "slug": "white",
+   "hex": "#d5d5d5",
+   "is_default": true
+  },
+  {
+   "name": "黑色",
+   "slug": "black",
+   "hex": "#1e1f23",
+   "is_default": false
+  },
+  {
+   "name": "岩石青",
+   "slug": "jadegreen",
+   "hex": "#364a3f",
+   "is_default": false
+  },
+  {
+   "name": "雪山粉",
+   "slug": "snowpink",
+   "hex": "#d4bfc8",
+   "is_default": false
+  }
+ ],
+ "release_date": "2023-10"
+}

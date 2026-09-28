@@ -1,0 +1,141 @@
+{
+ "name": "Xiaomi 17 Pro",
+ "brand": "小米",
+ "series": "数字系列",
+ "release_year": 2025,
+ "chipset": {
+  "chip": "第五代骁龙 8 至尊版",
+  "ram": [
+   "12GB LPDDR5X",
+   "16GB LPDDR5X"
+  ],
+  "rom": [
+   "256GB UFS",
+   "512GB UFS",
+   "1TB UFS"
+  ]
+ },
+ "body": {
+  "dimensions_mm": {
+   "height": 151.1,
+   "width": 71.8,
+   "depth": 8
+  },
+  "weight_g": 192,
+  "frame_material": null,
+  "back_material": null,
+  "front_material": null,
+  "water_resistance": null
+ },
+ "display": {
+  "size_inch": 6.3,
+  "resolution": "2656 x 1220",
+  "ppi": 464,
+  "refresh_rate": "1-120Hz",
+  "panel": "AMOLED",
+  "form": null,
+  "max_brightness_nits": 3500,
+  "hdr_formats": [
+   "HDR Vivid",
+   "杜比视界"
+  ]
+ },
+ "display_secondary": {
+  "size_inch": 2.7,
+  "resolution": "904 x 572",
+  "ppi": 396,
+  "refresh_rate": "1-120Hz",
+  "panel": "AMOLED",
+  "form": null,
+  "max_brightness_nits": 3500,
+  "hdr_formats": null
+ },
+ "battery": {
+  "capacity_mah": 6300,
+  "charging_watt": 100,
+  "wireless_charging_watt": 50
+ },
+ "camera": [
+  {
+   "type": "主摄",
+   "sensor": null,
+   "resolution_mp": 50,
+   "aperture": "f/1.67",
+   "focal_length_mm": 23,
+   "image_stabilization": [
+    "光学防抖"
+   ]
+  },
+  {
+   "type": "长焦",
+   "sensor": null,
+   "resolution_mp": 50,
+   "aperture": "f/3.0",
+   "focal_length_mm": null,
+   "image_stabilization": [
+    "光学防抖"
+   ]
+  },
+  {
+   "type": "超广角",
+   "sensor": null,
+   "resolution_mp": 50,
+   "aperture": "f/2.4",
+   "focal_length_mm": 17,
+   "image_stabilization": null
+  },
+  {
+   "type": "前置",
+   "sensor": null,
+   "resolution_mp": 50,
+   "aperture": "f/2.2",
+   "focal_length_mm": null,
+   "image_stabilization": null
+  }
+ ],
+ "os": "Xiaomi HyperOS 3",
+ "biometric": {
+  "fingerprint": "屏下指纹",
+  "face_unlock": null
+ },
+ "cellular": {
+  "sim": "双 Nano-SIM 卡",
+  "esim": null,
+  "bands": [
+   "5G NR：n1/n2/n3/n5/n7/n8/n12/n18/n20/n25/n26/n28/n38/n40/n41/n48/n66/n77/n78/n80/n81/n83/n84/n89",
+   "4G LTE FDD：B1/B2/B3/B4/B5/B7/B8/B12/B17/B18/B19/B20/B25/B26/B28/B66",
+   "4G LTE TDD：B34/B38/B39/B40/B41/B42/B48",
+   "3G WCDMA：B1/B2/B4/B5/B6/B8/B19",
+   "2G GSM：B2/B3/B5/B8"
+  ],
+  "satellite": null
+ },
+ "nfc": "在钱包 App 开通 NFC 相关服务后，通过双击电源键可使用交通卡、Mi Pay、门卡、车钥匙等功能。\n交通卡：支持 300+ 座城市，支持 40+ 张公交卡免费从旧手机迁移至新手机。（交通卡支持城市由于技术条件、城市等有所差异，以实际情况为准；刷卡终端可用范围及乘车优惠以当地政府及运营企业发布为准。）\nMi Pay：支持线上 App 支付，线下刷卡、二维码支付、银联标签碰一碰支付。二维码支付支持银联标准二维码\n的主扫及被扫支付，支付宝、微信等标准的收款二维码主扫支付。\n门卡：实体门卡、智能门锁、社区门卡、自定义空白卡。（仅能模拟频段为 13.56MHz 的门卡，有门卡功能的银\n行卡和带有储值消费、公交消费等功能的门卡即使模拟成功，这些卡片也不具备银行、公交等功能。）\n车钥匙：支持手机 NFC 解闭锁、启动引擎等功能。\n具体支持的城市数量、城市名称、银行、卡片数量、车钥匙合作车型等，以实际情况为准。进一步了解请参阅（https://www.mipay.com）",
+ "colors": [
+  {
+   "name": "黑色",
+   "slug": "black",
+   "hex": "#343434",
+   "is_default": true
+  },
+  {
+   "name": "白色",
+   "slug": "white",
+   "hex": "#dcdcdc",
+   "is_default": false
+  },
+  {
+   "name": "冷烟紫",
+   "slug": "coolsmokepurple",
+   "hex": "#8c8494",
+   "is_default": false
+  },
+  {
+   "name": "森野绿",
+   "slug": "forestgreen",
+   "hex": "#444c44",
+   "is_default": false
+  }
+ ],
+ "release_date": "2025-09"
+}

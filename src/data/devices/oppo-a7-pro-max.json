@@ -1,0 +1,113 @@
+{
+ "name": "OPPO A7 Pro Max",
+ "brand": "OPPO",
+ "series": "A 系列",
+ "release_year": 2026,
+ "chipset": {
+  "chip": "高通第五代骁龙®4",
+  "ram": [
+   "8GB LPDDR4X",
+   "12GB LPDDR4X"
+  ],
+  "rom": [
+   "128GB UFS 3.1",
+   "256GB UFS 3.1",
+   "512GB UFS 3.1"
+  ]
+ },
+ "body": {
+  "dimensions_mm": {
+   "height": 162.98,
+   "width": 77.97,
+   "depth": 8.57
+  },
+  "weight_g": 226,
+  "frame_material": null,
+  "back_material": null,
+  "front_material": null,
+  "water_resistance": null
+ },
+ "display": {
+  "size_inch": 6.78,
+  "resolution": "2772 x 1272",
+  "ppi": null,
+  "refresh_rate": "1-120Hz",
+  "panel": null,
+  "form": "直屏",
+  "max_brightness_nits": 1800,
+  "hdr_formats": null
+ },
+ "display_secondary": null,
+ "battery": {
+  "capacity_mah": 10000,
+  "charging_watt": 80,
+  "wireless_charging_watt": null
+ },
+ "camera": [
+  {
+   "type": "主摄",
+   "sensor": null,
+   "resolution_mp": 50,
+   "aperture": "f/1.8",
+   "focal_length_mm": 26,
+   "image_stabilization": [
+    "光学防抖"
+   ]
+  },
+  {
+   "type": "景深",
+   "sensor": null,
+   "resolution_mp": 2,
+   "aperture": "f/2.4",
+   "focal_length_mm": 22,
+   "image_stabilization": null
+  },
+  {
+   "type": "前置",
+   "sensor": null,
+   "resolution_mp": 50,
+   "aperture": "f/2.0",
+   "focal_length_mm": 18,
+   "image_stabilization": null
+  }
+ ],
+ "os": "ColorOS 16.0",
+ "biometric": {
+  "fingerprint": "屏下指纹",
+  "face_unlock": "支持"
+ },
+ "cellular": {
+  "sim": "Nano-SIM 卡，Nano-USIM 卡",
+  "esim": null,
+  "bands": [
+   "2G GSM：850/900/1800MHz",
+   "3G WCDMA：频段 1/5/8",
+   "4G LTE FDD：频段 1/3/5/8/18/19/26/28A",
+   "4G LTE TDD：频段 34/38/39/40/41/42/43/48",
+   "5G NR：n1/n3/n5/n8/n18/n26/n28A/n38/n40/n41/n48/n77/n78"
+  ],
+  "satellite": null
+ },
+ "nfc": "支持读写 NFC 卡片（13.56MHz 的 NFC 卡片）\n\r\n支持 NFC-SIM（只支持 SIM1 卡槽）\n\r\n支持 HCE 支付\n\r\n支持 eSE（支持 300+城市地铁公交乘车，支持 OPPO Pay，门禁卡，车钥匙及公民网络电子身份标识（eID）等多项功能。轻触一下，便捷通行，安全支付。）",
+ "colors": [
+  {
+   "slug": "distantblack",
+   "name": "远山黑",
+   "hex": "#272727",
+   "is_default": true
+  },
+  {
+   "slug": "futureorange",
+   "name": "前橙似锦",
+   "hex": "#FFA375",
+   "is_default": false
+  },
+  {
+   "slug": "windsurfer",
+   "name": "乘风破浪",
+   "hex": "#FFFFFF",
+   "is_default": false
+  }
+ ],
+ "release_date": "2026-08"
+}

@@ -1,0 +1,136 @@
+{
+ "name": "OPPO Find N5",
+ "brand": "OPPO",
+ "series": "Find N 系列",
+ "release_year": 2025,
+ "chipset": {
+  "chip": "第五代高通骁龙 8 至尊版",
+  "ram": [
+   "16GB LPDDR5X",
+   "12GB LPDDR5X"
+  ],
+  "rom": [
+   "512GB UFS 4.0",
+   "256GB UFS 4.0"
+  ]
+ },
+ "body": {
+  "dimensions_mm": {
+   "height": 160.87,
+   "width": 146.58,
+   "depth": 4.36
+  },
+  "weight_g": 234,
+  "frame_material": null,
+  "back_material": null,
+  "front_material": null,
+  "water_resistance": null,
+  "dimensions_folded_mm": {
+   "height": 160.87,
+   "width": 74.42,
+   "depth": 9.35
+  }
+ },
+ "display": {
+  "size_inch": 8.12,
+  "resolution": "2480 x 2248",
+  "ppi": 412,
+  "refresh_rate": "1-120Hz",
+  "panel": "AMOLED",
+  "form": null,
+  "max_brightness_nits": 1400,
+  "hdr_formats": null
+ },
+ "display_secondary": {
+  "size_inch": 6.62,
+  "resolution": "2616 x 1140",
+  "ppi": 431,
+  "refresh_rate": "1-120Hz",
+  "panel": "AMOLED",
+  "form": null,
+  "max_brightness_nits": 1600,
+  "hdr_formats": null
+ },
+ "battery": {
+  "capacity_mah": 5600,
+  "charging_watt": 80,
+  "wireless_charging_watt": 50
+ },
+ "camera": [
+  {
+   "type": "主摄",
+   "sensor": null,
+   "resolution_mp": 50,
+   "aperture": "f/1.8",
+   "focal_length_mm": 21,
+   "image_stabilization": [
+    "光学防抖"
+   ]
+  },
+  {
+   "type": "超广角",
+   "sensor": null,
+   "resolution_mp": 8,
+   "aperture": "f/2.2",
+   "focal_length_mm": 15,
+   "image_stabilization": null
+  },
+  {
+   "type": "长焦",
+   "sensor": null,
+   "resolution_mp": 50,
+   "aperture": "f/2.7",
+   "focal_length_mm": 70,
+   "image_stabilization": [
+    "光学防抖"
+   ]
+  },
+  {
+   "type": "前置",
+   "sensor": null,
+   "resolution_mp": 8,
+   "aperture": "f/2.4",
+   "focal_length_mm": 21,
+   "image_stabilization": null
+  }
+ ],
+ "os": "ColorOS 15.0",
+ "biometric": {
+  "fingerprint": "侧边指纹",
+  "face_unlock": "支持"
+ },
+ "cellular": {
+  "sim": "Nano-SIM 卡，Nano-USIM 卡，双卡双待双通（部分 RAT/频段支持双通）",
+  "esim": null,
+  "bands": [
+   "2G GSM：850/900/1800MHz",
+   "3G WCDMA：频段 1/2/4/5/8",
+   "4G LTE FDD：频段 1/2/3/4/5/7/8/12/17/18/19/20/26/28/66",
+   "4G LTE TDD：频段 34/38/39/40/41/42/48",
+   "5G：n1/n2/n3/n5/n7/n8/n20/n28/n38/n40/n41/n66/n77/n78/n80/n81/n83/n84"
+  ],
+  "satellite": null
+ },
+ "nfc": "多功能 NFC\n支持读写 NFC 卡片（13.56MHz 的 NFC 卡片）\n支持 NFC-SIM（只支持 SIM1 卡槽）\n支持 HCE\n支持 eSE（支持 300+城市地铁公交乘车，支持 OPPO Pay、门禁卡、车钥匙及公民网络电子身份标识（eID）等多项功能。轻触一下，便捷通行，安全支付。）",
+ "colors": [
+  {
+   "slug": "satinblack",
+   "name": "缎黑",
+   "hex": "#3C3C3C",
+   "is_default": true
+  },
+  {
+   "slug": "jadewhite",
+   "name": "玉白",
+   "hex": "#FFFFFF",
+   "is_default": false
+  },
+  {
+   "slug": "duskpurple",
+   "name": "暮紫",
+   "hex": "#6F5C96",
+   "is_default": false
+  }
+ ],
+ "release_date": "2025-02"
+}

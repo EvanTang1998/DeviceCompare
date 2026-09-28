@@ -1,0 +1,110 @@
+{
+ "name": "OPPO A6k",
+ "brand": "OPPO",
+ "series": "A 系列",
+ "release_year": 2026,
+ "chipset": {
+  "chip": "天玑6300",
+  "ram": [
+   "8GB LPDDR4X",
+   "12GB LPDDR4X"
+  ],
+  "rom": [
+   "256GB UFS 2.2",
+   "512GB UFS 2.2"
+  ]
+ },
+ "body": {
+  "dimensions_mm": {
+   "height": 166.61,
+   "width": 78.51,
+   "depth": 8.61
+  },
+  "weight_g": 216,
+  "frame_material": null,
+  "back_material": null,
+  "front_material": null,
+  "water_resistance": null
+ },
+ "display": {
+  "size_inch": 6.75,
+  "resolution": "1570 x 720",
+  "ppi": null,
+  "refresh_rate": "1-120Hz",
+  "panel": null,
+  "form": "直屏",
+  "max_brightness_nits": 1125,
+  "hdr_formats": null
+ },
+ "display_secondary": null,
+ "battery": {
+  "capacity_mah": 7000,
+  "charging_watt": 45,
+  "wireless_charging_watt": null
+ },
+ "camera": [
+  {
+   "type": "主摄",
+   "sensor": null,
+   "resolution_mp": 50,
+   "aperture": "f/1.8",
+   "focal_length_mm": 27,
+   "image_stabilization": null
+  },
+  {
+   "type": "景深",
+   "sensor": null,
+   "resolution_mp": 2,
+   "aperture": "f/2.4",
+   "focal_length_mm": 22,
+   "image_stabilization": null
+  },
+  {
+   "type": "前置",
+   "sensor": null,
+   "resolution_mp": 8,
+   "aperture": "f/2.0",
+   "focal_length_mm": 25,
+   "image_stabilization": null
+  }
+ ],
+ "os": "ColorOS 15.0",
+ "biometric": {
+  "fingerprint": "侧边指纹",
+  "face_unlock": "支持"
+ },
+ "cellular": {
+  "sim": "Nano-SIM 卡，Nano-USIM 卡",
+  "esim": null,
+  "bands": [
+   "2G GSM：900/1800MHz",
+   "3G WCDMA：频段 1/5/8",
+   "4G LTE FDD：频段 1/3/5/8/28A",
+   "4G LTE TDD：频段 34/38/39/40/41",
+   "5G NR：n1/n3/n5/n8/n28A/n41/n48/n77/n78"
+  ],
+  "satellite": null
+ },
+ "nfc": null,
+ "colors": [
+  {
+   "slug": "duskblue",
+   "name": "暮光蓝",
+   "hex": "#486D70",
+   "is_default": true
+  },
+  {
+   "slug": "shellwhite",
+   "name": "海贝白",
+   "hex": "#F9F9F9",
+   "is_default": false
+  },
+  {
+   "slug": "dawngold",
+   "name": "曙光金",
+   "hex": "#FFEDDB",
+   "is_default": false
+  }
+ ],
+ "release_date": "2026-04"
+}

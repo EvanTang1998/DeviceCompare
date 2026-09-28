@@ -1,0 +1,125 @@
+{
+ "name": "Xiaomi 11 Pro",
+ "brand": "小米",
+ "series": "数字系列",
+ "release_year": 2021,
+ "chipset": {
+  "chip": "高通骁龙 888",
+  "ram": [
+   "8GB LPDDR5",
+   "12GB LPDDR5"
+  ],
+  "rom": [
+   "128GB UFS",
+   "256GB UFS"
+  ]
+ },
+ "body": {
+  "dimensions_mm": {
+   "height": 164.3,
+   "width": 74.6,
+   "depth": 8.53
+  },
+  "weight_g": 208,
+  "frame_material": null,
+  "back_material": null,
+  "front_material": null,
+  "water_resistance": "IP68"
+ },
+ "display": {
+  "size_inch": 6.81,
+  "resolution": "3200 x 1440",
+  "ppi": 515,
+  "refresh_rate": "1-120Hz",
+  "panel": "AMOLED",
+  "form": null,
+  "max_brightness_nits": 1700,
+  "hdr_formats": [
+   "HDR10+",
+   "杜比视界"
+  ]
+ },
+ "display_secondary": null,
+ "battery": {
+  "capacity_mah": 5000,
+  "charging_watt": 67,
+  "wireless_charging_watt": 67
+ },
+ "camera": [
+  {
+   "type": "主摄",
+   "sensor": null,
+   "resolution_mp": 50,
+   "aperture": "f/1.95",
+   "focal_length_mm": 24,
+   "image_stabilization": [
+    "光学防抖"
+   ]
+  },
+  {
+   "type": "长焦",
+   "sensor": null,
+   "resolution_mp": 8,
+   "aperture": null,
+   "focal_length_mm": null,
+   "image_stabilization": [
+    "光学防抖"
+   ]
+  },
+  {
+   "type": "超广角",
+   "sensor": null,
+   "resolution_mp": 13,
+   "aperture": "f/2.4",
+   "focal_length_mm": 16,
+   "image_stabilization": null
+  },
+  {
+   "type": "前置",
+   "sensor": null,
+   "resolution_mp": 20,
+   "aperture": null,
+   "focal_length_mm": null,
+   "image_stabilization": null
+  }
+ ],
+ "os": "MIUI 12（基于 Android 11）",
+ "biometric": {
+  "fingerprint": "屏下指纹",
+  "face_unlock": null
+ },
+ "cellular": {
+  "sim": "双 Nano-SIM 卡",
+  "esim": null,
+  "bands": [
+   "5G NR：n1/n3/n28/n41/n77/n78/n79",
+   "4G LTE FDD：B1/B2/B3/B4/B5/B7/B8/B12/B17/B18/B19/B20/B26/B28",
+   "4G LTE TDD：B34/B38/B39/B40/B41/B42",
+   "3G WCDMA：B1/B2/B4/B5/B6/B8/B19",
+   "2G GSM：B2/B3/B5/B8"
+  ],
+  "satellite": null
+ },
+ "nfc": "在天星金融·钱包App 开通后，通过双击电源键可使用交通卡、Mi Pay、门卡、eID*、电子车钥匙*等功能。\n交通卡：支持 300+ 座城市，支持 40+ 种公交卡*移卡，支持免费旧卡移新机以及卡内余额同步迁移。（交通卡支持城市由于技术条件、城市等有所差异，以实际情况为准；刷卡终端可用范围及乘车优惠以当地政府及运营企业发布为准。）\nMi Pay：支持线上支付，线下支付、银联二维码、银联卡支付、银联碰一碰支付。\n门卡：门卡模拟、米家智能门锁、虚拟门卡、自定义空白卡。（仅能模拟未经加密且频段为 13.56MHz 的门卡，有门卡功能的银行卡和带有储值消费、公交消费等功能的门卡暂时不能被模拟，即使模拟成功，这些卡片也不具备银行、公交等功能；）\n智能选卡：智能切换门卡和交通卡。\n具体支持的城市数量、城市名称、银行、卡片数量、 eID 合作酒店名单，电子车钥匙合作车型等，以实际情况为准。进一步了解请关注“天星金融钱包”官方微信公众号。",
+ "colors": [
+  {
+   "name": "黑色",
+   "slug": "black",
+   "hex": null,
+   "is_default": true
+  },
+  {
+   "name": "绿色",
+   "slug": "green",
+   "hex": null,
+   "is_default": false
+  },
+  {
+   "name": "紫色",
+   "slug": "purple",
+   "hex": null,
+   "is_default": false
+  }
+ ],
+ "release_date": "2021-03"
+}

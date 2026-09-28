@@ -625,11 +625,12 @@ const pick2 = (flat, ...keys) => keys.map((k) => flat[normKey(k)]).find(Boolean)
 /**
  * 从镜头那一行里抠出传感器型号。官网多数机型不写，写了就是有效信息
  * （Ace 5 前置写的是「1600 万像素，SONY IMX480，f/2.4」）。
- * 只认 SONY/索尼 + IMX 编号这种无歧义的写法，其余一律回落到「未公开」。
+ * 只认 SONY/索尼 + IMX 编号这种无歧义的写法，其余回落到 null
+ * —— 页面不显示占位文案，null 会让这一行整条省略。
  */
 function sensorName(line) {
   const m = String(line).match(/(?:SONY|索尼)\s*(IMX\s?\d+)/i);
-  return m ? `索尼 ${m[1].replace(/\s+/g, "")}` : "未公开";
+  return m ? `索尼 ${m[1].replace(/\s+/g, "")}` : null;
 }
 
 function parseCamera(flat) {

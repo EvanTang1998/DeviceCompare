@@ -107,6 +107,113 @@ body {
   object-fit: contain;
 }
 
+/* 图片加载提示：浅色胶囊 + 动态省略号，压在图片上层，不挡点击 */
+.image-loading {
+  position: absolute;
+  z-index: 3;
+  display: inline-flex;
+  align-items: baseline;
+  gap: 2px;
+  padding: 5px 11px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.86);
+  border: 0.5px solid var(--border);
+  color: var(--text-secondary);
+  font-size: 11px;
+  letter-spacing: 0.02em;
+  pointer-events: none;
+  animation: image-loading-in 0.18s ease-out;
+}
+
+.image-loading-dots {
+  display: inline-flex;
+  gap: 3px;
+  margin-left: 2px;
+}
+
+.image-loading-dots i {
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: currentColor;
+  animation: image-loading-dot 1.05s ease-in-out infinite;
+}
+
+.image-loading-dots i:nth-child(2) {
+  animation-delay: 0.15s;
+}
+
+.image-loading-dots i:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+@keyframes image-loading-dot {
+  0%, 70%, 100% {
+    opacity: 0.25;
+    transform: translateY(0);
+  }
+  35% {
+    opacity: 1;
+    transform: translateY(-2px);
+  }
+}
+
+@keyframes image-loading-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* 多角度轮播（手动切换，不自动播放）：左右箭头 + 底部圆点 */
+.carousel-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 26px;
+  height: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 0.5px solid var(--border);
+  border-radius: 50%;
+  background: var(--surface);
+  color: var(--text-secondary);
+  cursor: pointer;
+  opacity: 0.75;
+  transition: opacity 0.15s, color 0.15s;
+  z-index: 2;
+}
+.carousel-btn:hover {
+  opacity: 1;
+  color: var(--text);
+}
+.carousel-btn.is-prev { left: 2px; }
+.carousel-btn.is-next { right: 2px; }
+
+.carousel-dots {
+  position: absolute;
+  bottom: -8px;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  gap: 5px;
+}
+.carousel-dot {
+  width: 6px;
+  height: 6px;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: var(--border);
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.carousel-dot.is-active { background: var(--text-secondary); }
+
 /* 单元格右上角的删除按钮（方形，完全贴角、弱存在感） */
 .remove-slot-btn {
   position: absolute;
@@ -134,23 +241,62 @@ body {
 /* 空位占位列：虚线框贯穿整表，点击新增一列 */
 .ghost-col {
   margin: 10px;
-  border: 1.5px dashed rgba(0, 0, 0, 0.16);
+  padding: 0;
+  border: none;
   border-radius: 14px;
   background: transparent;
+  /* 不能靠 button 默认的垂直居中：那会把 sticky 的自然位置顶到表格中部，
+     justify-content: flex-start 让内容自然位于列顶，sticky 才能钉在视口中部 */
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: flex-start;
+  color: #c3c8d0;
+  font-size: 15px;
+  cursor: pointer;
+  transition: color 0.15s, background 0.15s;
+}
+
+/* 列纵贯整张表，内容用 sticky 钉在视口中部：不管滚到哪都在眼前 */
+.ghost-inner {
+  position: sticky;
+  top: 38vh;
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: 14px;
+  padding: 6px 0;
+}
+
+/* 浅色圆圈加号：这里是「可以加一台机型」的提示 */
+.ghost-plus {
+  display: flex;
+  align-items: center;
   justify-content: center;
-  gap: 8px;
+  width: 78px;
+  height: 78px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.035);
+  border: 0.5px solid var(--border);
   color: #b6bcc6;
-  font-size: 14px;
-  cursor: pointer;
+  transition: background 0.15s, color 0.15s, border-color 0.15s, transform 0.15s;
 }
 
 .ghost-col:hover {
+  color: var(--text-secondary);
+  background: rgba(0, 0, 0, 0.015);
+}
+
+.ghost-col:hover .ghost-plus {
+  background: rgba(0, 102, 204, 0.08);
   border-color: var(--accent);
   color: var(--accent);
-  background: rgba(0, 102, 204, 0.04);
+  transform: scale(1.04);
+}
+
+.ghost-col:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: -4px;
 }
 
 .color-swatches {
@@ -261,7 +407,7 @@ body {
   display: flex;
 }
 
-/* 机型选择按钮（点击展开全屏覆盖面板） */
+/* 机型选择按钮（点击弹出与「点主图」同一个机型选择弹框，不再是就地展开的下拉） */
 .model-select-btn {
   width: 100%;
   display: flex;
@@ -276,6 +422,10 @@ body {
   color: var(--text);
   cursor: pointer;
   text-align: left;
+}
+
+.model-select-btn:hover {
+  border-color: var(--accent);
 }
 
 .model-select-btn:focus-visible {
@@ -526,6 +676,33 @@ body {
   border-color: var(--accent);
 }
 
+/* 搜索框内嵌「清空」叉号：有关键词才渲染 */
+.overlay-search {
+  position: relative;
+}
+
+.overlay-search input {
+  padding-right: 34px;
+}
+
+.overlay-search-clear {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  border: none;
+  background: none;
+  font-size: 17px;
+  line-height: 1;
+  color: var(--text-secondary);
+  cursor: pointer;
+  padding: 2px 5px;
+}
+
+.overlay-search-clear:hover {
+  color: var(--text);
+}
+
 .overlay-close {
   border: none;
   background: none;
@@ -760,5 +937,911 @@ body {
   .image-placeholder {
     width: 58px;
     height: 88px;
+  }
+}
+
+/* ==================== 首页 ==================== */
+
+.home {
+  padding-bottom: 40px;
+}
+
+.home-hero {
+  text-align: center;
+  padding: 62px 0 38px;
+}
+
+.home-title {
+  font-size: 52px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  line-height: 1.1;
+}
+
+.home-sub {
+  margin-top: 10px;
+  color: var(--text-secondary);
+  font-size: 14px;
+}
+
+.home-search {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  width: min(560px, 100%);
+  height: 46px;
+  margin: 26px auto 0;
+  padding: 0 14px;
+  background: var(--surface);
+  border: 0.5px solid var(--border);
+  border-radius: 999px;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.home-search:focus-within {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(0, 102, 204, 0.12);
+}
+
+.home-search-icon {
+  flex: none;
+  color: var(--text-secondary);
+}
+
+.home-search input {
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  border: none;
+  outline: none;
+  background: transparent;
+  font: inherit;
+  font-size: 15px;
+  color: var(--text);
+}
+
+.home-search input::placeholder {
+  color: #a1a1a6;
+}
+
+/* 复用弹框里那个清空按钮的外观，但这里不靠绝对定位 */
+.home-search .overlay-search-clear {
+  position: static;
+  flex: none;
+}
+
+.home-section-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+
+.home-section-head h2 {
+  font-size: 17px;
+  font-weight: 600;
+}
+
+.home-browse {
+  border: 0.5px solid var(--border);
+  background: var(--surface);
+  border-radius: 999px;
+  padding: 6px 14px;
+  font: inherit;
+  font-size: 13px;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: border-color 0.15s, color 0.15s;
+}
+
+.home-browse:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.home-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(184px, 1fr));
+  gap: 14px;
+}
+
+.hot-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 18px 14px 12px;
+  background: var(--surface);
+  border: 0.5px solid var(--border);
+  border-radius: 16px;
+  cursor: pointer;
+  outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s, transform 0.15s;
+}
+
+.hot-card:hover,
+.hot-card:focus-visible {
+  border-color: rgba(0, 102, 204, 0.35);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.07);
+  transform: translateY(-2px);
+}
+
+/* 「已添加」是**状态**不是操作 —— 不靠 hover 也得看得出来。
+   整卡换底 + 蓝描边 + 一层淡蓝投影，一屏扫过去就知道哪几台已经进了对比表。 */
+.hot-card.is-added {
+  border-color: rgba(0, 102, 204, 0.42);
+  background: linear-gradient(180deg, #e6f1ff, #f4f9ff 58%, var(--surface));
+  box-shadow: 0 2px 14px rgba(0, 102, 204, 0.1);
+}
+
+.hot-card.is-added:hover,
+.hot-card.is-added:focus-visible {
+  border-color: var(--accent);
+  box-shadow: 0 10px 30px rgba(0, 102, 204, 0.16);
+}
+
+.hot-card-media {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hot-card img {
+  height: 116px;
+  max-width: 100%;
+  object-fit: contain;
+}
+
+.hot-card-ph {
+  width: 76px;
+  height: 116px;
+  border-radius: 10px;
+  background: var(--bg);
+}
+
+/* 跟随光标的「查看详情」提示。
+   跟随位置由 JS 直接写 transform（见 Home.jsx 的 placeHint），所以这里**只过渡 opacity**
+   —— 给 transform 加过渡会变成"拖影"，光标走了它才慢慢追上来，手感立刻变糊。 */
+.cursor-hint {
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 90;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 6px 13px 6px 11px;
+  border-radius: 999px;
+  background: rgba(29, 29, 31, 0.88);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.18);
+  color: #fff;
+  font-size: 12.5px;
+  line-height: 1.25;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transform: translate3d(-999px, -999px, 0);
+  transition: opacity 0.13s ease;
+  will-change: transform;
+}
+
+.cursor-hint.is-on {
+  opacity: 1;
+}
+
+/* 右上角那枚徽标删掉了：它和底部按钮的「已添加」说的是同一件事，两处并存反而看不出重点。
+   现在状态交给卡片底色，操作交给底部按钮。 */
+
+.hot-card-foot {
+  width: 100%;
+  margin-top: 14px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.hot-card-name {
+  font-size: 13.5px;
+  line-height: 1.4;
+  text-align: center;
+}
+
+/* 按钮平时透明，但**高度一直占着** —— 浮现时卡片不会被撑高、整页不跳 */
+.hot-card-actions {
+  display: flex;
+  gap: 6px;
+  height: 34px;
+  opacity: 0;
+  transition: opacity 0.15s ease;
+}
+
+.hot-card:hover .hot-card-actions,
+.hot-card:focus-within .hot-card-actions {
+  opacity: 1;
+}
+
+/* 已添加的卡片，把底部这枚按钮**常驻显示** —— 它既是状态（已添加），
+   也是唯一的出口（再点一下撤下来）；藏进 hover 里，用户就找不到取消的地方了。 */
+.hot-card.is-added .hot-card-actions {
+  opacity: 1;
+}
+
+.hot-action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  height: 34px;
+  padding: 0 20px;
+  border: 0.5px solid var(--border);
+  border-radius: 999px;
+  background: var(--bg);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text);
+  white-space: nowrap;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s, color 0.15s;
+}
+
+.hot-action:hover {
+  border-color: var(--accent);
+  background: var(--surface);
+  color: var(--accent);
+}
+
+/* 已添加：按钮自己也换成"选中"的样子（白底压在淡蓝卡面上，比原来的浅蓝底更跳） */
+.hot-action.is-on {
+  border-color: var(--accent);
+  background: var(--surface);
+  color: var(--accent);
+}
+
+/* ==================== 顶栏 ==================== */
+
+.site-header-left {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-width: 0;
+}
+
+/* 对比页的显式出口：光靠"站名可点"用户根本发现不了。
+   做成 44px 高 —— 这是触摸目标的下限（Apple HIG），手指点得准、鼠标也更好瞄；
+   图标跟着从 14 放到 18，否则大按钮配小图标会显得空。 */
+.back-home {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  height: 44px;
+  padding: 0 22px 0 17px;
+  border: 0.5px solid var(--border);
+  border-radius: 999px;
+  background: var(--surface);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  font: inherit;
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--text);
+  cursor: pointer;
+  transition: border-color 0.15s, color 0.15s, box-shadow 0.15s;
+}
+
+.back-home:hover {
+  border-color: var(--accent);
+  box-shadow: 0 4px 14px rgba(0, 102, 204, 0.14);
+  color: var(--accent);
+}
+
+/* 对比页顶栏右侧：复制链接 + 高亮差异项 */
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+/* 「复制链接」是次要动作，比「返回首页」矮一档，但也不能只 30px —— 一排里 44 vs 30 高低差太扎眼 */
+.copy-link-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 36px;
+  padding: 0 15px 0 13px;
+  border: 0.5px solid var(--border);
+  border-radius: 999px;
+  background: var(--surface);
+  font: inherit;
+  font-size: 13.5px;
+  color: var(--text);
+  cursor: pointer;
+  transition: border-color 0.15s, color 0.15s;
+}
+
+.copy-link-btn:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+/* 复制成功后就地变成「已复制」，不弹 toast —— 手指还在按钮上，回显放眼前最省事 */
+.copy-link-btn.is-done {
+  border-color: var(--accent);
+  background: var(--diff-bg);
+  color: var(--accent);
+}
+
+/* 站名：首页上是纯标题，对比页上变成回首页的入口（与「返回首页」按钮等价） */
+.site-title {
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  font-size: 13px;
+  color: var(--text-secondary);
+  cursor: default;
+}
+
+.site-title.is-link {
+  cursor: pointer;
+}
+
+.site-title.is-link:hover {
+  color: var(--text);
+}
+
+.nav-compare-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 6px 14px 6px 16px;
+  border: 0.5px solid var(--border);
+  border-radius: 999px;
+  background: var(--surface);
+  font: inherit;
+  font-size: 13px;
+  color: var(--text);
+  cursor: pointer;
+  transition: border-color 0.15s;
+}
+
+.nav-compare-btn:hover {
+  border-color: var(--accent);
+}
+
+.nav-compare-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  border-radius: 999px;
+  background: var(--accent);
+  color: #fff;
+  font-size: 11px;
+  line-height: 1;
+}
+
+/* ==================== 暂存区浮标 ==================== */
+
+/* 整体尺寸按 1.5 倍做过一轮放大（含按钮、计数、清单里的缩略图与文字）——
+   右下角这个浮标是"看得见的行动入口"，太小就没人注意得到。 */
+
+.compare-dock {
+  position: fixed;
+  right: 32px;
+  bottom: 32px;
+  z-index: 90;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 15px;
+}
+
+.dock-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  height: 68px;
+  padding: 0 27px;
+  border: none;
+  border-radius: 999px;
+  background: var(--text);
+  color: #fff;
+  font: inherit;
+  font-size: 20px;
+  font-weight: 500;
+  cursor: pointer;
+  box-shadow: 0 15px 42px rgba(0, 0, 0, 0.24);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.dock-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.28);
+}
+
+.dock-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 30px;
+  height: 30px;
+  padding: 0 9px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.22);
+  font-size: 18px;
+}
+
+/* 悬停才摊开的待对比清单（鼠标移上去、或键盘焦点进来） */
+.dock-list {
+  width: 396px;
+  padding: 18px;
+  background: var(--surface);
+  border: 0.5px solid var(--border);
+  border-radius: 20px;
+  box-shadow: 0 26px 66px rgba(0, 0, 0, 0.18);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(8px);
+  transition: opacity 0.16s ease, transform 0.16s ease, visibility 0.16s;
+}
+
+.compare-dock:hover .dock-list,
+.compare-dock:focus-within .dock-list {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.dock-list-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 0 6px 12px;
+  font-size: 18px;
+  color: var(--text-secondary);
+}
+
+/* 「清空」：一次撤完。放在摊开后的清单顶上，跟逐条移除的 × 在同一片区域里，不用去别处找 */
+.dock-clear {
+  flex: none;
+  height: 34px;
+  padding: 0 16px;
+  border: 0.5px solid var(--border);
+  border-radius: 999px;
+  background: var(--surface);
+  font: inherit;
+  font-size: 15px;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: border-color 0.15s, color 0.15s, background 0.15s;
+}
+
+.dock-clear:hover {
+  border-color: var(--accent);
+  background: var(--diff-bg);
+  color: var(--accent);
+}
+
+.dock-item {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 9px 6px;
+  border-radius: 12px;
+}
+
+.dock-item + .dock-item {
+  border-top: 0.5px solid var(--border);
+}
+
+.dock-thumb {
+  flex: none;
+  width: 38px;
+  height: 50px;
+  object-fit: contain;
+}
+
+.dock-thumb-ph {
+  border-radius: 9px;
+  background: var(--bg);
+}
+
+.dock-item-name {
+  flex: 1;
+  min-width: 0;
+  font-size: 19px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.dock-item-remove {
+  flex: none;
+  width: 30px;
+  height: 30px;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  color: #b6b6bc;
+  font-size: 21px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.dock-item-remove:hover {
+  background: rgba(120, 120, 128, 0.14);
+  color: var(--text-secondary);
+}
+
+/* ==================== 参数浮窗 ==================== */
+
+.detail-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* 两侧留白多、上下只留一点点：浮窗不铺满，背后的列表还看得见轮廓 */
+  padding: 26px 56px;
+  background: rgba(28, 28, 30, 0.3);
+  backdrop-filter: blur(14px) saturate(140%);
+  -webkit-backdrop-filter: blur(14px) saturate(140%);
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.detail-backdrop.is-open {
+  opacity: 1;
+}
+
+.detail-panel {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(300px, 42%) 1fr;
+  width: min(1180px, 100%);
+  height: min(840px, 100%);
+  /* 半透明压在模糊背板上，得到玻璃感；不给面板自己加 backdrop-filter ——
+     那会让缩放动画每帧重算背景，低端机上会顿。 */
+  background: rgba(255, 255, 255, 0.92);
+  border: 0.5px solid rgba(255, 255, 255, 0.75);
+  border-radius: 22px;
+  box-shadow: 0 40px 90px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+  /* transform-origin 由组件按「被点卡片中心」算出来，这里只管过渡 */
+  transform: scale(0.14);
+  opacity: 0;
+  transition: transform 0.2s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.2s ease;
+  will-change: transform, opacity;
+}
+
+.detail-panel.is-open {
+  transform: scale(1);
+  opacity: 1;
+}
+
+.detail-close {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  z-index: 3;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 50%;
+  background: rgba(120, 120, 128, 0.1);
+  color: var(--text-secondary);
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+
+.detail-close:hover {
+  background: rgba(120, 120, 128, 0.2);
+  color: var(--text);
+}
+
+.detail-media {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-height: 0;
+  padding: 26px 22px 22px;
+  background: rgba(245, 245, 247, 0.62);
+  border-right: 0.5px solid var(--border);
+}
+
+.detail-shot {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.detail-shot img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+/* 浮窗里的轮播控件比表头里大一号；圆点也收进面板内，不压到边框外 */
+.detail-shot .carousel-btn {
+  width: 34px;
+  height: 34px;
+}
+
+.detail-shot .carousel-btn.is-prev {
+  left: 0;
+}
+
+.detail-shot .carousel-btn.is-next {
+  right: 0;
+}
+
+.detail-shot .carousel-dots {
+  bottom: 0;
+}
+
+.detail-shot .image-loading {
+  left: 0;
+  right: 0;
+  bottom: 6px;
+  width: fit-content;
+  margin: 0 auto;
+}
+
+.detail-specs {
+  min-height: 0;
+  padding: 26px 30px 36px;
+  overflow-y: auto;
+}
+
+.detail-head {
+  padding-right: 40px;
+}
+
+.detail-kicker {
+  font-size: 12.5px;
+  color: var(--text-secondary);
+}
+
+.detail-name {
+  margin-top: 4px;
+  font-size: 26px;
+  font-weight: 600;
+  line-height: 1.25;
+}
+
+.detail-actions {
+  margin-top: 16px;
+}
+
+.detail-add {
+  padding: 8px 20px;
+  border: 0.5px solid var(--accent);
+  border-radius: 999px;
+  background: var(--accent);
+  color: #fff;
+  font: inherit;
+  font-size: 13px;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+
+.detail-add.is-on {
+  background: var(--diff-bg);
+  color: var(--accent);
+}
+
+.detail-section {
+  margin-top: 26px;
+}
+
+.detail-section h3 {
+  margin-bottom: 4px;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  color: var(--text-secondary);
+}
+
+.detail-rows {
+  margin: 0;
+}
+
+.detail-row {
+  display: grid;
+  grid-template-columns: 128px 1fr;
+  gap: 16px;
+  padding: 9px 0;
+  border-bottom: 0.5px solid var(--border);
+  font-size: 13.5px;
+}
+
+.detail-row:last-child {
+  border-bottom: none;
+}
+
+.detail-row dt {
+  color: var(--text-secondary);
+}
+
+.detail-row dd {
+  margin: 0;
+  color: var(--text);
+}
+
+.detail-row dd .line + .line {
+  margin-top: 2px;
+}
+
+.detail-row dd .line:first-child {
+  font-weight: 500;
+}
+
+@media (max-width: 768px) {
+  .home-hero {
+    padding: 40px 0 26px;
+  }
+
+  .home-title {
+    font-size: 38px;
+  }
+
+  .home-grid {
+    grid-template-columns: repeat(auto-fill, minmax(148px, 1fr));
+    gap: 10px;
+  }
+
+  .hot-card img {
+    height: 92px;
+  }
+
+  /* 触屏没有 hover：按钮直接常显 */
+  .hot-card-actions {
+    opacity: 1;
+    height: 30px;
+  }
+
+  .hot-action {
+    height: 30px;
+    padding: 0 14px;
+    font-size: 12.5px;
+  }
+
+  /* 触屏没有"光标"，跟随提示无从跟起，直接不显示（点卡片即开浮窗） */
+  .cursor-hint {
+    display: none;
+  }
+
+  /* 窄屏顶栏挤：留「返回首页」，把冗余的站名收起来（首页本来就有大标题） */
+  .site-title {
+    display: none;
+  }
+
+  /* 44px 的返回按钮在手机上正好是舒服的触摸目标，只把内边距收一点 */
+  .back-home {
+    padding: 0 18px 0 14px;
+  }
+
+  /* 「复制链接」缩成图标按钮，给「高亮差异项」腾地方 */
+  .header-actions {
+    gap: 12px;
+  }
+
+  .copy-link-btn {
+    padding: 0 10px;
+  }
+
+  .copy-link-label {
+    display: none;
+  }
+
+  /* 放大的浮标在手机上会顶到屏幕边、清单也放不下，所以窄屏回落到紧凑一档
+     （仍比放大前大一点，手指够得着） */
+  .compare-dock {
+    right: 14px;
+    bottom: 14px;
+    gap: 10px;
+  }
+
+  .dock-btn {
+    gap: 9px;
+    height: 54px;
+    padding: 0 20px;
+    font-size: 16px;
+  }
+
+  .dock-btn svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  .dock-count {
+    min-width: 24px;
+    height: 24px;
+    padding: 0 7px;
+    font-size: 14px;
+  }
+
+  .dock-list {
+    width: min(320px, calc(100vw - 28px));
+    padding: 14px;
+    border-radius: 16px;
+  }
+
+  .dock-list-head {
+    padding-bottom: 10px;
+    font-size: 15px;
+  }
+
+  .dock-clear {
+    height: 30px;
+    padding: 0 13px;
+    font-size: 13px;
+  }
+
+  .dock-item {
+    gap: 12px;
+    padding: 7px 4px;
+  }
+
+  .dock-thumb {
+    width: 30px;
+    height: 40px;
+  }
+
+  .dock-item-name {
+    font-size: 15px;
+  }
+
+  .dock-item-remove {
+    width: 26px;
+    height: 26px;
+    font-size: 18px;
+  }
+
+  /* 窄屏：浮窗转成整屏形态（面板自身铺满，两侧不再留白） */
+  .detail-backdrop {
+    padding: 0;
+  }
+
+  .detail-panel {
+    grid-template-columns: 1fr;
+    grid-template-rows: minmax(0, 44%) 1fr;
+    width: 100%;
+    height: 100%;
+    border-radius: 0;
+  }
+
+  .detail-media {
+    padding: 18px 18px 14px;
+    border-right: none;
+    border-bottom: 0.5px solid var(--border);
+  }
+
+  .detail-specs {
+    padding: 18px 20px 40px;
+  }
+
+  .detail-name {
+    font-size: 21px;
+  }
+
+  .detail-row {
+    grid-template-columns: 96px 1fr;
+    gap: 12px;
   }
 }

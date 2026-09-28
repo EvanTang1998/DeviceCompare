@@ -1,0 +1,114 @@
+{
+  "name": "HUAWEI Pura X View",
+  "brand": "华为",
+  "series": "Pura 系列",
+  "release_year": 2026,
+  "chipset": {
+    "chip": "麒麟9030S",
+    "ram": [
+      "12GB"
+    ],
+    "rom": [
+      "256GB",
+      "512GB",
+      "1TB"
+    ]
+  },
+  "body": {
+    "dimensions_mm": {
+      "height": 144.1,
+      "width": 87,
+      "depth": 6.68
+    },
+    "weight_g": 201,
+    "frame_material": null,
+    "back_material": null,
+    "front_material": null,
+    "water_resistance": "IP68/IP69"
+  },
+  "display": {
+    "size_inch": 6.39,
+    "resolution": "2232 x 1320",
+    "ppi": 406,
+    "refresh_rate": null,
+    "panel": "OLED",
+    "form": null,
+    "max_brightness_nits": null,
+    "hdr_formats": null
+  },
+  "display_secondary": null,
+  "battery": {
+    "capacity_mah": 7000,
+    "charging_watt": 66,
+    "wireless_charging_watt": 50
+  },
+  "camera": [
+    {
+      "type": "主摄",
+      "sensor": null,
+      "resolution_mp": 200,
+      "aperture": "f/1.8",
+      "focal_length_mm": 23,
+      "image_stabilization": [
+        "光学防抖"
+      ]
+    },
+    {
+      "type": "超广角",
+      "sensor": null,
+      "resolution_mp": 8,
+      "aperture": "f/2.2",
+      "focal_length_mm": 16,
+      "image_stabilization": null
+    },
+    {
+      "type": "长焦",
+      "sensor": null,
+      "resolution_mp": 50,
+      "aperture": "f/2.6",
+      "focal_length_mm": 88,
+      "image_stabilization": [
+        "光学防抖"
+      ]
+    }
+  ],
+  "os": "HarmonyOS 7.0",
+  "biometric": {
+    "fingerprint": "侧边指纹",
+    "face_unlock": null
+  },
+  "cellular": {
+    "sim": "双 Nano-SIM 卡",
+    "esim": true,
+    "bands": null,
+    "satellite": "北斗卫星消息"
+  },
+  "nfc": "支持读卡器模式、卡模拟模式（华为钱包支付，SIM 卡支付*，HCE 支付）",
+  "colors": [
+    {
+      "slug": "leapred",
+      "name": "跃影红",
+      "hex": "#a3223e",
+      "is_default": true
+    },
+    {
+      "slug": "linengray",
+      "name": "亚麻灰",
+      "hex": "#d8d3cb",
+      "is_default": false
+    },
+    {
+      "slug": "zerowhite",
+      "name": "零度白",
+      "hex": "#e8e8e8",
+      "is_default": false
+    },
+    {
+      "slug": "nightblack",
+      "name": "幻夜黑",
+      "hex": "#282828",
+      "is_default": false
+    }
+  ],
+  "release_date": "2026-09"
+}

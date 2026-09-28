@@ -1,0 +1,116 @@
+{
+  "name": "HUAWEI Mate 70 Air",
+  "brand": "华为",
+  "series": "Mate 系列",
+  "release_year": 2025,
+  "chipset": {
+    "chip": "麒麟9020A / 麒麟9020B",
+    "ram": [
+      "12GB",
+      "16GB"
+    ],
+    "rom": [
+      "256GB",
+      "512GB"
+    ]
+  },
+  "body": {
+    "dimensions_mm": {
+      "height": 165,
+      "width": 81.5,
+      "depth": 6.6
+    },
+    "weight_g": 208,
+    "frame_material": null,
+    "back_material": null,
+    "front_material": null,
+    "water_resistance": "IP68/IP69"
+  },
+  "display": {
+    "size_inch": 7,
+    "resolution": "2760 x 1320",
+    "ppi": 437,
+    "refresh_rate": null,
+    "panel": "OLED",
+    "form": null,
+    "max_brightness_nits": null,
+    "hdr_formats": null
+  },
+  "display_secondary": null,
+  "battery": {
+    "capacity_mah": 6500,
+    "charging_watt": 66,
+    "wireless_charging_watt": null
+  },
+  "camera": [
+    {
+      "type": "主摄",
+      "sensor": null,
+      "resolution_mp": 50,
+      "aperture": "f/1.8",
+      "focal_length_mm": 24,
+      "image_stabilization": [
+        "光学防抖"
+      ]
+    },
+    {
+      "type": "长焦",
+      "sensor": null,
+      "resolution_mp": 12,
+      "aperture": "f/2.4",
+      "focal_length_mm": 69,
+      "image_stabilization": [
+        "光学防抖"
+      ]
+    },
+    {
+      "type": "超广角",
+      "sensor": null,
+      "resolution_mp": 8,
+      "aperture": "f/2.2",
+      "focal_length_mm": 16,
+      "image_stabilization": null
+    },
+    {
+      "type": "前置",
+      "sensor": null,
+      "resolution_mp": 10.7,
+      "aperture": "f/2.2",
+      "focal_length_mm": null,
+      "image_stabilization": null
+    }
+  ],
+  "os": "HarmonyOS 5.1",
+  "biometric": {
+    "fingerprint": "侧边指纹",
+    "face_unlock": null
+  },
+  "cellular": {
+    "sim": null,
+    "esim": null,
+    "bands": null,
+    "satellite": "北斗卫星通信"
+  },
+  "nfc": "支持读卡器模式、卡模拟模式（华为钱包支付、SIM 卡支付、HCE 支付）",
+  "colors": [
+    {
+      "slug": "goldbrocade",
+      "name": "金丝银锦",
+      "hex": "#615f5f",
+      "is_default": true
+    },
+    {
+      "slug": "featherwhite",
+      "name": "羽衣白",
+      "hex": "#c2c2c2",
+      "is_default": false
+    },
+    {
+      "slug": "obsidiangold",
+      "name": "曜金黑",
+      "hex": "#1a1b1d",
+      "is_default": false
+    }
+  ],
+  "release_date": "2025-11"
+}

@@ -1,0 +1,132 @@
+{
+ "name": "Xiaomi 10 至尊纪念版",
+ "brand": "小米",
+ "series": "数字系列",
+ "release_year": 2020,
+ "chipset": {
+  "chip": "骁龙 865",
+  "ram": [
+   "8GB",
+   "12GB",
+   "16GB"
+  ],
+  "rom": [
+   "128GB",
+   "256GB",
+   "512GB"
+  ]
+ },
+ "body": {
+  "dimensions_mm": {
+   "height": 162.38,
+   "width": 75.04,
+   "depth": 9.45
+  },
+  "weight_g": 221.8,
+  "frame_material": null,
+  "back_material": null,
+  "front_material": null,
+  "water_resistance": null
+ },
+ "display": {
+  "size_inch": 6.67,
+  "resolution": "2340 x 1080",
+  "ppi": 386,
+  "refresh_rate": "1-120Hz",
+  "panel": "AMOLED",
+  "form": null,
+  "max_brightness_nits": 1120,
+  "hdr_formats": null
+ },
+ "display_secondary": null,
+ "battery": {
+  "capacity_mah": 4500,
+  "charging_watt": 120,
+  "wireless_charging_watt": 50
+ },
+ "camera": [
+  {
+   "type": "主摄",
+   "sensor": null,
+   "resolution_mp": 48,
+   "aperture": "f/1.85",
+   "focal_length_mm": null,
+   "image_stabilization": [
+    "光学防抖"
+   ]
+  },
+  {
+   "type": "长焦",
+   "sensor": null,
+   "resolution_mp": 48,
+   "aperture": "f/4.1",
+   "focal_length_mm": 120,
+   "image_stabilization": [
+    "光学防抖"
+   ]
+  },
+  {
+   "type": "长焦",
+   "sensor": null,
+   "resolution_mp": 12,
+   "aperture": "f/2.0",
+   "focal_length_mm": 50,
+   "image_stabilization": null
+  },
+  {
+   "type": "超广角",
+   "sensor": null,
+   "resolution_mp": 20,
+   "aperture": "f/2.2",
+   "focal_length_mm": 12,
+   "image_stabilization": null
+  },
+  {
+   "type": "前置",
+   "sensor": null,
+   "resolution_mp": 20,
+   "aperture": null,
+   "focal_length_mm": null,
+   "image_stabilization": null
+  }
+ ],
+ "os": "MIUI 12（基于 Android 10）",
+ "biometric": {
+  "fingerprint": "屏下指纹",
+  "face_unlock": null
+ },
+ "cellular": {
+  "sim": "双 Nano-SIM 卡",
+  "esim": null,
+  "bands": [
+   "5G NR：n1/n3/n41/n78/n79",
+   "4G LTE FDD：B1/B2/B3/B4/B5/B7/B8/B12/B17",
+   "4G LTE TDD：B34/B38/B39/B40/B41",
+   "3G WCDMA：B1/B2/B4/B5/B8",
+   "2G GSM：B2/B3/B5/B8"
+  ],
+  "satellite": null
+ },
+ "nfc": "在小米钱包APP 开通后，通过双击电源键可使用交通卡、Mi Pay、门卡、eID*、电子车钥匙*等功能。\n·交通卡：支持全国300+座城市*，支持37 张公交卡*移卡，支持免费旧卡移新机以及卡内余额同步迁移。\n（使用时请认准刷卡终端的“交通联合”标识，具体可用范围及乘车优惠以当地政府及运营企业发布为准。）\n·Mi Pay：支持 119 家银行*，线上支付，线下支付、银联二维码、银联卡支付、银联碰一碰支付。\n·门卡：门卡模拟、米家智能门锁、虚拟门卡、自定义空白卡。（仅能模拟未经加密且频段为 13.56MHz 的门卡，有门卡功能的银行卡和带有储值消费、公交消费等功能的门卡暂时不 能被模拟，即使模拟成功，这些卡片也不具备银行、公交等功能；）\n·智能选卡：智能切换门卡和交通卡。\n* 具体支持的城市数量、城市名称、银行、卡片数量、 eID 合作酒店名单，电子车钥匙合作车型等，以实际情况为准。 进一步了解请关注“小米钱包”微信公众号。",
+ "colors": [
+  {
+   "name": "透明版",
+   "slug": "transparent",
+   "hex": null,
+   "is_default": true
+  },
+  {
+   "name": "陶瓷黑",
+   "slug": "ceramicblack",
+   "hex": null,
+   "is_default": false
+  },
+  {
+   "name": "亮银版",
+   "slug": "brightsilver",
+   "hex": null,
+   "is_default": false
+  }
+ ],
+ "release_date": "2020-08"
+}

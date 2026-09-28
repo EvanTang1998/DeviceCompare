@@ -1,0 +1,133 @@
+{
+ "name": "Xiaomi 14 Pro",
+ "brand": "小米",
+ "series": "数字系列",
+ "release_year": 2023,
+ "chipset": {
+  "chip": "第三代骁龙 8",
+  "ram": [
+   "12GB LPDDR5X",
+   "16GB LPDDR5X"
+  ],
+  "rom": [
+   "256GB UFS",
+   "512GB UFS",
+   "1TB UFS"
+  ]
+ },
+ "body": {
+  "dimensions_mm": {
+   "height": 161.4,
+   "width": 75.3,
+   "depth": 8.49
+  },
+  "weight_g": 223,
+  "frame_material": null,
+  "back_material": null,
+  "front_material": null,
+  "water_resistance": "IP68"
+ },
+ "display": {
+  "size_inch": 6.73,
+  "resolution": "3200 x 1440",
+  "ppi": 521,
+  "refresh_rate": "1-120Hz",
+  "panel": "AMOLED",
+  "form": null,
+  "max_brightness_nits": 3000,
+  "hdr_formats": [
+   "HDR10+",
+   "HDR Vivid",
+   "杜比视界"
+  ]
+ },
+ "display_secondary": null,
+ "battery": {
+  "capacity_mah": 4880,
+  "charging_watt": 120,
+  "wireless_charging_watt": 50
+ },
+ "camera": [
+  {
+   "type": "主摄",
+   "sensor": null,
+   "resolution_mp": 50,
+   "aperture": "f/1.42",
+   "focal_length_mm": 23,
+   "image_stabilization": [
+    "光学防抖"
+   ]
+  },
+  {
+   "type": "长焦",
+   "sensor": null,
+   "resolution_mp": null,
+   "aperture": "f/2.0",
+   "focal_length_mm": 75,
+   "image_stabilization": [
+    "光学防抖"
+   ]
+  },
+  {
+   "type": "超广角",
+   "sensor": null,
+   "resolution_mp": 50,
+   "aperture": "f/2.2",
+   "focal_length_mm": 14,
+   "image_stabilization": null
+  },
+  {
+   "type": "前置",
+   "sensor": null,
+   "resolution_mp": 32,
+   "aperture": null,
+   "focal_length_mm": null,
+   "image_stabilization": null
+  }
+ ],
+ "os": "Xiaomi HyperOS",
+ "biometric": {
+  "fingerprint": "屏下指纹",
+  "face_unlock": null
+ },
+ "cellular": {
+  "sim": "双 Nano-SIM 卡",
+  "esim": null,
+  "bands": [
+   "5G NR：n1/n3/n5/n7/n8/n28a/n38/n40/n41/n48/n66/n77/n78/n79",
+   "4G LTE FDD：B1/B3/B4/B5/B7/B8/B18/B19/B26/B28a/B66",
+   "4G LTE TDD：B34/B38/B39/B40/B41/B42/B48",
+   "3G WCDMA：B1/B4/B5/B6/B8/B19",
+   "2G GSM：B3/B5/B8"
+  ],
+  "satellite": null
+ },
+ "nfc": "支持",
+ "colors": [
+  {
+   "name": "黑色",
+   "slug": "black",
+   "hex": "#141518",
+   "is_default": true
+  },
+  {
+   "name": "白色",
+   "slug": "white",
+   "hex": "#c4c4c4",
+   "is_default": false
+  },
+  {
+   "name": "岩石青",
+   "slug": "jadegreen",
+   "hex": "#23352c",
+   "is_default": false
+  },
+  {
+   "name": "钛金属特别版",
+   "slug": "titanium",
+   "hex": "#4a4a4a",
+   "is_default": false
+  }
+ ],
+ "release_date": "2023-10"
+}
