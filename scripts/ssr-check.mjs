@@ -70,6 +70,14 @@ try {
     ["分区标题 芯片组", html.includes("芯片组")],
     ["分区标题 摄像头", html.includes("摄像头")],
     ["首页 站名大标题", homeHtml.includes("home-title")],
+    [
+      "首页 大标题带上说明「手机对比」（站名 + 后缀两段）",
+      /<h1 class="home-title">灵眸<span class="home-title-sub">手机对比<\/span><\/h1>/.test(homeHtml)
+    ],
+    [
+      "首页 尾部有「显示更多」（池子还没取空时必须渲染）",
+      hotPool > hotExpected && homeHtml.includes("home-more-btn")
+    ],
     ["首页 搜索框", homeHtml.includes("搜索机型")],
     [
       `首页 热门机型 ${hotRendered} 张（${HOT_ROWS} 行 × ${DEFAULT_COLS} 列，池子 ${hotPool} 台）`,
@@ -90,6 +98,14 @@ try {
     ["首页 已加入对比的卡片整体标记 is-added", homeAddedHtml.includes("hot-card is-added")],
     ["首页 已加入对比后按钮转成「已添加」", homeAddedHtml.includes(">已添加<") || homeAddedHtml.includes("已添加</button>")],
     ["首页 右上角那枚重复的已添加徽标已移除", !homeHtml.includes("hot-card-added")],
+    [
+      "首页 一台都没加时也渲染暂存区浮标（数量 0，不是隐藏）",
+      homeHtml.includes("compare-dock") && homeHtml.includes("dock-btn")
+    ],
+    ["首页 空态浮标计数显示 0", /class="dock-count"[^>]*>0</.test(homeHtml)],
+    ["首页 空态浮标标记 is-empty", homeHtml.includes("dock-btn is-empty")],
+    ["首页 空态不摊开待对比清单", !homeHtml.includes("dock-list")],
+    ["首页 有暂存机型时浮标带上待对比清单", homeAddedHtml.includes("dock-list")],
     ["首页 未渲染对比表", !homeHtml.includes("compare-grid")],
     ["地址栏 cart 里的逗号没被转义成 %2C", rtSearch.includes(`${A},${B}`) && !rtSearch.includes("%2C")],
     [`地址栏往返一致（${rtSearch}）`, sameState(rt, rtBack)],

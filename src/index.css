@@ -958,6 +958,17 @@ body {
   line-height: 1.1;
 }
 
+/* 站名后面的"手机对比"：字号取 .5em（跟着 .home-title 走，窄屏那档自动一起缩），
+   字重降到 400、颜色浅一档 —— 让它是"一句话说明"，而不是和站名平起平坐的第二个大词。
+   用 margin-left 而不是空格字符：中文两端本来就宽，再加空格会散架。 */
+.home-title-sub {
+  margin-left: 0.14em;
+  font-size: 0.5em;
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  color: var(--text-secondary);
+}
+
 .home-sub {
   margin-top: 10px;
   color: var(--text-secondary);
@@ -1040,9 +1051,59 @@ body {
   color: var(--accent);
 }
 
+/* 网格底部的「显示更多」。
+   做成**居中的胶囊**、44px 高（触摸目标下限）而不是一行小字链接：它是这一屏里唯一的
+   "继续往下看"的出口，得让人一眼看到、一按就中。
+   右侧挂一句浅色的"还有 N 台"（字号小一档），因为不报数字的话，用户不知道后面还有没有、
+   还剩多少，就容易一路点下去。 */
+.home-more {
+  display: flex;
+  justify-content: center;
+  margin-top: 28px;
+}
+
+.home-more-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  height: 44px;
+  padding: 0 26px;
+  border: 0.5px solid var(--border);
+  border-radius: 999px;
+  background: var(--surface);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  font: inherit;
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--text);
+  cursor: pointer;
+  transition: border-color 0.15s, color 0.15s, box-shadow 0.15s;
+}
+
+.home-more-btn:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.09);
+}
+
+.home-more-count {
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--text-secondary);
+}
+
+.home-more-btn:hover .home-more-count {
+  color: var(--accent);
+}
+
+/* 一行**最多 6 列** —— 用 minmax 的下限把列数顶住，而不是去限制容器宽度。
+   216px 是算出来的：容器最宽时（.page 的 1640 减去左右各 36 的内边距 = 1568），
+   7 列需要 7×216 + 6×14 = 1596 > 1568，塞不下；6 列只要 1366，绰绰有余，
+   所以再宽的屏幕也稳定停在 6 列（每张约 250px），卡片因此比之前宽了一成多。
+   窄屏不用管：auto-fill 会自己往下降列数，不必写一串媒体查询。 */
 .home-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(184px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(216px, 1fr));
   gap: 14px;
 }
 
@@ -1051,34 +1112,52 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 18px 14px 12px;
+  padding: 22px 16px 16px;
   background: var(--surface);
   border: 0.5px solid var(--border);
   border-radius: 16px;
   cursor: pointer;
   outline: none;
-  transition: border-color 0.15s, box-shadow 0.15s, transform 0.15s;
+  transition: border-color 0.15s, box-shadow 0.15s,
+    transform 0.18s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
+/* 鼠标进卡片：**原地放大**一点点 + 投影压深，这就是"突出感"的来源（光有阴影太平了）。
+   要注意是"放大"而不是"位移"，两者对鼠标的手感差很多：
+     - 位移（原来的 translateY(-2px)）把整张卡往上搬，鼠标要是停在下边缘附近，
+       就等于被"从身下抽走"，hover 于是反复触发/取消、底部按钮跟着一闪一闪，
+       用户得再对焦一次才点得中 —— 这正是当初"二次对焦"的根因；
+     - 从中心等比放大，四条边只会往**外**推，原来的矩形被完整包住：
+       光标只要在卡片里，放大之后一定还在卡片里，hover 不可能丢。
+   所以浮起感 = 放大 + 更重的投影，位移一律不许有（验收脚本盯着这条）。
+   1.03 是"看得出来、但不至于撞到隔壁"的量：14px 的行列间距够它两侧各扩 4px。 */
 .hot-card:hover,
 .hot-card:focus-visible {
+  z-index: 1;
   border-color: rgba(0, 102, 204, 0.35);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.07);
-  transform: translateY(-2px);
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.05), 0 16px 38px rgba(0, 0, 0, 0.14);
+  transform: scale(1.03);
 }
 
 /* 「已添加」是**状态**不是操作 —— 不靠 hover 也得看得出来。
-   整卡换底 + 蓝描边 + 一层淡蓝投影，一屏扫过去就知道哪几台已经进了对比表。 */
+   表达方式刻意做成"往外走"而不是"往里刷"：
+     - 卡内几乎保持白（只在顶端留一丝极淡的蓝），所以不会有"被一层蓝色盖住"的感觉；
+     - 力量放在四周：蓝色描边 + 紧贴卡片的一圈淡蓝光晕 + 外侧柔和投影。
+   视觉上读到的就是"这张浮起来了"，和 hover 时的感受是同一套语言，只是更持久。 */
 .hot-card.is-added {
-  border-color: rgba(0, 102, 204, 0.42);
-  background: linear-gradient(180deg, #e6f1ff, #f4f9ff 58%, var(--surface));
-  box-shadow: 0 2px 14px rgba(0, 102, 204, 0.1);
+  border-color: rgba(0, 102, 204, 0.5);
+  background: linear-gradient(180deg, #f8fbff, var(--surface) 42%);
+  box-shadow:
+    0 0 0 3px rgba(0, 102, 204, 0.1),
+    0 8px 24px rgba(0, 102, 204, 0.16);
 }
 
 .hot-card.is-added:hover,
 .hot-card.is-added:focus-visible {
   border-color: var(--accent);
-  box-shadow: 0 10px 30px rgba(0, 102, 204, 0.16);
+  box-shadow:
+    0 0 0 3px rgba(0, 102, 204, 0.16),
+    0 14px 34px rgba(0, 102, 204, 0.24);
 }
 
 .hot-card-media {
@@ -1089,14 +1168,14 @@ body {
 }
 
 .hot-card img {
-  height: 116px;
+  height: 150px;
   max-width: 100%;
   object-fit: contain;
 }
 
 .hot-card-ph {
-  width: 76px;
-  height: 116px;
+  width: 96px;
+  height: 150px;
   border-radius: 10px;
   background: var(--bg);
 }
@@ -1136,47 +1215,66 @@ body {
 
 .hot-card-foot {
   width: 100%;
-  margin-top: 14px;
+  margin-top: 16px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
 }
 
 .hot-card-name {
-  font-size: 13.5px;
+  font-size: 15px;
   line-height: 1.4;
   text-align: center;
 }
 
-/* 按钮平时透明，但**高度一直占着** —— 浮现时卡片不会被撑高、整页不跳 */
+/* 底部这块**高度恒定**（42px）：按钮长大还是缩回，卡片都不会被撑高、整页不跳。
+   justify-content: center 是让按钮**从中间往两边长** —— flex-grow 从 0 涨到 1 的过程中，
+   原先平分在左右的剩余空间被它吃掉，看上去就是"由中心张开"，而不是从左边甩出去。 */
 .hot-card-actions {
   display: flex;
+  justify-content: center;
+  align-items: center;
   gap: 6px;
-  height: 34px;
+  width: 100%;
+  height: 42px;
   opacity: 0;
   transition: opacity 0.15s ease;
 }
 
+/* 这里是**三级**，别把它们混成一件事：
+     ① 平时              —— 按钮不显示（但高度恒占，浮现时卡片不被撑高、整页不跳）
+     ② 鼠标进卡片         —— 显出一枚**小胶囊**（132×34）
+     ③ 鼠标压到那枚小胶囊上 —— 长成卡片底部的一整条（216×42），横向不用对齐、一按一个准
+   ③ 不会来回闪：按钮是**从中心向外长**的，鼠标落在哪个点，长大之后那个点仍在按钮里。 */
 .hot-card:hover .hot-card-actions,
 .hot-card:focus-within .hot-card-actions {
   opacity: 1;
 }
 
-/* 已添加的卡片，把底部这枚按钮**常驻显示** —— 它既是状态（已添加），
-   也是唯一的出口（再点一下撤下来）；藏进 hover 里，用户就找不到取消的地方了。 */
+/* 已添加的卡片：按钮**常驻显示**（②的小胶囊尺寸）—— 它既是状态（已添加），
+   也是唯一的撤销入口，藏进 hover 里用户就找不到取消的地方了。 */
 .hot-card.is-added .hot-card-actions {
   opacity: 1;
 }
 
+/* ② 鼠标在卡片上、但还没压到按钮时：小胶囊（132px 宽、34px 高）
+   配色是**浅灰底 + 深色字**（用户反馈实心蓝"饱和度太高、丑陋"）—— 卡片上的这个动作是次要的，
+   视觉上就该往后退一步，别和卡片里真正的主角（手机图、机型名）抢。
+   规矩不变：**颜色只由"加没加"决定，尺寸只由"鼠标在不在按钮上"决定**，所以从 ② 到 ③
+   颜色一动不动，读起来就是"同一枚按钮长大了"（用户上一轮反馈过"颜色跳一下就割裂"）。
+     未添加 → 浅灰底 + 深色字（安静的次要动作）
+     已添加 → 淡蓝底 + 蓝字（"已成事实"，和卡片四周的蓝描边呼应） */
 .hot-action {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 5px;
+  flex: 0 1 auto;
+  min-width: 132px;
+  gap: 6px;
   height: 34px;
   padding: 0 20px;
-  border: 0.5px solid var(--border);
+  border: 0.5px solid rgba(0, 0, 0, 0.1);
   border-radius: 999px;
   background: var(--bg);
   font: inherit;
@@ -1185,20 +1283,44 @@ body {
   color: var(--text);
   white-space: nowrap;
   cursor: pointer;
-  transition: border-color 0.15s, background 0.15s, color 0.15s;
+  transition:
+    flex-grow 0.2s cubic-bezier(0.22, 1, 0.36, 1),
+    margin 0.2s cubic-bezier(0.22, 1, 0.36, 1),
+    height 0.2s cubic-bezier(0.22, 1, 0.36, 1),
+    padding 0.2s cubic-bezier(0.22, 1, 0.36, 1),
+    font-size 0.2s cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 0.15s,
+    background 0.15s,
+    color 0.15s,
+    box-shadow 0.2s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-.hot-action:hover {
-  border-color: var(--accent);
-  background: var(--surface);
+/* 已添加：换成淡蓝底 + 蓝字（状态色，和"未添加"的浅灰拉开档次）。
+   只改配色、不改尺寸 —— 尺寸统一由"鼠标在不在按钮上"决定，规则才不会互相打架。 */
+.hot-card.is-added .hot-action {
+  border-color: rgba(0, 102, 204, 0.4);
+  background: var(--diff-bg);
   color: var(--accent);
 }
 
-/* 已添加：按钮自己也换成"选中"的样子（白底压在淡蓝卡面上，比原来的浅蓝底更跳） */
-.hot-action.is-on {
-  border-color: var(--accent);
-  background: var(--surface);
-  color: var(--accent);
+/* ③ 鼠标压到按钮上：长大。**只改尺寸和投影，颜色一概不动** —— 一改颜色就回到"两个按钮"的观感了。
+   长大后的尺寸比"撑满整条"再收一点（用户要求）：宽度取满宽的 90%、高度 42 → 40px（95%）。
+   宽度不是写死 px，而是给按钮左右各 5% 的外边距 —— 容器宽度的 10% 被吃掉，
+   剩下正好是 90%，卡片宽窄变化时比例自动跟着走，不用再算一遍数字。
+   高度 40px 比容器（42px）矮 2px，容器高度恒定，所以卡片依旧不会被撑高。 */
+.hot-card .hot-action:hover,
+.hot-card .hot-action:focus-visible {
+  flex-grow: 1;
+  margin: 0 5%;
+  height: 40px;
+  font-size: 14px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.14);
+}
+
+/* 已添加的那枚长大时给浅一档的蓝投影：底色本来就淡，用中性灰的影子会发脏 */
+.hot-card.is-added .hot-action:hover,
+.hot-card.is-added .hot-action:focus-visible {
+  box-shadow: 0 5px 16px rgba(0, 102, 204, 0.18);
 }
 
 /* ==================== 顶栏 ==================== */
@@ -1364,6 +1486,52 @@ body {
   box-shadow: 0 20px 50px rgba(0, 0, 0, 0.28);
 }
 
+.dock-btn svg {
+  transform-origin: 50% 50%;
+}
+
+/* 空态（一台都没加）：按钮照常在，但点它不会有反应 —— 让图标抖一下代替文案报错。
+   transform-origin 必须显式写：SVG 元素的默认原点在部分浏览器里是 0 0，
+   不写的话旋转会绕着左上角甩，看着像 bug。 */
+@keyframes dock-shake {
+  0%,
+  100% {
+    transform: translateX(0) rotate(0);
+  }
+  15% {
+    transform: translateX(-4px) rotate(-8deg);
+  }
+  30% {
+    transform: translateX(4px) rotate(8deg);
+  }
+  45% {
+    transform: translateX(-3px) rotate(-6deg);
+  }
+  60% {
+    transform: translateX(3px) rotate(6deg);
+  }
+  80% {
+    transform: translateX(-1.5px) rotate(-3deg);
+  }
+}
+
+.dock-btn.is-shake svg {
+  animation: dock-shake 0.44s cubic-bezier(0.36, 0.07, 0.19, 0.97);
+}
+
+/* 计数每变一次弹一下，加/减都有即时反馈（重挂载靠 key，见 CompareDock.jsx） */
+@keyframes dock-pop {
+  0% {
+    transform: scale(0.72);
+  }
+  55% {
+    transform: scale(1.16);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
 .dock-count {
   display: inline-flex;
   align-items: center;
@@ -1374,6 +1542,13 @@ body {
   border-radius: 999px;
   background: rgba(255, 255, 255, 0.22);
   font-size: 18px;
+  animation: dock-pop 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* 空态时把「0」压暗一点，别抢注意力 */
+.dock-btn.is-empty .dock-count {
+  background: rgba(255, 255, 255, 0.14);
+  color: rgba(255, 255, 255, 0.72);
 }
 
 /* 悬停才摊开的待对比清单（鼠标移上去、或键盘焦点进来） */
@@ -1709,16 +1884,24 @@ body {
     height: 92px;
   }
 
-  /* 触屏没有 hover：按钮直接常显 */
+  /* 触屏没有 hover，"临近放大"无从触发，所以按钮直接就是**大态** ——
+     尺寸与桌面端压上去那一档完全对齐（满宽的 90% + 40px 高），不另立一套规矩。
+     40px 也正好是舒服的触摸目标（手指落点比鼠标糙，卡片小的时候按钮更不能小）。
+     min-width 必须放开：132px 的下限会在窄卡上顶出容器。
+     opacity 也必须放开：上面那条"平时 opacity 0"是给鼠标准备的（hover 才浮现），
+     触屏没有 hover，照抄过去就等于**永远不显示**，加对比就没入口了。 */
   .hot-card-actions {
+    height: 42px;
     opacity: 1;
-    height: 30px;
   }
 
   .hot-action {
-    height: 30px;
+    flex-grow: 1;
+    margin: 0 5%;
+    min-width: 0;
+    height: 40px;
     padding: 0 14px;
-    font-size: 12.5px;
+    font-size: 14px;
   }
 
   /* 触屏没有"光标"，跟随提示无从跟起，直接不显示（点卡片即开浮窗） */

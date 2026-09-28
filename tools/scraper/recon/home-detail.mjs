@@ -1,13 +1,19 @@
 // 验收：首页 + 参数浮窗 + 暂存区浮标（2026-09-28）
-//   1. 首页：大标题、搜索框、热门机型卡片（每品牌最新 HOT_PER_BRAND 台，铺满 HOT_ROWS 行）
-//   2. 操作平时不可见、hover 才浮现：「添加对比」按钮 + 一枚**跟随光标**的「查看详情」提示
-//   3. 点卡片任意处都打开参数浮窗（浮窗左侧图片、右侧参数）
-//   4. 浮窗**不铺满**：两侧留白、上下留空隙，尺寸小于视口
-//   5. 浮窗从被点的那张卡片处放大（transform-origin 落在卡片中心），关闭时播回缩动画再卸载
-//   6. 点空白处、按 Esc、点右上角 × 三种方式都能关
-//   7. 「添加对比」→ 右下角出现暂存区浮标，悬停摊开已添加机型；放大后的浮标 ≥1.5 倍原尺寸，带「清空」
-//   8. 点浮标进对比页，对比表第一列就是刚加的那台；顶栏「返回首页」能退回来，
-//      且卡片上的「已添加」是**常显状态**（不 hover 也看得见，靠整卡底色 + 常驻按钮两处表达）
+//   1. 首页：大标题、搜索框、热门机型卡片（每品牌最新 HOT_PER_BRAND 台，铺满 HOT_ROWS 行、一行最多 6 列）
+//   2. 「添加对比」三级：平时不显示 → 鼠标进卡片显出小胶囊 → 光标压到按钮上才长大（满宽的 90% × 40px 高）；
+//      卡片本身跟着"原地放大"一点点（只放大、不位移）；从小到大的**配色完全一致**（只有尺寸在变），
+//      且小胶囊是**浅灰**不是高饱和蓝；
+//      卡片上另有一枚**跟随光标**的「查看详情」提示（鼠标走多远它跟多远）
+//   3. 空态暂存区：一台都没加时浮标也常显（计数 0）；点它不跳转，改成图标震一下；空态不摊开空清单
+//   4. 点卡片任意处都打开参数浮窗（浮窗左侧图片、右侧参数）
+//   5. 浮窗**不铺满**：两侧留白、上下留空隙，尺寸小于视口
+//   6. 浮窗从被点的那张卡片处放大（transform-origin 落在卡片中心），关闭时播回缩动画再卸载
+//   7. 点空白处、按 Esc、点右上角 × 三种方式都能关
+//   8. 「添加对比」→ 暂存区计数 +1，悬停摊开已添加机型；放大后的浮标 ≥1.5 倍原尺寸，带「清空」
+//   9. 点浮标进对比页，对比表第一列就是刚加的那台；顶栏「返回首页」能退回来，
+//      且卡片上的「已添加」是**常显状态**（不 hover 也看得见：卡面留白 + 四周加强 + 常驻大按钮）
+//   10. 网格底部的「显示更多」：一次多铺 HOT_ROWS 行、按钮居中且报出剩余台数，
+//       热门池取空后按钮自己消失；搜索时不出现（搜索结果是全部命中）
 // 用法：node recon/home-detail.mjs   （需先起 dev server :5173）
 
 import { launchBrowser, newPage, sleep } from "../lib/browser.mjs";
@@ -31,7 +37,9 @@ const waitClosed = async () => {
 };
 
 // ---------- 1. 首页结构 ----------
-const title = (await page.locator(".home-title").textContent())?.trim();
+// 标题是「站名 + 后缀」两段拼的（.home-title-sub），JSX 里那个换行可能带出空白，
+// 所以把空白全去掉再比，免得断言因为排版抖一下就红
+const title = (await page.locator(".home-title").textContent())?.replace(/\s+/g, "");
 const hasSearch = await page.locator(".home-search input").isVisible();
 const cards = await page.locator(".hot-card").count();
 // 热门机型几张是跟着视口走的（一行几列由 CSS 的 auto-fill 决定），所以断言 =
@@ -46,11 +54,49 @@ const { hotRows, hotPoolSize } = await page.evaluate(async () => {
   const m = await import("/DeviceCompare/src/Home.jsx");
   return { hotRows: m.HOT_ROWS, hotPoolSize: m.HOT_POOL.length };
 });
-check(title === "灵眸", `首页大标题：${title}`);
+check(title === "灵眸手机对比", `首页大标题 = 站名 + 说明：${title}`);
+// 「手机对比」得比站名明显小一档，否则两个大词并排、读不出主次
+const titleSize = await page.locator(".home-title").evaluate((el) => parseFloat(getComputedStyle(el).fontSize));
+const subTitleSize = await page
+  .locator(".home-title-sub")
+  .evaluate((el) => parseFloat(getComputedStyle(el).fontSize));
+check(
+  subTitleSize < titleSize * 0.7,
+  `"手机对比"明显小于站名（${subTitleSize}px vs ${titleSize}px），一眼能读出主次`
+);
 check(hasSearch, "首页搜索框可见");
 check(cards === cols * hotRows, `热门机型 ${cards} 张 = ${cols} 列 × ${hotRows} 行（池子 ${hotPoolSize} 台）`);
 check(cards % hotRows === 0, `铺满 ${hotRows} 行，最后一行不留半截`);
+// 一行最多 6 列：这条是"卡片太挤"那个反馈的看门人 —— 列数再多就说明 CSS 里的 minmax 下限被改小了
+check(cols <= 6, `一行不超过 6 列（实际 ${cols} 列）`);
+const cardW = (await page.locator(".hot-card").first().boundingBox()).width;
+check(cardW >= 220, `卡片已加宽（宽 ${Math.round(cardW)}px）`);
 check(!(await page.locator(".compare-grid").isVisible().catch(() => false)), "首页不渲染对比表");
+
+// ---------- 1b. 一台都没加时：浮标也要在；点了不跳转，改成图标震一下 ----------
+// 入口时有时无的话，用户根本形成不了"这里能发起对比"的印象，所以空态必须常显。
+check((await page.locator(".compare-dock").count()) === 1, "一台都没加时浮标也在（不是隐藏）");
+check((await page.locator(".dock-count").textContent())?.trim() === "0", "空态浮标计数显示 0");
+check((await page.locator(".dock-btn.is-empty").count()) === 1, "空态浮标带 is-empty 标记");
+await page.locator(".dock-btn").hover();
+await sleep(350);
+check((await page.locator(".dock-list").count()) === 0, "空态悬停不摊开空清单（里面没东西可看）");
+
+const search0 = await page.evaluate(() => location.search);
+await page.locator(".dock-btn").click();
+await sleep(80);
+const shaking = await page.locator(".dock-btn").evaluate((el) => el.classList.contains("is-shake"));
+const animName = await page.locator(".dock-btn svg").evaluate((el) => getComputedStyle(el).animationName);
+check(shaking, "点空态浮标：按钮进入震动状态");
+check(String(animName).includes("dock-shake"), `图标正在播震动动画（animation-name: ${animName}）`);
+check(!(await page.locator(".compare-grid").isVisible().catch(() => false)), "点空态浮标没有跳去对比页");
+check((await page.evaluate(() => location.search)) === search0, "点空态浮标地址栏没变（没留下历史记录）");
+await sleep(700);
+check(
+  !(await page.locator(".dock-btn").evaluate((el) => el.classList.contains("is-shake"))),
+  "震动播完自动收回，不会一直抖"
+);
+await page.mouse.move(10, 10);
 
 // 搜索：全局过滤，且带清空按钮
 await page.fill(".home-search input", "iphone17");
@@ -62,7 +108,7 @@ await page.locator(".home-search .overlay-search-clear").click();
 await sleep(400);
 check((await page.locator(".hot-card").count()) === cols * hotRows, "清空后回到热门机型");
 
-// ---------- 2. 操作 hover 才出现；「查看详情」跟随光标 ----------
+// ---------- 2. 三级：平时不显示 → 鼠标进卡片显示小胶囊 → 压到按钮上才放大；「查看详情」跟随光标 ----------
 const opacityOf = (sel) => page.locator(sel).first().evaluate((el) => getComputedStyle(el).opacity);
 const parseXY = (tf) => {
   const m = /matrix\(([^)]+)\)/.exec(tf);
@@ -74,22 +120,48 @@ const hintXY = async () => parseXY(await page.locator(".cursor-hint").evaluate((
 
 const firstCard = page.locator(".hot-card").first();
 const cardBox = await firstCard.boundingBox();
+// 卡片左右内边距各 16px —— 占比按"可用内宽"算，不看 padding
+const fillOf = (btn, card) => btn.width / (card.width - 32);
+// 按钮配色：用来盯"小胶囊 → 放大态颜色不许跳"这条（用户反馈过"很割裂"）
+const btnColors = () =>
+  firstCard.locator(".hot-action").evaluate((el) => {
+    const cs = getComputedStyle(el);
+    return { bg: cs.backgroundColor, color: cs.color, border: cs.borderTopColor };
+  });
 
-const btnBefore = await opacityOf(".hot-card-actions");
 const hintBefore = await opacityOf(".cursor-hint");
-check(btnBefore === "0", `「添加对比」按钮默认不可见（opacity ${btnBefore}）`);
 check(hintBefore === "0", `跟随提示默认不可见（opacity ${hintBefore}）`);
 
-// 光标挪到卡片内两个位置，验提示真的跟着走
+// ① 平时：按钮**不显示**（高度仍恒占，所以卡片不会因为按钮浮现被撑高）
+const btnHidden = await opacityOf(".hot-card-actions");
+check(btnHidden === "0", `① 平时按钮不显示（opacity ${btnHidden}）`);
+
+// ② 鼠标进卡片（但没压到按钮上）：小胶囊浮现；顺带验跟随提示真的跟着光标走
 await page.mouse.move(cardBox.x + 40, cardBox.y + 40);
-await sleep(320);
-const btnAfter = await opacityOf(".hot-card-actions");
+await sleep(360);
+// 卡片 hover 时是"原地放大"，boundingBox 会跟着变大 —— 算占比要拿**同一时刻**的卡片框，
+// 不能拿布局尺寸去比一枚已经跟着放大过的按钮。
+const cardHov = await firstCard.boundingBox();
+const btnSmall = await firstCard.locator(".hot-action").boundingBox();
+const colorsSmall = await btnColors();
 const hintAfter = await opacityOf(".cursor-hint");
 const p1 = await hintXY();
 await page.mouse.move(cardBox.x + 130, cardBox.y + 110);
 await sleep(320);
 const p2 = await hintXY();
-check(btnAfter === "1", `鼠标移上卡片后按钮浮现（opacity ${btnAfter}）`);
+check((await opacityOf(".hot-card-actions")) === "1", "② 鼠标进卡片后按钮浮现");
+check(btnSmall.height <= 38, `② 浮现的是小胶囊（高 ${Math.round(btnSmall.height)}px）`);
+check(
+  fillOf(btnSmall, cardHov) <= 0.75,
+  `② 小胶囊不撑满卡片底部（占可用宽 ${Math.round(fillOf(btnSmall, cardHov) * 100)}%）`
+);
+check(btnSmall.width >= 104, `② 再小也得看得清（宽 ${Math.round(btnSmall.width)}px）`);
+
+// 卡片 hover 的"突出感"：原地放大一点点（×1.03）。
+// 只放大不位移是关键 —— 位移会把鼠标从卡片身下抽走，放大则只会把边往外推，hover 丢不了。
+const lift = cardHov.width / cardBox.width;
+check(lift > 1.01 && lift < 1.06, `鼠标进卡片时卡片原地放大（×${lift.toFixed(3)}，布局宽 ${Math.round(cardBox.width)}px）`);
+check(cardHov.height > cardBox.height, `放大是整体的，高度也跟着起来（${Math.round(cardBox.height)} → ${Math.round(cardHov.height)}px）`);
 check(hintAfter === "1", `鼠标移上卡片后跟随提示浮现（opacity ${hintAfter}）`);
 check(
   Math.abs(p1.x - (cardBox.x + 40 + 16)) <= 3 && Math.abs(p1.y - (cardBox.y + 40 + 18)) <= 3,
@@ -100,13 +172,73 @@ check(
   `提示跟随光标位移（鼠标走 90×70，提示走 ${Math.round(p2.x - p1.x)}×${Math.round(p2.y - p1.y)}）`
 );
 
-await page.mouse.move(20, 20);
-await sleep(320);
-check((await opacityOf(".cursor-hint")) === "0", "光标移出卡片后提示消失");
+// ③ 光标压到那枚小胶囊上：才长大（满宽的 90% × 40px 高，比"撑满整条"收一档）
+await page.mouse.move(btnSmall.x + btnSmall.width / 2, btnSmall.y + btnSmall.height / 2);
+await sleep(420);
+const cardHov3 = await firstCard.boundingBox();
+const btnBig = await firstCard.locator(".hot-action").boundingBox();
+const colorsBig = await btnColors();
+// 卡片 hover 时整体放大了 lift 倍，按钮的 boundingBox 也跟着放大 —— 除以 lift 还原成 CSS 尺寸再断言
+const grownW = btnBig.width / lift;
+const grownH = btnBig.height / lift;
+const innerW = cardBox.width - 32;
+check(
+  btnBig.height >= 38 && btnBig.height < btnSmall.height + 20,
+  `③ 光标压到按钮上才长大（高 ${Math.round(btnSmall.height)} → ${Math.round(btnBig.height)}px）`
+);
+check(
+  Math.abs(grownW / innerW - 0.9) <= 0.03,
+  `③ 长到"满宽"的 90%（宽 ${Math.round(grownW)}px / 可用 ${Math.round(innerW)}px = ${((grownW / innerW) * 100).toFixed(0)}%）`
+);
+check(
+  Math.abs(grownH - 40) <= 1.5,
+  `③ 高度是 40px（原 42px 的 95%）：${grownH.toFixed(1)}px`
+);
+check(
+  btnBig.height / cardBox.height <= 0.2,
+  `③ 按钮没有大到失真（占卡片高 ${Math.round((btnBig.height / cardBox.height) * 100)}%）`
+);
 
-// 按钮比原先大了（用户反馈"略有点小"）
-const btnBox = await page.locator(".hot-card").first().locator(".hot-action").boundingBox();
-check(btnBox.height >= 32, `「添加对比」按钮已放大（${Math.round(btnBox.width)}×${Math.round(btnBox.height)}）`);
+// ③c 「小胶囊」和「长大的按钮」必须是**同一个按钮**，不能是两副面孔 ——
+// 用户反馈：「添加卡片 和 放大的添加卡片 颜色不一致 很割裂」。
+// 规矩定死：颜色只由"加没加"决定，尺寸只由"鼠标在不在按钮上"决定。所以 ②→③ 配色一个字节都不许改。
+check(
+  colorsSmall.bg === colorsBig.bg && colorsSmall.color === colorsBig.color && colorsSmall.border === colorsBig.border,
+  `②→③ 只有尺寸在变、配色一模一样（${colorsSmall.bg} / ${colorsSmall.color}）`
+);
+// 也不能再是高饱和蓝：用户反馈过"蓝色饱和度太高了、丑陋，做成浅灰色"。
+// 判据 = 三个通道几乎相等（中性色，没有色相）且足够浅。
+const channelsSmall = (colorsSmall.bg.match(/\d+/g) ?? []).map(Number).slice(0, 3);
+check(
+  channelsSmall.length === 3 &&
+    Math.max(...channelsSmall) - Math.min(...channelsSmall) <= 6 &&
+    Math.min(...channelsSmall) >= 235,
+  `小胶囊是浅灰（不再高饱和蓝）：底 ${colorsSmall.bg}`
+);
+
+// ③b 光标从按钮上移开（人还在卡片里）：缩回小胶囊
+await page.mouse.move(cardBox.x + 40, cardBox.y + 40);
+await sleep(420);
+const btnBack = await firstCard.locator(".hot-action").boundingBox();
+check(btnBack.height <= 38, `③ 光标离开按钮后缩回小胶囊（${Math.round(btnBig.height)} → ${Math.round(btnBack.height)}px）`);
+
+// hover 时卡片**不许位移**（原地放大可以，平移不行）：一上移，鼠标停在下边缘就会被"从身下抽走"，
+// hover 反复触发/取消、按钮一闪一闪，用户得再对焦一次才点得中 —— 那正是"二次对焦"的根因。
+const hoverTf = await firstCard.evaluate((el) => getComputedStyle(el).transform);
+const tfNums = (hoverTf.match(/matrix(?:3d)?\(([^)]+)\)/)?.[1] ?? "").split(",").map(Number);
+const [tx, ty] = tfNums.length === 6 ? [tfNums[4], tfNums[5]] : [tfNums[12], tfNums[13]];
+check(
+  hoverTf !== "none" && Math.abs(tx) < 0.5 && Math.abs(ty) < 0.5,
+  `hover 时卡片只就地放大、一点位移都没有（transform: ${hoverTf}）`
+);
+
+// ① 光标离开卡片：提示消失、按钮也跟着收回去
+await page.mouse.move(20, 20);
+await sleep(420);
+check((await opacityOf(".cursor-hint")) === "0", "光标移出卡片后提示消失");
+check((await opacityOf(".hot-card-actions")) === "0", "光标移出卡片后按钮也收回去（回到 ①）");
+
+check(cardBox.height >= 265, `卡片整体拉长（高 ${Math.round(cardBox.height)}px）`);
 
 // ---------- 3~5. 点卡片开浮窗 ----------
 const cardRect = await page.locator(".hot-card").first().evaluate((el) => {
@@ -253,45 +385,164 @@ const [addedBg, plainBg] = await page.evaluate(() => {
   const b = all.find((el) => !el.classList.contains("is-added"));
   return a && b ? [pick(a), pick(b)] : [null, null];
 });
-check(Boolean(addedBg) && Boolean(plainBg) && addedBg !== plainBg, "已添加卡片的底色与未添加的明显不同");
-check(/gradient/.test(addedBg ?? ""), "已添加卡片用的是渐变底色（更醒目）");
+check(Boolean(addedBg) && Boolean(plainBg) && addedBg !== plainBg, "已添加卡片的底色与未添加的不同");
 
-// 按钮常显：不 hover 也得看得见（用户反馈"添加后看不出来"）
+// 表达方式必须是"往外走"：卡内几乎留白（只有顶端一丝极淡的蓝），力量放在四周（描边 + 光晕 + 外投影）。
+// 之前整卡刷淡蓝底，用户反馈"像被盖住、没有空气感"，这两条断言就是那个反馈的守门人。
+const addedStyle = await page.evaluate(() => {
+  const el = document.querySelector(".hot-card.is-added");
+  const cs = getComputedStyle(el);
+  // 渐变卡面的 background-color 恒为 transparent（颜色都在 background-image 里），
+  // 所以把渐变里出现的所有颜色一起取出来判断"是不是接近白"。
+  const rgb = [...cs.backgroundImage.matchAll(/rgba?\((\d+),\s*(\d+),\s*(\d+)/g)].map((m) => [
+    +m[1],
+    +m[2],
+    +m[3]
+  ]);
+  return { rgb, shadow: cs.boxShadow, border: cs.borderTopColor };
+});
+check(
+  addedStyle.rgb.length > 0 && addedStyle.rgb.every((c) => Math.min(...c) >= 240),
+  `已添加卡片的卡面颜色全部接近白、不再整体刷蓝底（${addedStyle.rgb.map((c) => c.join(",")).join(" / ")}）`
+);
+check(
+  (addedStyle.shadow.match(/rgba\(0, 102, 204/g) ?? []).length >= 2,
+  `已添加卡片四周加强：描边 + 至少两层蓝色外阴影（${addedStyle.shadow.slice(0, 64)}…）`
+);
+check(
+  /^rgba\(0, 102, 204/.test(addedStyle.border),
+  `已添加卡片描边是蓝色（${addedStyle.border}）`
+);
+
+// 已添加的卡片：按钮**常驻显示**（不 hover 也看得见）—— 用户反馈"添加后看不出来"。
+// 但尺寸仍走同一套规则：鼠标不在按钮上时是 ② 的小胶囊，压上去才 ③ 放大。
 await page.mouse.move(20, 20);
-await sleep(350);
+await sleep(420);
 const addOpacity = await firstCard2.locator(".hot-card-actions").evaluate((el) => getComputedStyle(el).opacity);
 const addLabel = (await firstCard2.locator(".hot-card-actions button").first().textContent())?.trim();
-check(addOpacity === "1", `未 hover 时「已添加」按钮也常显（opacity ${addOpacity}）`);
+check(addOpacity === "1", `已添加的卡片：未 hover 时按钮也常显（opacity ${addOpacity}）`);
 check(addLabel === "已添加", `按钮文案：${addLabel}`);
+const addBtn2 = await firstCard2.locator(".hot-action").boundingBox();
+const addCard2 = await firstCard2.boundingBox();
+check(
+  fillOf(addBtn2, addCard2) <= 0.75,
+  `已添加的按钮静止时同样是 ② 的小胶囊（占可用宽 ${Math.round(fillOf(addBtn2, addCard2) * 100)}%）`
+);
+// 「已添加」在这一档要**安静下来**：换成淡蓝底 + 蓝字（和参数浮窗里「已加入」同一套），
+// 和未添加那张实心蓝底白字的按钮拉开档次 —— 状态一眼可辨，但仍然没有换一套配色语言。
+const addBtnColors = await firstCard2.locator(".hot-action").evaluate((el) => {
+  const cs = getComputedStyle(el);
+  return { bg: cs.backgroundColor, color: cs.color };
+});
+check(
+  addBtnColors.bg === "rgb(240, 247, 255)" && addBtnColors.color === "rgb(0, 102, 204)",
+  `已添加的按钮是淡蓝底 + 蓝字、与未添加的实心蓝可区分（${addBtnColors.bg} / ${addBtnColors.color}）`
+);
 
-// 对照：没加入对比的卡片，操作仍然是 hover 才出现
-const plainOpacity = await page
-  .locator(".hot-card")
-  .nth(cols)
-  .locator(".hot-card-actions")
-  .evaluate((el) => getComputedStyle(el).opacity);
-check(plainOpacity === "0", `未添加的卡片按钮依旧 hover 才出现（opacity ${plainOpacity}）`);
+// 对照：没加入对比的卡片，鼠标不在它上面时按钮是**隐藏**的（①）；鼠标进去才显出小胶囊（②）
+const plainCard = page.locator(".hot-card").nth(cols);
+const plainCardBox = await plainCard.boundingBox();
+check(
+  (await plainCard.locator(".hot-card-actions").evaluate((el) => getComputedStyle(el).opacity)) === "0",
+  "未添加的卡片：鼠标不在上面时按钮不显示（①）"
+);
+await page.mouse.move(plainCardBox.x + 40, plainCardBox.y + 40);
+await sleep(380);
+const plainBtn = await plainCard.locator(".hot-action").boundingBox();
+check(
+  (await plainCard.locator(".hot-card-actions").evaluate((el) => getComputedStyle(el).opacity)) === "1",
+  "未添加的卡片：鼠标进去后显出按钮（②）"
+);
+check(
+  fillOf(plainBtn, plainCardBox) <= 0.75,
+  `未添加的卡片按钮也是小胶囊（占可用宽 ${Math.round(fillOf(plainBtn, plainCardBox) * 100)}%）`
+);
 
 // 再点一次那个常显按钮 = 取消
 await firstCard2.hover();
 await sleep(300);
 await firstCard2.locator(".hot-card-actions button").first().click();
 await sleep(400);
-check((await page.locator(".compare-dock").count()) === 0, "取消后浮标消失");
 check((await page.locator(".hot-card.is-added").count()) === 0, "取消后卡片的已添加态一并消失");
+// 浮标不再消失，而是回到空态（入口常显）
+check((await page.locator(".compare-dock").count()) === 1, "取消到 0 台后浮标仍在（回到空态，不是隐藏）");
+check((await page.locator(".dock-count").textContent())?.trim() === "0", "取消后浮标计数回到 0");
+check((await page.locator(".dock-btn.is-empty").count()) === 1, "取消后浮标回到空态标记");
 
 // ---------- 10. 「清空」：一次撤完 ----------
 await page.locator(".hot-card").first().hover();
 await sleep(300);
 await page.locator(".hot-card").first().locator(".hot-action").click();
 await sleep(400);
-check((await page.locator(".dock-count").textContent())?.trim() === "1", "重新加一台，浮标回来了");
+check((await page.locator(".dock-count").textContent())?.trim() === "1", "重新加一台，计数回到 1");
+check((await page.locator(".dock-btn.is-empty").count()) === 0, "有内容后空态标记消失");
 await page.locator(".dock-btn").hover();
 await sleep(350);
 await page.locator(".dock-clear").click();
 await sleep(400);
-check((await page.locator(".compare-dock").count()) === 0, "点「清空」后浮标消失");
 check((await page.locator(".hot-card.is-added").count()) === 0, "「清空」后所有卡片的已添加态一并消失");
+check((await page.locator(".dock-count").textContent())?.trim() === "0", "「清空」后计数为 0");
+check((await page.locator(".dock-list").count()) === 0, "清空后不再摊开空清单");
+await page.locator(".dock-btn").click();
+await sleep(80);
+check(
+  await page.locator(".dock-btn").evaluate((el) => el.classList.contains("is-shake")),
+  "清空后再点浮标：同样只震动、不跳转"
+);
+await sleep(700);
+
+// ---------- 11. 网格底部的「显示更多」 ----------
+// 没做分页：分页要往地址栏加 page 参数、还得管翻页后的滚动位置，而"扫一眼 → 点进去看"
+// 这种动作本来就不该多一道"下一页/上一页"的决策；要精确找某一台走「浏览全部机型」。
+const { hotPoolLen, hotRowCount } = await page.evaluate(async () => {
+  const m = await import("/DeviceCompare/src/Home.jsx");
+  return { hotPoolLen: m.HOT_POOL.length, hotRowCount: m.HOT_ROWS };
+});
+check((await page.locator(".home-more-btn").count()) === 1, "网格底部有「显示更多」按钮");
+const moreBox = await page.locator(".home-more-btn").boundingBox();
+check(moreBox.height >= 42, `做成 44px 的胶囊而不是一行小字（高 ${Math.round(moreBox.height)}px）`);
+// 按钮居中：它是这一屏唯一的"继续往下看"出口，摆偏了会显得像脚注
+const gridBox = await page.locator(".home-grid").boundingBox();
+const moreCX = moreBox.x + moreBox.width / 2;
+check(
+  Math.abs(moreCX - (gridBox.x + gridBox.width / 2)) <= 4,
+  `「显示更多」在网格下方居中（偏差 ${Math.abs(moreCX - (gridBox.x + gridBox.width / 2)).toFixed(0)}px）`
+);
+const moreLabel = (await page.locator(".home-more-btn").textContent())?.replace(/\s+/g, "");
+check(/还有\d+台/.test(moreLabel ?? ""), `按钮上报了还剩多少台，用户能判断要点几下：${moreLabel}`);
+
+const cols11 = await hotCols();
+const first11 = await page.locator(".hot-card").count();
+check(first11 === cols11 * hotRowCount, `首屏 ${first11} 张 = ${cols11} 列 × ${hotRowCount} 行`);
+await page.locator(".home-more-btn").click();
+await sleep(450);
+const afterOne = await page.locator(".hot-card").count();
+check(
+  afterOne === cols11 * hotRowCount * 2,
+  `点一次多铺 ${hotRowCount} 行：${first11} → ${afterOne} 张`
+);
+check(afterOne % cols11 === 0, `新增的是整行，不留半截空行（${afterOne} / ${cols11} 行）`);
+// 一路点到热门池取空：按钮要自己消失，不能留一个"点了没反应"的死按钮
+for (let i = 0; i < 12 && (await page.locator(".home-more-btn").count()) > 0; i += 1) {
+  await page.locator(".home-more-btn").click();
+  await sleep(260);
+}
+const finalCards = await page.locator(".hot-card").count();
+check(finalCards === hotPoolLen, `一直点到底 = 热门池 ${hotPoolLen} 台全部铺出（实际 ${finalCards} 张）`);
+check(finalCards % cols11 === 0, `铺完仍是整行（${finalCards} / ${cols11} = ${finalCards / cols11} 行）`);
+check((await page.locator(".home-more-btn").count()) === 0, "池子取空后按钮自己消失，不留死按钮");
+// 搜索时不出现：搜索结果是全部命中，本来就没有"更多"可给
+const beforeSearch = await page.locator(".hot-card").count();
+await page.fill(".home-search input", "iphone");
+await sleep(450);
+check((await page.locator(".home-more-btn").count()) === 0, "搜索时底部不出现「显示更多」");
+await page.locator(".home-search .overlay-search-clear").click();
+await sleep(400);
+// 清空搜索后回到刚才的铺法（已经点到 48 台了，就还回 48 台，不要莫名其妙缩回首屏）
+check(
+  (await page.locator(".hot-card").count()) === beforeSearch,
+  `清空搜索后回到搜索前的铺法（${beforeSearch} 张）`
+);
 
 await page.screenshot({ path: "/tmp/home-detail.png", fullPage: false });
 console.log(problems ? `\n${problems} 项未通过` : "\n全部通过");

@@ -8,13 +8,18 @@ import { normSearch, fuzzyHit } from "./search.js";
 // 为什么不按日期混排：下面要把网格铺满固定行数，按日期排的话最后一行可能整行都是同一家，
 // 轮转之后**每一行都会把六个品牌走一遍**，这也正好满足"每个品牌都露脸"。
 //
-// 池子取 4 台/品牌 = 24 台，比最宽时需要的量（7 列 × 3 行 = 21 台）多留一点余量。
+// 池子取 8 台/品牌 = 48 台，是配合底部「显示更多」定的：
+//   首屏铺 3 行（6 列时 18 张）→ 点一次 +3 行（36）→ 再点一次 +3 行（48，取空）。
+//   48 恰好 = 6 列 × 8 行，所以在宽屏上任何一次停下来都是整行，不会剩半截空行。
+//   品牌里最少的一加也有 12 台，8 台/品牌取不满的风险没有（真取不满也只会少几台，不会报错）。
 // 不写人工名单 —— 每次抓完新机自动跟上，要改口径只动这几个常量。
 // 这三个常量连同 HOT_POOL 一起导出给 scripts/ssr-check.mjs 用，避免"改了一处忘了另一处"。
-export const HOT_PER_BRAND = 4;
-// 热门机型固定铺满的行数。实际渲染几张由"当前一行能放几列"决定（见下面的 cols），
-// 所以窄屏会少放几张、宽屏多放几张 —— 任何设备上都是整整 3 行，不会出现半截的空行。
+export const HOT_PER_BRAND = 8;
+// 首屏铺的行数，也是「显示更多」每次追加的行数。实际渲染几张由"当前一行能放几列"决定
+// （见下面的 cols），所以窄屏会少放几张、宽屏多放几张 —— 任何设备上都是整行，
+// 不会出现半截的空行。
 export const HOT_ROWS = 3;
+// 宽屏下每行最多几列（CSS 里 .home-grid 的 minmax 下限已经把它顶在 6）。
 // 服务端渲染（scripts/ssr-check.mjs）量不到容器宽度，退化用这个列数。
 export const DEFAULT_COLS = 6;
 
@@ -43,6 +48,11 @@ export const HOT_POOL = (() => {
  * 卡片上的"操作"与"状态"分开处理，这是这块最容易改错的地方：
  *   - 操作（添加对比）：平时透明，hover / 键盘聚焦才浮现；但**高度一直占着**，
  *     所以浮出来时卡片不会被撑高、整页不跳一下。
+ *     按钮配色只有两档、且**只由"加没加"决定**（未加 = 实心蓝底白字，已加 = 淡蓝底蓝字，
+ *     与参数浮窗里的「加入对比 / 已加入」同一套）；尺寸只由"鼠标在不在按钮上"决定。
+ *     两件事彻底拆开，所以按钮从小胶囊长到整条时颜色一动不动 —— 用户反馈过"颜色跳一下很割裂"。
+ *   - 卡片本身 hover 时**原地放大**约 3%（不是位移）：位移会把鼠标从卡片身下抽走、
+ *     导致 hover 反复触发，放大则只把四条边往外推，光标丢不了。详见 index.css 的注释。
  *   - 状态（已添加）：**常显**，不依赖 hover。整卡换成淡蓝底 + 蓝描边 + 底部按钮转为
  *     「已添加」并常驻显示。这两个位置各管一件事：底色负责"一屏扫过去就知道哪几台在表里"，
  *     按钮负责"点这里可以撤下来"，所以不再额外挂一枚右上角徽标（会和按钮重复）。
@@ -57,6 +67,13 @@ export default function Home({ onOpenDetail, onAddCompare, onBrowseAll, compareI
   const inputRef = useRef(null);
   const gridRef = useRef(null);
   const [cols, setCols] = useState(DEFAULT_COLS);
+  // 热门区是**分批往下铺**的：首屏 HOT_ROWS 行，底部点一次「显示更多」再加 HOT_ROWS 行，
+  // 直到热门池取空（此时按钮自己消失）。
+  // 存的是"批数"而不是"张数"：一行几列由 CSS auto-fill 决定，窗口一变列数就变，
+  // 存张数会留下半截行；存批数则永远按整行往下长。
+  // 没做分页：分页要往地址栏加 page 参数、还得管翻页后的滚动位置，而对"扫一眼 → 点进去看"
+  // 这种动作来说，"下一页/上一页"本身就是多余的一道决策；真要精确找某一台，走「浏览全部机型」。
+  const [batches, setBatches] = useState(1);
 
   // 网格一行能放几列，由 CSS 的 auto-fill 决定；这里读回来，是为了渲染「列数 × 行数」张卡片，
   // 保证任何视口宽度下都是整整 HOT_ROWS 行、最后一行不留半截。
@@ -120,11 +137,11 @@ export default function Home({ onOpenDetail, onAddCompare, onBrowseAll, compareI
 
   const query = normSearch(keyword.trim());
   const searching = Boolean(query);
-  // 搜索时给出**全部命中**（不截断、不铺行）；没搜索时才是"铺满 HOT_ROWS 行"的热门机型
-  const hot = useMemo(
-    () => HOT_POOL.slice(0, Math.min(cols * HOT_ROWS, HOT_POOL.length)),
-    [cols]
-  );
+  // 搜索时给出**全部命中**（不截断、不铺行）；没搜索时才是"热门机型"，按批往下铺
+  const perBatch = cols * HOT_ROWS;
+  const shown = Math.min(perBatch * batches, HOT_POOL.length);
+  const remaining = HOT_POOL.length - shown;
+  const hot = useMemo(() => HOT_POOL.slice(0, shown), [shown]);
   const list = useMemo(
     () => (searching ? phones.filter((p) => fuzzyHit(p, query)) : hot),
     [searching, query, hot]
@@ -139,7 +156,14 @@ export default function Home({ onOpenDetail, onAddCompare, onBrowseAll, compareI
   return (
     <div className="home">
       <header className="home-hero">
-        <h1 className="home-title">灵眸</h1>
+        {/* 站名后面挂上"手机对比"：光一个"灵眸"外人看不出这站是干什么的。
+            两段用不同字号/字重写在一行里（站名 52px 粗体，后缀 .5em 中等字重、浅一档），
+            读起来是"品牌 + 一句话说明"，而不是并排两个一样重的大词。
+            文案和顶栏的「灵眸 · 手机对比」一致（顶栏那处中间带点，是因为它挤在一行小字里）。 */}
+        <h1 className="home-title">
+          灵眸
+          <span className="home-title-sub">手机对比</span>
+        </h1>
         <p className="home-sub">{phones.length} 台手机的参数对比</p>
         <div className="home-search">
           <svg
@@ -222,7 +246,10 @@ export default function Home({ onOpenDetail, onAddCompare, onBrowseAll, compareI
                   <div className="hot-card-actions">
                     <button
                       type="button"
-                      className={`hot-action${added ? " is-on" : ""}`}
+                      // 按钮的 className 不按"是否已添加"分支（没有 is-on 之类的变体类）：
+                      // 状态一律由卡片上的 is-added 承载，配色规则挂在 `.hot-card.is-added .hot-action`
+                      // 上（见 index.css）；这里只管"大小"—— 平时小胶囊、鼠标压上来才长大。
+                      className="hot-action"
                       onClick={(e) => {
                         e.stopPropagation();
                         onAddCompare(p.id);
@@ -254,6 +281,19 @@ export default function Home({ onOpenDetail, onAddCompare, onBrowseAll, compareI
         </div>
 
         {list.length === 0 && <div className="model-empty">没有匹配的机型</div>}
+
+        {/* 网格底部的「显示更多」：一次多铺 HOT_ROWS 行，取空热门池后自己消失。
+            副标里带上"还剩多少台"—— 不给数字的话，用户不知道后面还有没有、还剩多少，
+            容易一路点下去；给了数字就能自己判断"点到这就够了"。
+            搜索时不出现：搜索结果是**全部命中**，本来就没有"更多"可给。 */}
+        {!searching && remaining > 0 && (
+          <div className="home-more">
+            <button type="button" className="home-more-btn" onClick={() => setBatches((b) => b + 1)}>
+              显示更多
+              <span className="home-more-count">还有 {remaining} 台</span>
+            </button>
+          </div>
+        )}
       </section>
 
       {/* 跟随光标的提示：常驻 DOM（靠 opacity 切显隐），这样进入卡片的瞬间
