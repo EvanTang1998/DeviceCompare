@@ -1,6 +1,6 @@
 // 验收：首页 + 参数浮窗 + 暂存区浮标（2026-09-28）
 //   1. 首页：大标题、搜索框、热门机型卡片（每品牌最新 HOT_PER_BRAND 台，铺满 HOT_ROWS 行、一行最多 6 列）
-//   2. 「添加对比」三级：平时不显示 → 鼠标进卡片显出小胶囊 → 光标压到按钮上才长大（满宽的 90% × 40px 高）；
+//   2. 「添加对比」三级：平时不显示 → 鼠标进卡片显出小胶囊 → 光标压到按钮上才长大（满宽的 81% × 40px 高）；
 //      卡片本身跟着"原地放大"一点点（只放大、不位移）；从小到大的**配色完全一致**（只有尺寸在变），
 //      且小胶囊是**浅灰**不是高饱和蓝；
 //      卡片上另有一枚**跟随光标**的「查看详情」提示（鼠标走多远它跟多远）
@@ -172,7 +172,7 @@ check(
   `提示跟随光标位移（鼠标走 90×70，提示走 ${Math.round(p2.x - p1.x)}×${Math.round(p2.y - p1.y)}）`
 );
 
-// ③ 光标压到那枚小胶囊上：才长大（满宽的 90% × 40px 高，比"撑满整条"收一档）
+// ③ 光标压到那枚小胶囊上：才长大（满宽的 81% × 40px 高，比"撑满整条"收两档）
 await page.mouse.move(btnSmall.x + btnSmall.width / 2, btnSmall.y + btnSmall.height / 2);
 await sleep(420);
 const cardHov3 = await firstCard.boundingBox();
@@ -186,9 +186,11 @@ check(
   btnBig.height >= 38 && btnBig.height < btnSmall.height + 20,
   `③ 光标压到按钮上才长大（高 ${Math.round(btnSmall.height)} → ${Math.round(btnBig.height)}px）`
 );
+// 用户两次要求收窄：先"满宽的 90%"，再"在现在的基础上再缩到 90%" → 90% × 90% = 81%。
+// 口径是**相对满宽**（而不是"比小胶囊大多少"），所以这里直接对 innerW 取 0.81。
 check(
-  Math.abs(grownW / innerW - 0.9) <= 0.03,
-  `③ 长到"满宽"的 90%（宽 ${Math.round(grownW)}px / 可用 ${Math.round(innerW)}px = ${((grownW / innerW) * 100).toFixed(0)}%）`
+  Math.abs(grownW / innerW - 0.81) <= 0.03,
+  `③ 长到"满宽"的 81%（宽 ${Math.round(grownW)}px / 可用 ${Math.round(innerW)}px = ${((grownW / innerW) * 100).toFixed(0)}%）`
 );
 check(
   Math.abs(grownH - 40) <= 1.5,
