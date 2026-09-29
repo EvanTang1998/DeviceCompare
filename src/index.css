@@ -1297,6 +1297,63 @@ body {
   color: var(--accent);
 }
 
+/* 满员（只作用于"未添加"的卡片）：置灰，明确"现在按不动"。
+   置灰的三件事必须一起做，少一件就自相矛盾：
+     ① 灰掉（降不透明度 + 弱化文字色），先让眼睛知道这枚不可用；
+     ② **取消 ③ 级的放大**（下面用更高优先级的规则把 hover 尺寸还原）——
+        又在长大、又点不动，等于骗人；
+     ③ 点击时左右晃（hot-shake）—— 不能真用 disabled 属性，
+        那样连 click 事件都不发，用户点了毫无动静，比静默更糟。
+   注意这里不用 cursor:not-allowed：它会让"能点（只是会被拒）"的语义变味，
+   保持 pointer，把"不可用"交给晃动的反馈去说。 */
+.hot-action.is-full,
+.hot-card.is-added .hot-action.is-full {
+  opacity: 0.4;
+  border-color: rgba(0, 0, 0, 0.08);
+  background: var(--bg);
+  color: var(--text-secondary);
+}
+
+/* ② 优先级的拉锯：上面那条 is-full 配色要被"③ 压上放大"的规则压住，但尺寸不能放大。
+   所以显式还原成 ② 级尺寸（小胶囊），并清掉投影 —— 长大和置灰不可能同时成立。 */
+.hot-card .hot-action.is-full:hover,
+.hot-card .hot-action.is-full:focus-visible {
+  flex-grow: 0;
+  margin: 0;
+  height: 34px;
+  font-size: 13px;
+  box-shadow: none;
+}
+
+/* 被拒时左右晃：焦点在按钮上，反馈就在按钮上（位移 ±5px、0.4s，比浮标的震动轻一点，
+   因为它尺寸小、离眼睛近，同样幅度会显得更猛）。 */
+@keyframes hot-shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  18% {
+    transform: translateX(-5px);
+  }
+  36% {
+    transform: translateX(5px);
+  }
+  54% {
+    transform: translateX(-3.5px);
+  }
+  72% {
+    transform: translateX(3.5px);
+  }
+  88% {
+    transform: translateX(-1.5px);
+  }
+}
+
+.hot-action.is-shake,
+.detail-add.is-shake {
+  animation: hot-shake 0.4s cubic-bezier(0.36, 0.07, 0.19, 0.97);
+}
+
 /* ③ 鼠标压到按钮上：长大。**只改尺寸和投影，颜色一概不动** —— 一改颜色就回到"两个按钮"的观感了。
    长大后的尺寸比"撑满整条"收着来（用户两次要求收窄）：宽度取满宽的 81%、高度 42 → 40px（95%）。
    宽度不是写死 px，而是给按钮左右各 9.5% 的外边距 —— 容器宽度的 19% 被吃掉，
@@ -1532,22 +1589,9 @@ body {
   }
 }
 
-/* 满员拒绝：徽章红闪一下 —— "满了"用颜色说，比任何文案都快。
-   起手略放大（和 dock-pop 同语言），红是"禁止"的通用色；播完由 onAnimationEnd 收类。 */
-@keyframes dock-full {
-  0% {
-    background: rgba(255, 59, 48, 0.92);
-    transform: scale(1.18);
-  }
-  100% {
-    background: rgba(255, 255, 255, 0.22);
-    transform: scale(1);
-  }
-}
-
-.dock-count.is-full {
-  animation: dock-full 0.6s cubic-bezier(0.22, 1, 0.36, 1);
-}
+/* 满员拒绝的动效**不在这里**：v1 曾在计数徽章上做过红闪，被用户否掉 ——
+   用户点的是卡片/浮窗上的「添加对比」，焦点在那儿，效果却出现在右下角，不符合直觉。
+   现在改由按钮自己置灰 + 点击晃动（见 .hot-action.is-full / .detail-add.is-full）。 */
 
 .dock-count {
   display: inline-flex;
@@ -1835,6 +1879,16 @@ body {
 .detail-add.is-on {
   background: var(--diff-bg);
   color: var(--accent);
+}
+
+/* 满员且未加入：置灰 + 不响应 hover 变深，点击时左右晃（和首页卡片上那枚同款反馈）。
+   文案同时换成"对比已满 4 台"，让"灰"有出处，不靠猜。 */
+.detail-add.is-full {
+  border-color: rgba(0, 0, 0, 0.1);
+  background: var(--bg);
+  color: var(--text-secondary);
+  opacity: 0.55;
+  cursor: pointer;
 }
 
 .detail-section {

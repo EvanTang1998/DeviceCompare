@@ -62,11 +62,14 @@ export const HOT_POOL = (() => {
  *     跟随实现见 placeHint —— 定位直接写 DOM transform，**不进 React 状态**；
  *     mousemove 用 rAF 合帧，一次重渲染都不该有。
  */
-export default function Home({ onOpenDetail, onAddCompare, onBrowseAll, compareIds }) {
+export default function Home({ onOpenDetail, onAddCompare, onBrowseAll, compareIds, compareFull }) {
   const [keyword, setKeyword] = useState("");
   const inputRef = useRef(null);
   const gridRef = useRef(null);
   const [cols, setCols] = useState(DEFAULT_COLS);
+  // 满员被拒时，**哪张卡**在晃（存 id 不存布尔：只有被点的那一枚该动，
+  // 别的卡片跟着一起晃就是噪音）。动画播完由 onAnimationEnd 收回来。
+  const [shakeId, setShakeId] = useState(null);
   // 热门区是**分批往下铺**的：首屏 HOT_ROWS 行，底部点一次「显示更多」再加 HOT_ROWS 行，
   // 直到热门池取空（此时按钮自己消失）。
   // 存的是"批数"而不是"张数"：一行几列由 CSS auto-fill 决定，窗口一变列数就变，
@@ -247,12 +250,36 @@ export default function Home({ onOpenDetail, onAddCompare, onBrowseAll, compareI
                       // 按钮的 className 不按"是否已添加"分支（没有 is-on 之类的变体类）：
                       // 状态一律由卡片上的 is-added 承载，配色规则挂在 `.hot-card.is-added .hot-action`
                       // 上（见 index.css）；这里只管"大小"—— 平时小胶囊、鼠标压上来才长大。
-                      className="hot-action"
+                      //
+                      // 满员（is-full，只作用于"未添加"的卡片）：置灰 + 压上去不再长大 +
+                      // 点击左右晃。用户点哪儿，反馈就出在哪儿 —— 焦点与效果在同一处，
+                      // 而不是让右下角的浮标去摇（那样得盯着远处才知道发生了什么）。
+                      className={`hot-action${!added && compareFull ? " is-full" : ""}${
+                        shakeId === p.id ? " is-shake" : ""
+                      }`}
+                      /* 刻意**不用** aria-disabled：它会连带把元素标成"不可操作"，
+                         而这里的设计是"可以点，点了给你晃动"，两者语义打架（可访问性工具
+                         真把它当 disabled，连点击测试都过不去）。状态改由 aria-label 说明。 */
+                      aria-label={
+                        added
+                          ? `把 ${p.name} 移出对比`
+                          : !added && compareFull
+                            ? `对比已满 4 台，先移除一台再把 ${p.name} 加入对比`
+                            : `把 ${p.name} 加入对比`
+                      }
                       onClick={(e) => {
                         e.stopPropagation();
+                        // 满员：不发添加、原地晃一下（不能真 disabled —— 那样连点击事件都没有，
+                        // 用户点了连个动静都收不到，比静默还糟）
+                        if (!added && compareFull) {
+                          setShakeId(p.id);
+                          return;
+                        }
                         onAddCompare(p.id);
                       }}
-                      aria-label={added ? `把 ${p.name} 移出对比` : `把 ${p.name} 加入对比`}
+                      onAnimationEnd={(ev) => {
+                        if (ev.animationName === "hot-shake") setShakeId(null);
+                      }}
                     >
                       {added && (
                         <svg

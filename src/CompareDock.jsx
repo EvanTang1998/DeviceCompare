@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { phones } from "./data.js";
 
 /**
@@ -10,22 +10,14 @@ import { phones } from "./data.js";
  *
  * 有内容时：悬停摊开已添加机型（可逐个移除，顶上「清空」一次撤完），点按钮进对比页。
  *
- * 满员拒绝：用户在已满 4 台时又去点别家的「添加对比」，反馈必须出现在**结果发生地**
- * （右下角浮标），而不是被点的那个按钮上 —— 那个按钮语义是"添加"，它自己没有失败能力；
- * 浮标摇一下 + 计数徽章红闪一下，和空态的"摇 = 不可操作"是同一种语言。
- * rejectPulse 是 App 那边的脉冲计数器：每满员拒绝一次 +1，这里靠数值变化重播动画。
+ * 满员时的"添加被拒"反馈**不在浮标上**（v1 试过，被用户否了）：
+ * 用户点的是卡片上的按钮，视线在那儿，效果却出现在右下角，不符合直觉 ——
+ * 设计原则：**用户的焦点在哪里，效果就应该出现在哪里**。反馈由按钮自己表达（置灰 + 点击晃动）。
  */
-export default function CompareDock({ slots, max, rejectPulse = 0, onRemove, onClear, onGo }) {
+export default function CompareDock({ slots, max, onRemove, onClear, onGo }) {
   const items = slots.map((id) => phones.find((p) => p.id === id)).filter(Boolean);
   const empty = items.length === 0;
   const [shake, setShake] = useState(false);
-  const [fullFlash, setFullFlash] = useState(false);
-
-  useEffect(() => {
-    if (rejectPulse === 0) return; // 初次挂载不算
-    setShake(true);
-    setFullFlash(true);
-  }, [rejectPulse]);
 
   const go = () => {
     if (empty) {
@@ -75,7 +67,6 @@ export default function CompareDock({ slots, max, rejectPulse = 0, onRemove, onC
         /* 震动动画挂在内层图标上，事件冒泡到这里；按名字过滤，免得被计数徽章的动画误清 */
         onAnimationEnd={(e) => {
           if (e.animationName === "dock-shake") setShake(false);
-          if (e.animationName === "dock-full") setFullFlash(false);
         }}
         title={empty ? "还没有添加机型" : undefined}
         aria-label={empty ? "还没有添加机型，无法对比" : `查看对比（已添加 ${items.length} 台）`}
@@ -95,9 +86,8 @@ export default function CompareDock({ slots, max, rejectPulse = 0, onRemove, onC
           <rect x="14" y="4" width="7" height="16" rx="1.5" />
         </svg>
         <span>对比</span>
-        {/* key 跟着数量走：数字一变就重挂载、重播一次 pop，加减都有反馈。
-            满员拒绝时叠加红闪（is-full），"满了"用颜色说，比文案快。 */}
-        <span className={`dock-count${fullFlash ? " is-full" : ""}`} key={items.length}>
+        {/* key 跟着数量走：数字一变就重挂载、重播一次 pop，加减都有反馈 */}
+        <span className="dock-count" key={items.length}>
           {items.length}
         </span>
       </button>

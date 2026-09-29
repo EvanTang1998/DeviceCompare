@@ -24,13 +24,16 @@ export default function PhoneDetailOverlay({
   originRect,
   onClose,
   onAddCompare,
-  inCompare
+  inCompare,
+  compareFull
 }) {
   const panelRef = useRef(null);
   const [origin, setOrigin] = useState("50% 50%");
   const [open, setOpen] = useState(false);
   const [closing, setClosing] = useState(false);
   const closingRef = useRef(false);
+  // 满员被拒：本按钮自己晃一下（焦点在哪，效果在哪 —— 详见 Home.jsx 里同样的说明）
+  const [rejected, setRejected] = useState(false);
 
   const {
     colors,
@@ -169,10 +172,31 @@ export default function PhoneDetailOverlay({
           <div className="detail-actions">
             <button
               type="button"
-              className={`detail-add${inCompare ? " is-on" : ""}`}
-              onClick={() => onAddCompare(phone.id)}
+              className={`detail-add${inCompare ? " is-on" : ""}${
+                !inCompare && compareFull ? " is-full" : ""
+              }${rejected ? " is-shake" : ""}`}
+              /* 不用 aria-disabled（理由同 Home.jsx 卡片按钮：可点、点了给晃动反馈，
+                 不是真禁用），状态由文案 + aria-label 表达 */
+              aria-label={
+                inCompare
+                  ? `把 ${phone.name} 移出对比`
+                  : compareFull
+                    ? `对比已满 4 台，先移除一台再把 ${phone.name} 加入对比`
+                    : `把 ${phone.name} 加入对比`
+              }
+              onClick={() => {
+                // 已加入的按钮是"移除"语义，满员也能点；只有"加入"这条路会被拒
+                if (!inCompare && compareFull) {
+                  setRejected(true);
+                  return;
+                }
+                onAddCompare(phone.id);
+              }}
+              onAnimationEnd={(e) => {
+                if (e.animationName === "hot-shake") setRejected(false);
+              }}
             >
-              {inCompare ? "已加入对比" : "加入对比"}
+              {inCompare ? "已加入对比" : compareFull ? "对比已满 4 台" : "加入对比"}
             </button>
           </div>
 

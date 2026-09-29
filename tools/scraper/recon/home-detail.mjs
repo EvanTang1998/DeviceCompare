@@ -490,7 +490,9 @@ check(
 );
 await sleep(700);
 
-// ---------- 11. 满员拒绝：4 台后再添加，浮标摇 + 徽章红闪，而不是静默 ----------
+// ---------- 11. 满员拒绝：反馈必须落在**被点的按钮**上，而不是远处的浮标 ----------
+// 用户明确过的设计原则："用户的焦点在哪里，效果就应该出现在哪里"。
+// v1 是让右下角浮标摇 + 计数徽章红闪，被否；现在改成按钮自己置灰 + 点击左右晃。
 // 加满 4 台（前 4 张卡各点一次）
 for (let i = 0; i < 4; i++) {
   const c = page.locator(".hot-card").nth(i);
@@ -500,31 +502,66 @@ for (let i = 0; i < 4; i++) {
   await sleep(350);
 }
 check((await page.locator(".dock-count").textContent())?.trim() === "4", "已加满 4 台");
-// 第 5 台：点击必须被拒，且**有动效**（浮标 shake + 徽章红闪），不允许静默忽略
-const fifth = page.locator(".hot-card").nth(4);
-await fifth.hover();
-await sleep(250);
-await fifth.locator(".hot-action").click();
+
+// 满员后：未添加卡片的按钮置灰（.is-full）
+const fullBtn = page.locator(".hot-card:not(.is-added) .hot-action").first();
+check(
+  await fullBtn.evaluate((el) => el.classList.contains("is-full")),
+  "满员后：未添加的卡片按钮带 is-full（置灰）"
+);
+const fullOpacity = await fullBtn.evaluate((el) => parseFloat(getComputedStyle(el).opacity));
+check(fullOpacity < 0.5, `满员后：按钮确实灰掉了（opacity ${fullOpacity}）`);
+check(
+  ((await fullBtn.getAttribute("aria-label")) ?? "").includes("已满"),
+  "满员后：按钮的无障碍标签说明了原因（读屏能听到「已满」，而不是一串静默）"
+);
+// 已添加的卡片按钮不受影响（它是"移除"，满员照样能点）
+const addedBtn = page.locator(".hot-card.is-added .hot-action").first();
+check(
+  !(await addedBtn.evaluate((el) => el.classList.contains("is-full"))),
+  "满员后：已添加的按钮不置灰（移除仍然可用）"
+);
+
+// 置灰按钮**不许再放大**（又在长大、又点不动 = 骗人），同时点击要左右晃
+const fullCard = page.locator(".hot-card:not(.is-added)").first();
+const fullCardBox = await fullCard.boundingBox();
+await fullBtn.hover();
+await sleep(420);
+const fullBox = await fullBtn.boundingBox();
+check(
+  fullBox.height <= 38,
+  `满员后：压上去也不长大（高 ${Math.round(fullBox.height)}px，仍是 ② 级小胶囊）`
+);
+check(
+  fullBox.width / (fullCardBox.width - 32) <= 0.75,
+  `满员后：宽度也没撑开（占可用宽 ${Math.round((fullBox.width / (fullCardBox.width - 32)) * 100)}%）`
+);
+await fullBtn.click();
 await sleep(100);
 check(
-  await page.locator(".dock-btn").evaluate((el) => el.classList.contains("is-shake")),
-  "满员再添加：浮标进入震动状态"
+  await fullBtn.evaluate((el) => el.classList.contains("is-shake")),
+  "满员后点击：按钮自己进入晃动状态"
 );
 check(
-  String(await page.locator(".dock-btn svg").evaluate((el) => getComputedStyle(el).animationName)).includes("dock-shake"),
-  "满员再添加：浮标图标在播震动"
+  String(await fullBtn.evaluate((el) => getComputedStyle(el).animationName)).includes("hot-shake"),
+  "满员后点击：按钮在播左右晃动动画"
+);
+// 反馈不该跑到右下角去（浮标必须毫无反应）
+check(
+  !(await page.locator(".dock-btn").evaluate((el) => el.classList.contains("is-shake"))),
+  "满员后点击：右下角浮标**不**震（焦点在哪，效果在哪）"
 );
 check(
-  String(await page.locator(".dock-count").evaluate((el) => getComputedStyle(el).animationName)).includes("dock-full"),
-  "满员再添加：计数徽章在播红闪"
+  (await page.locator(".dock-count").textContent())?.trim() === "4",
+  "满员后点击：数量不变（仍是 4）"
 );
-check((await page.locator(".dock-count").textContent())?.trim() === "4", "满员再添加：数量不变（仍是 4）");
-check((await page.locator(".hot-card.is-added").count()) === 4, "满员再添加：已添加卡片数量不变");
-await sleep(800);
+check((await page.locator(".hot-card.is-added").count()) === 4, "满员后点击：已添加卡片数量不变");
+await sleep(600);
 check(
-  !(await page.locator(".dock-count").evaluate((el) => el.classList.contains("is-full"))),
-  "红闪播完自动收回"
+  !(await fullBtn.evaluate((el) => el.classList.contains("is-shake"))),
+  "晃动播完自动收回"
 );
+
 // 已添加的卡片再点一次 = 取消，不是"再添加"，不能误触发拒绝
 const added = page.locator(".hot-card.is-added").first();
 await added.hover();
@@ -532,8 +569,15 @@ await sleep(250);
 await added.locator(".hot-action").click();
 await sleep(350);
 check((await page.locator(".dock-count").textContent())?.trim() === "3", "已添加的再点一次 = 正常取消（计数 3）");
+// 腾出位置后，置灰必须立刻解除
+check(
+  !(await page.locator(".hot-card:not(.is-added) .hot-action").first().evaluate((el) =>
+    el.classList.contains("is-full")
+  )),
+  "取消一台后：未添加卡片的按钮解除置灰"
+);
 
-// ---------- 11. 网格底部的「显示更多」 ----------
+// ---------- 12. 网格底部的「显示更多」 ----------
 // 没做分页：分页要往地址栏加 page 参数、还得管翻页后的滚动位置，而"扫一眼 → 点进去看"
 // 这种动作本来就不该多一道"下一页/上一页"的决策；要精确找某一台走「浏览全部机型」。
 const { hotPoolLen, hotRowCount } = await page.evaluate(async () => {

@@ -987,20 +987,16 @@ export default function App({ initialView, initialSlots, initialPhoneId }) {
 
   // 「添加对比」是个开关：已在清单里再点一次就撤下来。
   // 不做成开关的话，在首页反复点同一台毫无反馈，也找不到取消的地方。
-  // 满员后再添加：不静默忽略 —— 发一个拒绝脉冲给暂存区浮标，
-  // 让它在右下角摇一下、计数徽章红闪（见 CompareDock 的 rejectPulse），
-  // 用动效告诉用户"装不下了"，而不是点了没反应让人怀疑坏了。
-  const [rejectPulse, setRejectPulse] = useState(0);
-  const toggleCompare = (id) => {
-    const cur = slotsRef.current;
-    if (!cur.includes(id) && cur.length >= SLOT_COUNT) {
-      setRejectPulse((n) => n + 1);
-      return;
-    }
+  // 满员后再点：按钮那边自己会置灰 + 点击晃动（反馈在用户焦点所在处，见 Home/PhoneDetailOverlay），
+  // 这里照旧静默兜底即可。
+  const toggleCompare = (id) =>
     setSlots((prev) =>
-      prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]
+      prev.includes(id)
+        ? prev.filter((x) => x !== id)
+        : prev.length < SLOT_COUNT
+          ? [...prev, id]
+          : prev
     );
-  };
 
   const isDiff = (values) => {
     const valid = values.filter((v) => v !== null);
@@ -1060,13 +1056,13 @@ export default function App({ initialView, initialSlots, initialPhoneId }) {
               返回首页
             </button>
           )}
-          <button
-            type="button"
-            className={`site-title${view === "compare" ? " is-link" : ""}`}
-            onClick={() => setView("home")}
-          >
-            机型对比
-          </button>
+          {/* 首页左上角不放字（用户要求：首页有大标题在中间，左上角再来一个"机型对比"是重复）；
+              只在对比页显示，充当回首页的入口（与「返回首页」按钮等价）。 */}
+          {view === "compare" && (
+            <button type="button" className="site-title is-link" onClick={() => setView("home")}>
+              机型对比
+            </button>
+          )}
         </div>
         {view === "compare" ? (
           <div className="header-actions">
@@ -1115,13 +1111,13 @@ export default function App({ initialView, initialSlots, initialPhoneId }) {
           <Home
             onOpenDetail={(phone, originRect) => setDetail({ phone, originRect })}
             onAddCompare={toggleCompare}
+            compareFull={slots.length >= SLOT_COUNT}
             onBrowseAll={() => setBrowsingAll(true)}
             compareIds={slots}
           />
           <CompareDock
             slots={slots}
             max={SLOT_COUNT}
-            rejectPulse={rejectPulse}
             onRemove={toggleCompare}
             onClear={() => setSlots([])}
             onGo={() => setView("compare")}
@@ -1244,6 +1240,7 @@ export default function App({ initialView, initialSlots, initialPhoneId }) {
           sections={detailSections}
           originRect={detail.originRect}
           inCompare={slots.includes(detail.phone.id)}
+          compareFull={slots.length >= SLOT_COUNT}
           onAddCompare={toggleCompare}
           onClose={() => setDetail(null)}
         />
