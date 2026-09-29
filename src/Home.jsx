@@ -162,7 +162,7 @@ export default function Home({ onOpenDetail, onAddCompare, onBrowseAll, compareI
             间隔后来又从空格换成「 · 」，和顶栏文案完全一致。
             顶栏那处挤在一行小字里，中间也带点。 */}
         <h1 className="home-title">灵眸 · 手机对比</h1>
-        <p className="home-sub">{phones.length} 台手机的参数对比</p>
+        <p className="home-sub">已收录 {phones.length} 台机型</p>
         <div className="home-search">
           <svg
             className="home-search-icon"
