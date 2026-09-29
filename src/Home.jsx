@@ -157,13 +157,10 @@ export default function Home({ onOpenDetail, onAddCompare, onBrowseAll, compareI
     <div className="home">
       <header className="home-hero">
         {/* 站名后面挂上"手机对比"：光一个"灵眸"外人看不出这站是干什么的。
-            两段用不同字号/字重写在一行里（站名 52px 粗体，后缀 .5em 中等字重、浅一档），
-            读起来是"品牌 + 一句话说明"，而不是并排两个一样重的大词。
+            两段**同一格式**（同字号/同字重/同色，中间一个空格隔开）——
+            最初后缀是缩小的浅色小字，用户反馈"这几个字格式不一样"，统一成一体。
             文案和顶栏的「灵眸 · 手机对比」一致（顶栏那处中间带点，是因为它挤在一行小字里）。 */}
-        <h1 className="home-title">
-          灵眸
-          <span className="home-title-sub">手机对比</span>
-        </h1>
+        <h1 className="home-title">灵眸 手机对比</h1>
         <p className="home-sub">{phones.length} 台手机的参数对比</p>
         <div className="home-search">
           <svg

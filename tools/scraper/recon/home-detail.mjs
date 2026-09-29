@@ -37,9 +37,9 @@ const waitClosed = async () => {
 };
 
 // ---------- 1. 首页结构 ----------
-// 标题是「站名 + 后缀」两段拼的（.home-title-sub），JSX 里那个换行可能带出空白，
-// 所以把空白全去掉再比，免得断言因为排版抖一下就红
-const title = (await page.locator(".home-title").textContent())?.replace(/\s+/g, "");
+// 标题是「灵眸 手机对比」一行（中间一个空格），JSX 里的换行可能带出额外空白，
+// 所以把空白统一折成一个再比，免得断言因为排版抖一下就红
+const title = (await page.locator(".home-title").textContent())?.replace(/\s+/g, " ").trim();
 const hasSearch = await page.locator(".home-search input").isVisible();
 const cards = await page.locator(".hot-card").count();
 // 热门机型几张是跟着视口走的（一行几列由 CSS 的 auto-fill 决定），所以断言 =
@@ -54,15 +54,12 @@ const { hotRows, hotPoolSize } = await page.evaluate(async () => {
   const m = await import("/DeviceCompare/src/Home.jsx");
   return { hotRows: m.HOT_ROWS, hotPoolSize: m.HOT_POOL.length };
 });
-check(title === "灵眸手机对比", `首页大标题 = 站名 + 说明：${title}`);
-// 「手机对比」得比站名明显小一档，否则两个大词并排、读不出主次
-const titleSize = await page.locator(".home-title").evaluate((el) => parseFloat(getComputedStyle(el).fontSize));
-const subTitleSize = await page
-  .locator(".home-title-sub")
-  .evaluate((el) => parseFloat(getComputedStyle(el).fontSize));
+check(title === "灵眸 手机对比", `首页大标题 = 「灵眸 手机对比」：${title}`);
+// 用户反馈过"这几个字格式不一样"（最初后缀是缩小的浅色小字）——
+// 现在整行必须是一种格式：站名和后缀之间不许再有任何差异化 span。
 check(
-  subTitleSize < titleSize * 0.7,
-  `"手机对比"明显小于站名（${subTitleSize}px vs ${titleSize}px），一眼能读出主次`
+  (await page.locator(".home-title-sub").count()) === 0,
+  "大标题整行一种格式，没有缩小/变浅的后缀段"
 );
 check(hasSearch, "首页搜索框可见");
 check(cards === cols * hotRows, `热门机型 ${cards} 张 = ${cols} 列 × ${hotRows} 行（池子 ${hotPoolSize} 台）`);

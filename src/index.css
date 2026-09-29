@@ -958,16 +958,9 @@ body {
   line-height: 1.1;
 }
 
-/* 站名后面的"手机对比"：字号取 .5em（跟着 .home-title 走，窄屏那档自动一起缩），
-   字重降到 400、颜色浅一档 —— 让它是"一句话说明"，而不是和站名平起平坐的第二个大词。
-   用 margin-left 而不是空格字符：中文两端本来就宽，再加空格会散架。 */
-.home-title-sub {
-  margin-left: 0.14em;
-  font-size: 0.5em;
-  font-weight: 400;
-  letter-spacing: 0.04em;
-  color: var(--text-secondary);
-}
+/* 原来这里还有一条 .home-title-sub（后缀缩到 .5em、字重 400、颜色浅一档），
+   用户反馈"这几个字格式不一样" → 删掉差异，整行统一成一种格式，
+   中间的空隙交给 JSX 里那个普通空格（中文字距本来就宽，再加大间距会散架）。 */
 
 .home-sub {
   margin-top: 10px;

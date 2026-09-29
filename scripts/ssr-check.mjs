@@ -71,8 +71,8 @@ try {
     ["分区标题 摄像头", html.includes("摄像头")],
     ["首页 站名大标题", homeHtml.includes("home-title")],
     [
-      "首页 大标题带上说明「手机对比」（站名 + 后缀两段）",
-      /<h1 class="home-title">灵眸<span class="home-title-sub">手机对比<\/span><\/h1>/.test(homeHtml)
+      "首页 大标题 = 「灵眸 手机对比」且整行一种格式（无分段 span）",
+      /<h1 class="home-title">灵眸 手机对比<\/h1>/.test(homeHtml)
     ],
     [
       "首页 尾部有「显示更多」（池子还没取空时必须渲染）",
