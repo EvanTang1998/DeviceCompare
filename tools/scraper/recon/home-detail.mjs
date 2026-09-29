@@ -14,6 +14,8 @@
 //      且卡片上的「已添加」是**常显状态**（不 hover 也看得见：卡面留白 + 四周加强 + 常驻大按钮）
 //   10. 网格底部的「显示更多」：一次多铺 HOT_ROWS 行、按钮居中且报出剩余台数，
 //       热门池取空后按钮自己消失；搜索时不出现（搜索结果是全部命中）
+//   10.5 「添加对比」的飞入动效：缩略图从卡片图起飞、沿抛物线飞进右下角浮标（越飞越小、
+//       落地时浮标回弹一下）；移除不飞、满员被拒不飞；飞完不留残留元素
 // 用法：node recon/home-detail.mjs   （需先起 dev server :5173）
 
 import { launchBrowser, newPage, sleep } from "../lib/browser.mjs";
@@ -607,6 +609,10 @@ check(
 check(
   String(await fullBtn.evaluate((el) => getComputedStyle(el).animationName)).includes("hot-shake"),
   "满员后点击：按钮在播左右晃动动画"
+);
+check(
+  (await page.locator(".fly-thumb").count()) === 0,
+  "满员后点击：不触发飞入（拒绝就是拒绝，没有东西在飞）"
 );
 // 反馈不该跑到右下角去（浮标必须毫无反应）
 check(
