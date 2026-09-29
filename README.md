@@ -10,6 +10,7 @@ npm install        # 首次安装依赖
 npm run dev        # 开发模式（热更新，http://localhost:5173/DeviceCompare/）
 npm run build      # 构建生产包到 dist/
 npm run preview    # 本地预览构建产物（http://localhost:4173/DeviceCompare/）
+npm run webp       # 把 src/data/images 下的原图转成 .webp（predev / prebuild 已自动挂钩，一般不用手动跑）
 ```
 
 ## 在线访问（GitHub Pages）
@@ -44,7 +45,8 @@ npm run preview    # 本地预览构建产物（http://localhost:4173/DeviceComp
 │       │   ├── iphone-17.json
 │       │   └── oneplus-15.json
 │       └── images/               # ★ 产品图：文件名 = 对应 JSON 的文件名（+ 可选的配色段）
-│           ├── iphone-17.sage.jpg
+│           ├── iphone-17.sage.jpg     # 原图：唯一的源，进 Git
+│           ├── iphone-17.sage.webp    # 派生：构建时自动生成，不进 Git（网站只引用它）
 │           ├── iphone-13-pro.jpg
 │           └── oneplus-15.gold.jpg
 ├── tools/scraper/                # 数据采集工具（独立依赖，不参与构建）
@@ -56,6 +58,7 @@ npm run preview    # 本地预览构建产物（http://localhost:4173/DeviceComp
 │   └── sources/huawei/           #   华为官网：参数 + 分色图（同一页；Mate 60 系列参数页已下架，走官方存档）
 ├── designer-document/            # 设计说明（需求、参数范围、术语表）
 └── scripts/
+    ├── to-webp.mjs               # 原图 → .webp 派生（sharp，质量 82），predev / prebuild 自动调用
     └── ssr-check.mjs             # 无浏览器渲染验证（node scripts/ssr-check.mjs）
 ```
 
@@ -90,10 +93,33 @@ npm run preview    # 本地预览构建产物（http://localhost:4173/DeviceComp
 ## 新增机型（3 步，不用改代码）
 
 1. 在 `src/data/devices/` 新建 `<id>.json`（文件名即机型 id：小写、连字符，如 `xiaomi-15.json`），内容复制现有文件、按上面结构填写
-2. 在 `src/data/images/` 放**同名**图片（如 `xiaomi-15.png`），支持 png / jpg / jpeg / webp；没有图会显示占位卡
+2. 在 `src/data/images/` 放**同名**图片（如 `xiaomi-15.jpg`），jpg / png / jpeg 都行 —— **只放原图**，`.webp` 派生副本由构建自动生成（见下方「图片为什么是 WebP」）；没有图会显示占位卡
 3. `git push`，线上自动更新
 
 机型 id 决定三件事：页面选择器里的取值、图片的配对、默认排序（按 id 字母序）。
+
+## 图片为什么是 WebP
+
+`src/data/images/` 里每张图都有**两份**：原图（`.jpg` / `.png`，进 Git，是唯一的源）和派生的 `.webp`（不进 Git）。网站运行时**只引用 `.webp`** —— 由 `src/data.js` 的 `import.meta.glob("./data/images/*.webp")` 决定。
+
+glob 这里**只能写 `.webp` 一种格式**：若把原图扩展名也列进去，Vite 的 eager glob 会把两种格式全部打进 `dist`，部署包不降反增。
+
+转换由 `scripts/to-webp.mjs` 负责（sharp，质量 82）：
+
+- **自动**：`predev` / `prebuild` 已挂钩，本地开发与 CI 构建都会先跑一遍，新加的图不会漏
+- **增量**：`.webp` 比原图新就跳过；`npm run webp -- --force` 可强制全部重转
+- **孤儿清理**：原图已删、`.webp` 还留着的会一并删掉（否则会被数据层扫到，页面上冒出「幽灵机型」）
+- **失败即拦截**：任一张转换失败就非零退出，CI 直接拦住构建 —— 宁可构建失败，也不要部署一个静默缺图的站点
+
+实测收益：
+
+| | 转换前 | 转换后 |
+|---|---|---|
+| 552 张图总量 | 24.3 MB | **8.7 MB**（省 64%） |
+| 首页首屏 18 张图 | 782 KB | **262 KB**（省 67%） |
+| 首屏总传输（图 + JS + CSS） | 约 0.9 MB | **约 0.38 MB** |
+
+`.webp` 被 `.gitignore` 忽略，理由两条：原图才是源，派生文件不该进版本库；而且 552 张派生图会让仓库凭空翻倍，拖慢 push / pull。
 
 ## 图片和参数可以从官网自动抓
 
@@ -112,8 +138,8 @@ npm run preview    # 本地预览构建产物（http://localhost:4173/DeviceComp
 
 ## 当前状态
 
-- **数据**：164 台机型（苹果 29 台 / 一加 12 台 / vivo 30 台 / OPPO 38 台 / 小米 32 台 / 华为 23 台），627 张产品图
-- 已实现：首页（大标题「灵眸 · 手机对比」+ 全局搜索 + 热门机型网格，首屏 `HOT_ROWS` 行、一行最多 6 列、按品牌轮转保证每行六家都有，底部「显示更多」按 `HOT_ROWS` 行一批往下加）、参数浮窗（左图右参数、从点击处放大/收回、点空白或 Esc 关闭）、暂存区浮标（1.5 倍放大、悬停摊开、可清空、满 4 台；**空态常显**，点击改为图标震动示意）、**地址栏同步**（后退/前进可用、链接可分享、刷新不丢状态）、四列对比、品牌→型号两级选择（带搜索，系列按旗舰→入门排序）、参数分类显示、差异行高亮、移动端横滑、产品图与占位回退、同配色多角度图手动轮播
+- **数据**：164 台机型（苹果 29 台 / 一加 12 台 / vivo 30 台 / OPPO 38 台 / 小米 32 台 / 华为 23 台），552 张产品图（原图 24.3 MB，派生的 WebP 8.7 MB）
+- 已实现：首页（大标题「灵眸 · 手机对比」+ 全局搜索 + 热门机型网格，首屏 `HOT_ROWS` 行、一行最多 6 列、按品牌轮转保证每行六家都有，底部「显示更多」按 `HOT_ROWS` 行一批往下加）、参数浮窗（左图右参数、从点击处放大/收回、点空白或 Esc 关闭）、暂存区浮标（1.5 倍放大、悬停摊开、可清空、满 4 台；**空态常显**，点击改为图标震动示意）、**地址栏同步**（后退/前进可用、链接可分享、刷新不丢状态）、四列对比、品牌→型号两级选择（带搜索，系列按旗舰→入门排序）、参数分类显示、差异行高亮、移动端横滑、产品图与占位回退、同配色多角度图手动轮播、产品图 WebP 化（首屏传输约 0.38 MB）
 - 未实现（后续阶段）：次要参数（扬声器等）、差异 Winner 点评、构建期预渲染（SEO）、数据分层（按品牌拆分按需加载）
 
 ## 地址栏参数

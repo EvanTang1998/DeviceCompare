@@ -12,9 +12,16 @@
 //
 // 例：devices/iphone-17.json + images/iphone-17.lavender.jpg + images/iphone-17.sage.jpg
 // 机型 id 内部只用连字符（不含点），所以按「最后一个点」切分文件名即可
+//
+// 图片格式：目录里同时躺着原图（.jpg/.png）与派生的 .webp 副本，网站只引用 .webp。
+//   转换由 scripts/to-webp.mjs 完成（sharp，质量 82，实测省 6 成体积），原图始终保留、不参与打包。
 
 const specs = import.meta.glob("./data/devices/*.json", { eager: true, import: "default" });
-const images = import.meta.glob("./data/images/*.{png,jpg,jpeg,webp}", {
+// 只认 .webp。原图（jpg/png）由 scripts/to-webp.mjs 派生出同名 .webp 副本，网站一律走副本
+//   （体积约原图的 1/3）。若把原图也匹配进来，Vite 的 eager glob 会把两种格式全部打进 dist，
+//   部署包不降反增 —— 这是这里只写 .webp 的唯一原因。
+// 新增图片后需跑一次 npm run webp（prebuild / predev 已挂钩，通常不用手动）。
+const images = import.meta.glob("./data/images/*.webp", {
   eager: true,
   import: "default"
 });

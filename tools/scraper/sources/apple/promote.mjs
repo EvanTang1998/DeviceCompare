@@ -12,11 +12,19 @@
 //
 // 之所以要显式删除同名的其他扩展名：data.js 用 import.meta.glob 扫描整个目录，
 // 若同时存在 iphone-17.lavender.png 和 iphone-17.lavender.jpg，会按字母序互相覆盖且没有任何报错。
+// 清理范围只含**源图**扩展名（.png/.jpg/.jpeg）：.webp 是 scripts/to-webp.mjs 的派生产物，
+// 不是候选源图，删它没有意义 —— 下一次 prebuild 还会原样生成回来。
+//
+// 覆盖源图后不需要手动删旧的 .webp：to-webp.mjs 按 mtime 判断，源图更新了自然会重转。
 
 import { copyFileSync, existsSync, mkdirSync, readFileSync, readdirSync, rmSync, statSync } from "node:fs";
 import { basename, extname, resolve } from "node:path";
 
+// 列目录用：含派生的 .webp，这样 list 命令能看到目录里的全部图片
 const IMAGE_EXTS = [".png", ".jpg", ".jpeg", ".webp"];
+
+// 源图扩展名。只有这几种之间才存在「同名互相覆盖」的冲突，清理时也只在这几种之间进行
+const SOURCE_EXTS = [".png", ".jpg", ".jpeg"];
 
 /**
  * @param {object} opts
@@ -69,8 +77,8 @@ export function promoteRun({ fromRunDir, targetDir, overwrite = false, dryRun = 
         continue;
       }
 
-      // 清掉同名不同扩展的旧文件，避免扫描时互相覆盖
-      for (const other of IMAGE_EXTS.filter((e) => e !== ext)) {
+      // 清掉同名不同扩展的旧**源图**，避免扫描时互相覆盖（.webp 是派生物，不在此列）
+      for (const other of SOURCE_EXTS.filter((e) => e !== ext)) {
         const stale = resolve(targetDir, `${stem}${other}`);
         if (existsSync(stale)) {
           if (!dryRun) rmSync(stale);

@@ -4,7 +4,10 @@
   "version": "0.1.0",
   "type": "module",
   "scripts": {
+    "webp": "node scripts/to-webp.mjs",
+    "predev": "npm run webp",
     "dev": "vite",
+    "prebuild": "npm run webp",
     "build": "vite build",
     "preview": "vite preview"
   },
@@ -14,6 +17,7 @@
   },
   "devDependencies": {
     "@vitejs/plugin-react": "^4.3.4",
+    "sharp": "^0.35.5",
     "vite": "^5.4.11"
   }
 }

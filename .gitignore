@@ -3,3 +3,7 @@ dist/
 .vite-cache/
 vite.config.js.timestamp-*.mjs
 .DS_Store
+
+# WebP 是 scripts/to-webp.mjs 的派生产物（prebuild / predev 会自动生成），不进仓库：
+# 原图 .jpg 才是唯一的源，让派生文件也进 Git 只会让仓库凭空翻倍
+src/data/images/*.webp
