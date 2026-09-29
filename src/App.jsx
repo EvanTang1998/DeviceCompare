@@ -987,14 +987,20 @@ export default function App({ initialView, initialSlots, initialPhoneId }) {
 
   // 「添加对比」是个开关：已在清单里再点一次就撤下来。
   // 不做成开关的话，在首页反复点同一台毫无反馈，也找不到取消的地方。
-  const toggleCompare = (id) =>
+  // 满员后再添加：不静默忽略 —— 发一个拒绝脉冲给暂存区浮标，
+  // 让它在右下角摇一下、计数徽章红闪（见 CompareDock 的 rejectPulse），
+  // 用动效告诉用户"装不下了"，而不是点了没反应让人怀疑坏了。
+  const [rejectPulse, setRejectPulse] = useState(0);
+  const toggleCompare = (id) => {
+    const cur = slotsRef.current;
+    if (!cur.includes(id) && cur.length >= SLOT_COUNT) {
+      setRejectPulse((n) => n + 1);
+      return;
+    }
     setSlots((prev) =>
-      prev.includes(id)
-        ? prev.filter((x) => x !== id)
-        : prev.length < SLOT_COUNT
-          ? [...prev, id]
-          : prev
+      prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]
     );
+  };
 
   const isDiff = (values) => {
     const valid = values.filter((v) => v !== null);
@@ -1115,6 +1121,7 @@ export default function App({ initialView, initialSlots, initialPhoneId }) {
           <CompareDock
             slots={slots}
             max={SLOT_COUNT}
+            rejectPulse={rejectPulse}
             onRemove={toggleCompare}
             onClear={() => setSlots([])}
             onGo={() => setView("compare")}

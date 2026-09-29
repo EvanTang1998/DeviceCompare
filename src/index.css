@@ -1532,6 +1532,23 @@ body {
   }
 }
 
+/* 满员拒绝：徽章红闪一下 —— "满了"用颜色说，比任何文案都快。
+   起手略放大（和 dock-pop 同语言），红是"禁止"的通用色；播完由 onAnimationEnd 收类。 */
+@keyframes dock-full {
+  0% {
+    background: rgba(255, 59, 48, 0.92);
+    transform: scale(1.18);
+  }
+  100% {
+    background: rgba(255, 255, 255, 0.22);
+    transform: scale(1);
+  }
+}
+
+.dock-count.is-full {
+  animation: dock-full 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
 .dock-count {
   display: inline-flex;
   align-items: center;

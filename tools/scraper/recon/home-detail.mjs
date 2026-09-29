@@ -490,6 +490,49 @@ check(
 );
 await sleep(700);
 
+// ---------- 11. 满员拒绝：4 台后再添加，浮标摇 + 徽章红闪，而不是静默 ----------
+// 加满 4 台（前 4 张卡各点一次）
+for (let i = 0; i < 4; i++) {
+  const c = page.locator(".hot-card").nth(i);
+  await c.hover();
+  await sleep(250);
+  await c.locator(".hot-action").click();
+  await sleep(350);
+}
+check((await page.locator(".dock-count").textContent())?.trim() === "4", "已加满 4 台");
+// 第 5 台：点击必须被拒，且**有动效**（浮标 shake + 徽章红闪），不允许静默忽略
+const fifth = page.locator(".hot-card").nth(4);
+await fifth.hover();
+await sleep(250);
+await fifth.locator(".hot-action").click();
+await sleep(100);
+check(
+  await page.locator(".dock-btn").evaluate((el) => el.classList.contains("is-shake")),
+  "满员再添加：浮标进入震动状态"
+);
+check(
+  String(await page.locator(".dock-btn svg").evaluate((el) => getComputedStyle(el).animationName)).includes("dock-shake"),
+  "满员再添加：浮标图标在播震动"
+);
+check(
+  String(await page.locator(".dock-count").evaluate((el) => getComputedStyle(el).animationName)).includes("dock-full"),
+  "满员再添加：计数徽章在播红闪"
+);
+check((await page.locator(".dock-count").textContent())?.trim() === "4", "满员再添加：数量不变（仍是 4）");
+check((await page.locator(".hot-card.is-added").count()) === 4, "满员再添加：已添加卡片数量不变");
+await sleep(800);
+check(
+  !(await page.locator(".dock-count").evaluate((el) => el.classList.contains("is-full"))),
+  "红闪播完自动收回"
+);
+// 已添加的卡片再点一次 = 取消，不是"再添加"，不能误触发拒绝
+const added = page.locator(".hot-card.is-added").first();
+await added.hover();
+await sleep(250);
+await added.locator(".hot-action").click();
+await sleep(350);
+check((await page.locator(".dock-count").textContent())?.trim() === "3", "已添加的再点一次 = 正常取消（计数 3）");
+
 // ---------- 11. 网格底部的「显示更多」 ----------
 // 没做分页：分页要往地址栏加 page 参数、还得管翻页后的滚动位置，而"扫一眼 → 点进去看"
 // 这种动作本来就不该多一道"下一页/上一页"的决策；要精确找某一台走「浏览全部机型」。
