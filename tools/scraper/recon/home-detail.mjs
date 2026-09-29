@@ -54,7 +54,7 @@ const { hotRows, hotPoolSize } = await page.evaluate(async () => {
   const m = await import("/DeviceCompare/src/Home.jsx");
   return { hotRows: m.HOT_ROWS, hotPoolSize: m.HOT_POOL.length };
 });
-check(title === "灵眸 手机对比", `首页大标题 = 「灵眸 手机对比」：${title}`);
+check(title === "灵眸 · 手机对比", `首页大标题 = 「灵眸 · 手机对比」：${title}`);
 // 用户反馈过"这几个字格式不一样"（最初后缀是缩小的浅色小字）——
 // 现在整行必须是一种格式：站名和后缀之间不许再有任何差异化 span。
 check(
