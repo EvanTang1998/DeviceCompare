@@ -275,7 +275,17 @@ export default function Home({ onOpenDetail, onAddCompare, onBrowseAll, compareI
                           setShakeId(p.id);
                           return;
                         }
-                        onAddCompare(p.id);
+                        // 起飞点取卡片里那张手机图：一张小图从卡片里飞出去，比从按钮上飞
+                        // 更能说明"这一台被收进去了"。图还懒加载没出来（卡片在视口外）时
+                        // 退回按钮自身 —— 从视口左上角 (0,0) 飞出来比不飞还糟。
+                        const shot = e.currentTarget
+                          .closest(".hot-card")
+                          ?.querySelector(".hot-card-media img");
+                        const r = shot?.getBoundingClientRect();
+                        onAddCompare(p.id, {
+                          from: r && r.width > 0 ? r : e.currentTarget.getBoundingClientRect(),
+                          image: p.image
+                        });
                       }}
                       onAnimationEnd={(ev) => {
                         if (ev.animationName === "hot-shake") setShakeId(null);

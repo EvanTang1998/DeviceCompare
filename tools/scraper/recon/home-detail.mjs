@@ -490,6 +490,68 @@ check(
 );
 await sleep(700);
 
+// ---------- 10.5 「添加对比」的飞入动效：一张缩略图从卡片飞进右下角浮标 ----------
+// 轨迹用页面内的 rAF 采样器记：Playwright 单次查询要几十毫秒，720ms 的动画
+// 从外面量只够采两三个点，根本看不出弧线。
+await page.evaluate(() => {
+  window.__fly = [];
+  window.__sawCatch = false;
+  const tick = () => {
+    const el = document.querySelector(".fly-thumb");
+    if (el) {
+      const r = el.getBoundingClientRect();
+      window.__fly.push({ t: performance.now(), x: r.x + r.width / 2, y: r.y + r.height / 2, w: r.width });
+    }
+    if (document.querySelector(".dock-btn.is-catch")) window.__sawCatch = true;
+    requestAnimationFrame(tick);
+  };
+  requestAnimationFrame(tick);
+});
+const flyCard = page.locator(".hot-card").first();
+const flyShot = await flyCard.locator(".hot-card-media img").boundingBox();
+const flyDock = await page.locator(".dock-btn").boundingBox();
+await flyCard.hover();
+await sleep(300);
+await flyCard.locator(".hot-action").click();
+await sleep(1400);
+const trail = await page.evaluate(() => window.__fly);
+const sawCatch = await page.evaluate(() => window.__sawCatch);
+check(trail.length >= 20, `飞行动效确实发生了（逐帧采样到 ${trail.length} 点）`);
+if (trail.length >= 20) {
+  const sx = flyShot.x + flyShot.width / 2;
+  const sy = flyShot.y + flyShot.height / 2;
+  const ex = flyDock.x + flyDock.width / 2;
+  const ey = flyDock.y + flyDock.height / 2;
+  check(
+    Math.hypot(trail[0].x - sx, trail[0].y - sy) <= 32,
+    `起飞点就是卡片里那张图（中心距 ${Math.hypot(trail[0].x - sx, trail[0].y - sy).toFixed(0)}px）`
+  );
+  const last = trail[trail.length - 1];
+  check(
+    Math.hypot(last.x - ex, last.y - ey) <= 56,
+    `落点就是浮标（中心距 ${Math.hypot(last.x - ex, last.y - ey).toFixed(0)}px）`
+  );
+  // 弧线判据：45% 处的实际位置要比"起终点连线"明显靠上 —— 抛物线的证据，直线插值给不出
+  const mid = trail[Math.floor(trail.length * 0.45)];
+  const tt = (mid.t - trail[0].t) / (last.t - trail[0].t);
+  const lineY = sy + (ey - sy) * tt;
+  check(lineY - mid.y >= 40, `走的是弧线不是直线（中段上抬 ${(lineY - mid.y).toFixed(0)}px）`);
+  check(last.w < trail[0].w, `越飞越小（${Math.round(trail[0].w)} → ${Math.round(last.w)}px）`);
+}
+check(sawCatch, "落地时浮标播了「接住」的回弹");
+check((await page.locator(".fly-thumb").count()) === 0, "飞完不留残留元素");
+check((await page.locator(".dock-count").textContent())?.trim() === "1", "落地与计数 +1 同步");
+// 移除不飞：往回撤的那一下，东西是往外走的，再往浮标飞就反了
+await page.evaluate(() => {
+  window.__fly = [];
+});
+await flyCard.hover();
+await sleep(300);
+await flyCard.locator(".hot-action").click();
+await sleep(300);
+check((await page.evaluate(() => window.__fly.length)) === 0, "移除时不飞（往回撤不该有飞入）");
+check((await page.locator(".dock-count").textContent())?.trim() === "0", "移除后计数回到 0");
+
 // ---------- 11. 满员拒绝：反馈必须落在**被点的按钮**上，而不是远处的浮标 ----------
 // 用户明确过的设计原则："用户的焦点在哪里，效果就应该出现在哪里"。
 // v1 是让右下角浮标摇 + 计数徽章红闪，被否；现在改成按钮自己置灰 + 点击左右晃。

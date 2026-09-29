@@ -184,13 +184,19 @@ export default function PhoneDetailOverlay({
                     ? `对比已满 4 台，先移除一台再把 ${phone.name} 加入对比`
                     : `把 ${phone.name} 加入对比`
               }
-              onClick={() => {
+              onClick={(e) => {
                 // 已加入的按钮是"移除"语义，满员也能点；只有"加入"这条路会被拒
                 if (!inCompare && compareFull) {
                   setRejected(true);
                   return;
                 }
-                onAddCompare(phone.id);
+                // 起飞点：浮窗左边那张当前配色的图（而不是右下角这枚按钮）——
+                // 从"你正在看的那台手机"飞出去，和首页卡片是同一种说法。
+                const r = imgRef.current?.getBoundingClientRect();
+                onAddCompare(phone.id, {
+                  from: r && r.width > 0 ? r : e.currentTarget.getBoundingClientRect(),
+                  image: cur
+                });
               }}
               onAnimationEnd={(e) => {
                 if (e.animationName === "hot-shake") setRejected(false);

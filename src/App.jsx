@@ -9,6 +9,7 @@ import Home from "./Home.jsx";
 import PhoneDetailOverlay from "./PhoneDetailOverlay.jsx";
 import CompareDock from "./CompareDock.jsx";
 import { buildSearch, readFromSearch, sameState } from "./urlState.js";
+import { flyToDock } from "./flyToDock.js";
 
 const SLOT_COUNT = 4;
 
@@ -989,14 +990,18 @@ export default function App({ initialView, initialSlots, initialPhoneId }) {
   // 不做成开关的话，在首页反复点同一台毫无反馈，也找不到取消的地方。
   // 满员后再点：按钮那边自己会置灰 + 点击晃动（反馈在用户焦点所在处，见 Home/PhoneDetailOverlay），
   // 这里照旧静默兜底即可。
-  const toggleCompare = (id) =>
+  //
+  // origin（可选）是"货从哪来"：卡片里的手机图 / 浮窗里的图，调用方在事件里同步量好传进来
+  // （React 合成事件到了异步就拿不到 currentTarget 了）。**只在真正添进去时飞** ——
+  // 移除不飞（东西是往外走的，再往浮标飞就反了），满员被拒也不飞（那是按钮自己的晃动回合）。
+  const toggleCompare = (id, origin) => {
+    const adding = !slots.includes(id);
+    if (adding && slots.length >= SLOT_COUNT) return;
     setSlots((prev) =>
-      prev.includes(id)
-        ? prev.filter((x) => x !== id)
-        : prev.length < SLOT_COUNT
-          ? [...prev, id]
-          : prev
+      prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]
     );
+    if (adding && origin) flyToDock(origin);
+  };
 
   const isDiff = (values) => {
     const valid = values.filter((v) => v !== null);

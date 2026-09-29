@@ -1541,6 +1541,53 @@ body {
   box-shadow: 0 20px 50px rgba(0, 0, 0, 0.28);
 }
 
+/* 到货：飞过来的缩略图落进来时，浮标先沉一下再弹回来（见 src/flyToDock.js 的 bump）。
+   这是"收纳"的反馈，不是"点击"的反馈 —— 点击瞬间计数徽章已经弹过了，两者前后错开 0.7s，
+   读起来正好是"点了一下 → 东西飞过来 → 收进去了"。
+   动画自带 transform，会在这 0.42s 里盖掉 hover 的 translateY(-2px)；
+   反正点完添加鼠标还在卡片上，看不出来。 */
+@keyframes dock-catch {
+  0% {
+    transform: scale(1);
+  }
+  34% {
+    transform: scale(0.9);
+  }
+  68% {
+    transform: scale(1.06);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.dock-btn.is-catch {
+  animation: dock-catch 0.42s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* 「添加对比」飞向浮标的那张缩略图（元素由 flyToDock.js 临时创建、播完即摘）。
+   固定尺寸 + 白底圆角，看着像从卡片上揭下来的一小张；
+   pointer-events 必须关掉：它在最上层飞过，要是吃到点击，底下那一下就被吞了。 */
+.fly-thumb {
+  position: fixed;
+  z-index: 400;
+  box-sizing: border-box;
+  padding: 4px;
+  border: 0.5px solid var(--border);
+  border-radius: 16px;
+  background: var(--surface);
+  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.18);
+  object-fit: contain;
+  pointer-events: none;
+  will-change: transform, opacity;
+}
+
+/* 没有产品图的机型（少数第三方来源）：飞一块中性底的占位卡，
+   而不是一张空白的白卡 —— 后者容易被当成图片没加载出来。 */
+.fly-thumb.is-ph {
+  background: var(--bg);
+}
+
 .dock-btn svg {
   transform-origin: 50% 50%;
 }
