@@ -65,7 +65,7 @@ try {
   );
 
   const checks = [
-    ["站点标题", html.includes("灵眸")],
+    ["站点标题", html.includes("机型对比")],
     ...phones.slice(0, SLOT_COUNT).map((p) => [`首屏列：${p.name}`, html.includes(p.name)]),
     ["分区标题 芯片组", html.includes("芯片组")],
     ["分区标题 摄像头", html.includes("摄像头")],

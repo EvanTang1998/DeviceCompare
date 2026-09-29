@@ -1059,7 +1059,7 @@ export default function App({ initialView, initialSlots, initialPhoneId }) {
             className={`site-title${view === "compare" ? " is-link" : ""}`}
             onClick={() => setView("home")}
           >
-            灵眸 · 手机对比
+            机型对比
           </button>
         </div>
         {view === "compare" ? (

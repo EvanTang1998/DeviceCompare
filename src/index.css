@@ -37,8 +37,9 @@ body {
 }
 
 .site-title {
-  font-size: 13px;
-  color: var(--text-secondary);
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--text);
 }
 
 .diff-toggle {
@@ -1390,14 +1391,16 @@ body {
   color: var(--accent);
 }
 
-/* 站名：首页上是纯标题，对比页上变成回首页的入口（与「返回首页」按钮等价） */
+/* 站名：首页上是纯标题，对比页上变成回首页的入口（与「返回首页」按钮等价）。
+   15px + 正文色：原来 13px 浅灰太弱，用户点名"字体有点小" —— 它现在是顶栏的身份。 */
 .site-title {
   padding: 0;
   border: 0;
   background: none;
   font: inherit;
-  font-size: 13px;
-  color: var(--text-secondary);
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--text);
   cursor: default;
 }
 
@@ -1487,31 +1490,33 @@ body {
 
 /* 空态（一台都没加）：按钮照常在，但点它不会有反应 —— 让图标抖一下代替文案报错。
    transform-origin 必须显式写：SVG 元素的默认原点在部分浏览器里是 0 0，
-   不写的话旋转会绕着左上角甩，看着像 bug。 */
+   不写的话旋转会绕着左上角甩，看着像 bug。
+   幅度跟着浮标 1.5 倍化同步放大（位移 ±4→±7px、转角 ±8°→±11°、0.44→0.5s）：
+   图标 26px 摆在 68px 的大按钮里，原来那点幅度肉眼基本看不出来（用户反馈"震动没了"）。 */
 @keyframes dock-shake {
   0%,
   100% {
     transform: translateX(0) rotate(0);
   }
   15% {
-    transform: translateX(-4px) rotate(-8deg);
+    transform: translateX(-7px) rotate(-11deg);
   }
   30% {
-    transform: translateX(4px) rotate(8deg);
+    transform: translateX(7px) rotate(11deg);
   }
   45% {
-    transform: translateX(-3px) rotate(-6deg);
+    transform: translateX(-5px) rotate(-8deg);
   }
   60% {
-    transform: translateX(3px) rotate(6deg);
+    transform: translateX(5px) rotate(8deg);
   }
   80% {
-    transform: translateX(-1.5px) rotate(-3deg);
+    transform: translateX(-2.5px) rotate(-4deg);
   }
 }
 
 .dock-btn.is-shake svg {
-  animation: dock-shake 0.44s cubic-bezier(0.36, 0.07, 0.19, 0.97);
+  animation: dock-shake 0.5s cubic-bezier(0.36, 0.07, 0.19, 0.97);
 }
 
 /* 计数每变一次弹一下，加/减都有即时反馈（重挂载靠 key，见 CompareDock.jsx） */
